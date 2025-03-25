@@ -1,13 +1,13 @@
-package by.ikrotsyuk.bsuir.passangerservice;
+package by.ikrotsyuk.bsuir.passengerservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PassangerServiceApplication {
+public class PassengerServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PassangerServiceApplication.class, args);
+        SpringApplication.run(PassengerServiceApplication.class, args);
     }
 
 }

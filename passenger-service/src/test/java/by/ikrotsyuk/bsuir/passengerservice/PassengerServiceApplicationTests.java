@@ -1,10 +1,10 @@
-package by.ikrotsyuk.bsuir.passangerservice;
+package by.ikrotsyuk.bsuir.passengerservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PassangerServiceApplicationTests {
+class PassengerServiceApplicationTests {
 
     @Test
     void contextLoads() {

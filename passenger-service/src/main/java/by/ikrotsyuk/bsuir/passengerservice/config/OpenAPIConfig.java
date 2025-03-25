@@ -1,4 +1,4 @@
-package by.ikrotsyuk.bsuir.driverservice.config;
+package by.ikrotsyuk.bsuir.passengerservice.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.Components;
@@ -20,7 +20,7 @@ public class OpenAPIConfig {
         return new OpenAPI()
                 .servers(List.of(
                         new Server().url("http://localhost:8083"),
-                        new Server().url("http://localhost:8084")))
+                        new Server().url("http://localhost:8082")))
                 .info(new Info().title("Book Storage Service API").version("1.0.0"))
                 .addSecurityItem(new SecurityRequirement().addList("JWTAuthScheme"))
                 .components(new Components().addSecuritySchemes("JWTAuthScheme", new SecurityScheme()
