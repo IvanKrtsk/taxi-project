@@ -21,9 +21,6 @@ public class OpenAPIConfig {
                 .servers(List.of(
                         new Server().url("http://localhost:8083"),
                         new Server().url("http://localhost:8086")))
-                .info(new Info().title("Book Storage Service API").version("1.0.0"))
-                .addSecurityItem(new SecurityRequirement().addList("JWTAuthScheme"))
-                .components(new Components().addSecuritySchemes("JWTAuthScheme", new SecurityScheme()
-                        .name("Authorization via bearer token(JWT)").type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
+                .info(new Info().title("Rides Service API").version("1.0.0"));
     }
 }
