@@ -21,6 +21,8 @@
     <module>driver-service</module>
     <module>passenger-service</module>
     <module>rides-service</module>
+    <module>payment-service</module>
+    <module>rating-service</module>
   </modules>
 
   <dependencyManagement>
