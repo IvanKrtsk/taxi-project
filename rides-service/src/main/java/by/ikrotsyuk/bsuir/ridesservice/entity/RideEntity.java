@@ -5,10 +5,7 @@ import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 
@@ -18,6 +15,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class RideEntity {
     @Schema(description = "ride id")
     @Id
