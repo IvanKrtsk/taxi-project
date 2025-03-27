@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "driver_vehicles")
+@Table(name = "vehicles")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class DriverVehicleEntity {
+public class VehicleEntity {
     @Schema(description = "driver's vehicle id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

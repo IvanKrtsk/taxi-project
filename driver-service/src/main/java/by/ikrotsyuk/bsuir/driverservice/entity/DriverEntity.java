@@ -46,5 +46,5 @@ public class DriverEntity {
     @NotNull
     private Boolean isDeleted;
     @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
-    private List<DriverVehicleEntity> driverVehicles;
+    private List<VehicleEntity> driverVehicles;
 }
