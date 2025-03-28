@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="driver-1" author="ikrtsk">
+        <comment>Create car class type</comment>
+        <sql>
+            CREATE TYPE car_class_types AS ENUM('economy', 'comfort', 'comfort_plus', 'business', 'electric', 'truck', 'ultima', 'delivery');
+        </sql>
+    </changeSet>
+
+    <changeSet id="driver-2" author="ikrtsk">
+        <comment>Create drivers table</comment>
+        <createTable tableName="drivers">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="phone" type="varchar(15)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="float" defaultValue="0.0"/>
+            <column name="total_rides" type="bigint" defaultValue="0"/>
+            <column name="isDeleted" type="boolean" defaultValue="false"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="driver-3" author="ikrtsk">
+        <comment>Create vehicles table</comment>
+        <createTable tableName="vehicles">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="brand" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="model" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="car_class" type="car_class_types">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rides_count" type="bigint" defaultValue="0"/>
+            <column name="year" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="license_plate" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="color" type="varchar(30)"/>
+            <column name="driver_id" type="bigint"/>
+            <column name="isCurrent" type="boolean" defaultValue="false"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="vehicles"
+                baseColumnNames="driver_id"
+                referencedTableName="drivers"
+                referencedColumnNames="id"
+                constraintName="fk_driver"
+                onDelete="SET NULL"
+        />
+    </changeSet>
+
+</databaseChangeLog>

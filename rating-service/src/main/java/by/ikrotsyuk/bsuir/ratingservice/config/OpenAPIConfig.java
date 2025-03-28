@@ -21,6 +21,6 @@ public class OpenAPIConfig {
                 .servers(List.of(
                         new Server().url("http://localhost:8083"),
                         new Server().url("http://localhost:8090")))
-                .info(new Info().title("Passenger Service API").version("1.0.0"));
+                .info(new Info().title("Rating Service API").version("1.0.0"));
     }
 }
