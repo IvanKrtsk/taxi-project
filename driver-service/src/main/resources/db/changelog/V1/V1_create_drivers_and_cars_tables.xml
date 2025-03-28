@@ -34,6 +34,13 @@
     </changeSet>
 
     <changeSet id="driver-3" author="ikrtsk">
+        <comment>Add index on email column in drivers</comment>
+        <createIndex tableName="drivers" indexName="idx_drivers_email">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="driver-4" author="ikrtsk">
         <comment>Create vehicles table</comment>
         <createTable tableName="vehicles">
             <column name="id" type="bigint">

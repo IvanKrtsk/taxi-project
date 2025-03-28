@@ -26,4 +26,11 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="passenger-2" author="ikrtsk">
+        <comment>Add index on email column</comment>
+        <createIndex tableName="passengers" indexName="idx_email">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+
 </databaseChangeLog>
