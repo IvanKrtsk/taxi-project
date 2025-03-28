@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="payment-1" author="ikrtsk">
+        <comment>Create account types</comment>
+        <sql>
+            CREATE TYPE account_types AS ENUM ('driver', 'passenger');
+        </sql>
+    </changeSet>
+
+    <changeSet id="payment-2" author="ikrtsk">
+        <comment>Create internal_accounts table</comment>
+        <createTable tableName="internal_accounts">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_type" type="account_types"/>
+            <column name="balance" type="float" defaultValue="0.0"/>
+            <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
