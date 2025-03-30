@@ -1,30 +1,21 @@
-package by.ikrotsyuk.bsuir.passengerservice.entity;
+package by.ikrotsyuk.bsuir.passengerservice.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-
-@Entity
-@Table(name = "passengers")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
-public class PassengerEntity {
-    @Schema(description = "passenger id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class PassengerResponseDTO {
     @Schema(description = "passenger name")
     @NotBlank
     @Size(max = 100)
@@ -43,13 +34,5 @@ public class PassengerEntity {
     @DecimalMax(value = "10.0")
     private Double rating;
     @Schema(description = "passenger rides count")
-    private Long totalRides;
-    @Schema(description = "is passenger account deleted")
-    private Boolean isDeleted;
-    @Schema(description = "entity creation time")
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    @Schema(description = "when was entity last updated date")
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private Long total_rides;
 }

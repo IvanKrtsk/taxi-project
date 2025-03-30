@@ -15,7 +15,7 @@
     <changeSet id="payment-2" author="ikrtsk">
         <comment>Create internal_accounts table</comment>
         <createTable tableName="internal_accounts">
-            <column name="id" type="bigint">
+            <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_id" type="bigint">

@@ -8,7 +8,7 @@
     <changeSet id="passenger-1" author="ikrtsk">
         <comment>Create passengers table</comment>
         <createTable tableName="passengers">
-            <column name="id" type="bigint">
+            <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(100)">
