@@ -1,12 +1,12 @@
 package by.ikrotsyuk.bsuir.driverservice.entity.customtypes;
 
 public enum CarClassTypes {
-    economy,
-    comfort,
-    comfort_plus,
-    business,
-    electric,
-    truck,
-    ultima,
-    delivery
+    ECONOMY,
+    COMFORT,
+    COMFORT_PLUS,
+    BUSINESS,
+    ELECTRIC,
+    TRUCK,
+    ULTIMA,
+    DELIVERY
 }

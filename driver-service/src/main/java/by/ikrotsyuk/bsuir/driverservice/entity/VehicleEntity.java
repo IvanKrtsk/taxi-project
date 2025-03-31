@@ -7,6 +7,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vehicles")
@@ -51,4 +55,10 @@ public class VehicleEntity {
     private DriverEntity driver;
     @Schema(description = "is car current")
     private Boolean isCurrent;
+    @Schema(description = "entity creation time")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @Schema(description = "when was entity last updated date")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

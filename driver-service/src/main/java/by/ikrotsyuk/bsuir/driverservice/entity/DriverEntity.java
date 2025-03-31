@@ -4,7 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -43,6 +46,12 @@ public class DriverEntity {
     @Schema(description = "is driver account deleted")
     @NotNull
     private Boolean isDeleted;
+    @Schema(description = "entity creation time")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @Schema(description = "when was entity last updated date")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
     @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
     private List<VehicleEntity> driverVehicles;
 }
