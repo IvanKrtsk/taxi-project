@@ -24,4 +24,4 @@ springdoc:
     path: /passenger/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /passenger/swagger-ui.htm
+    path: /passenger/swagger-ui.html

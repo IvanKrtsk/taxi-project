@@ -28,4 +28,4 @@ springdoc:
     path: /rating/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /rating/swagger-ui.htm
+    path: /rating/swagger-ui.html
