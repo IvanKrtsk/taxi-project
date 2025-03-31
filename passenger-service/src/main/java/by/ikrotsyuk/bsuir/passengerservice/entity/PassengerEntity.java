@@ -7,6 +7,10 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -42,4 +46,10 @@ public class PassengerEntity {
     private Long total_rides;
     @Schema(description = "is passenger account deleted")
     private Boolean isDeleted;
+    @Schema(description = "entity creation time")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @Schema(description = "when was entity last updated date")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
