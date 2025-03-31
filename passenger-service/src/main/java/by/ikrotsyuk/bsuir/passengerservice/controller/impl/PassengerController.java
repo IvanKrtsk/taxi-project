@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping("/passenger")
+@RequestMapping("/api/v1/passenger")
 public class PassengerController implements PassengerOperations {
     private final PassengerService passengerService;
 
@@ -39,7 +39,7 @@ public class PassengerController implements PassengerOperations {
      * id в дальнейшем будет браться из jwt
      */
     @Override
-    @PatchMapping("/edit/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> editPassengerProfile(@PathVariable Long id, @Valid @RequestBody PassengerRequestDTO passengerRequestDTO){
         return new ResponseEntity<>(passengerService.editPassengerProfile(id, passengerRequestDTO), HttpStatus.OK);
     }
@@ -48,8 +48,13 @@ public class PassengerController implements PassengerOperations {
      * id в дальнейшем будет браться из jwt
      */
     @Override
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePassengerProfile(@PathVariable Long id) {
         return new ResponseEntity<>(passengerService.deletePassengerProfile(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> addPassenger(String email){
+        return new ResponseEntity<>(passengerService.addPassenger(email), HttpStatus.CREATED);
     }
 }

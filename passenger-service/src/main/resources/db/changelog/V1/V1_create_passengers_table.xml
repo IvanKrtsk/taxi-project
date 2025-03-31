@@ -22,7 +22,7 @@
             </column>
             <column name="rating" type="float" defaultValue="0.0"/>
             <column name="total_rides" type="bigint" defaultValue="0"/>
-            <column name="isDeleted" type="boolean" defaultValue="false"/>
+            <column name="is_deleted" type="boolean" defaultValue="false"/>
             <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
