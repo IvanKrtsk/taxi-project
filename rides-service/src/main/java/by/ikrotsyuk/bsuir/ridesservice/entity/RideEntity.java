@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
 
@@ -46,6 +48,7 @@ public class RideEntity {
     @DecimalMax(value = "10.0")
     private Double rating;
     @Schema(description = "taxi call time")
+    @CreationTimestamp
     @NotNull
     private OffsetDateTime bookedAt;
     @Schema(description = "taxi driver's confirmation time")
@@ -54,4 +57,7 @@ public class RideEntity {
     private OffsetDateTime beganAt;
     @Schema(description = "trip end time")
     private OffsetDateTime endedAt;
+    @Schema(description = "when was entity last updated date")
+    @UpdateTimestamp
+    private OffsetDateTime updatedAt;
 }

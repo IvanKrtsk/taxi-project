@@ -1,0 +1,31 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: rides-service
+  # postgresql database configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/taxi_db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+    open-in-view: false
+  # liquibase configuration
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+  # mongodb database configuration
+  data:
+    mongodb:
+      uri: mongodb://mongo:mongo@localhost:27017/taxi_db
+
+# swagger routes configuration
+springdoc:
+  api-docs:
+    enabled: true
+    path: /rides/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /rides/swagger-ui.htm
