@@ -8,7 +8,7 @@
     <changeSet id="payment-1" author="ikrtsk">
         <comment>Create account types</comment>
         <sql>
-            CREATE TYPE account_types AS ENUM ('driver', 'passenger');
+            CREATE TYPE account_types AS ENUM ('DRIVER', 'PASSENGER');
         </sql>
     </changeSet>
 
@@ -23,7 +23,9 @@
             </column>
             <column name="user_type" type="account_types"/>
             <column name="balance" type="float" defaultValue="0.0"/>
+            <column name="is_deleted" type="boolean" defaultValue="false"/>
             <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
     </changeSet>
 

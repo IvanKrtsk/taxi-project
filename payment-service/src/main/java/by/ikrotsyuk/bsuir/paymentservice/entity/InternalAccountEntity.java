@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
 
@@ -31,7 +33,12 @@ public class InternalAccountEntity {
     @Schema(description = "internal balance")
     @NotNull
     private Double balance;
+    @Schema(description = "is internal bank account deleted")
+    private Boolean isDeleted;
     @Schema(description = "account creation date")
-    @NotNull
+    @CreationTimestamp
     private OffsetDateTime createdAt;
+    @Schema(description = "when was entity last updated date")
+    @UpdateTimestamp
+    private OffsetDateTime updatedAt;
 }
