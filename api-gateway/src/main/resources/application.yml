@@ -1,0 +1,62 @@
+server:
+  port: 8083
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: api-gateway
+  # gateway configuration
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      # gateway routes configuration
+      routes:
+        - id: driver-service
+          uri: lb://driver-service
+          predicates:
+            - Path=/driver/**
+        - id: passenger-service
+          uri: lb://passenger-service
+          predicates:
+            - Path=/passenger/**
+        - id: rides-service
+          uri: lb://rides-service
+          predicates:
+            - Path=/rides/**
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/payment/**
+        - id: rating-service
+          uri: lb://rating-service
+          predicates:
+            - Path=/rating/**
+
+# swagger routes configuration
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: api-gateway
+        url: /v3/api-docs
+      - name: driver-service
+        url: /driver/v3/api-docs
+      - name: passenger-service
+        url: /passenger/v3/api-docs
+      - name: rides-service
+        url: /rides/v3/api-docs
+      - name: payment-service
+        url: /payment/v3/api-docs
+      - name: rating-service
+        url: /rating/v3/api-docs

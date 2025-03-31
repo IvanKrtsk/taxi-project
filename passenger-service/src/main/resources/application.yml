@@ -1,0 +1,27 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: passenger-service
+  # database configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/taxi_db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+    open-in-view: false
+  # liquibase configuration
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+# swagger routes configuration
+springdoc:
+  api-docs:
+    enabled: true
+    path: /passenger/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /passenger/swagger-ui.htm
