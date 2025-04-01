@@ -2,6 +2,7 @@ package by.ikrotsyuk.bsuir.passengerservice.controller.impl;
 
 import by.ikrotsyuk.bsuir.passengerservice.controller.PassengerOperations;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
+import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class PassengerController implements PassengerOperations {
      */
     @Override
     @GetMapping("/profile/{id}")
-    public ResponseEntity<?> getPassengerProfile(@PathVariable Long id) {
+    public ResponseEntity<PassengerResponseDTO> getPassengerProfile(@PathVariable Long id) {
         return new ResponseEntity<>(passengerService.getPassengerById(id), HttpStatus.OK);
     }
 
@@ -40,7 +41,7 @@ public class PassengerController implements PassengerOperations {
      */
     @Override
     @PatchMapping("/{id}")
-    public ResponseEntity<?> editPassengerProfile(@PathVariable Long id, @Valid @RequestBody PassengerRequestDTO passengerRequestDTO){
+    public ResponseEntity<PassengerResponseDTO> editPassengerProfile(@PathVariable Long id, @Valid @RequestBody PassengerRequestDTO passengerRequestDTO){
         return new ResponseEntity<>(passengerService.editPassengerProfile(id, passengerRequestDTO), HttpStatus.OK);
     }
 
@@ -49,7 +50,7 @@ public class PassengerController implements PassengerOperations {
      */
     @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePassengerProfile(@PathVariable Long id) {
+    public ResponseEntity<PassengerResponseDTO> deletePassengerProfile(@PathVariable Long id) {
         return new ResponseEntity<>(passengerService.deletePassengerProfile(id), HttpStatus.OK);
     }
 }
