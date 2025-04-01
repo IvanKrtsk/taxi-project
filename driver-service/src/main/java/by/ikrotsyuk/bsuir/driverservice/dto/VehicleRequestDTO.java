@@ -30,9 +30,6 @@ public class VehicleRequestDTO {
     @Enumerated(EnumType.STRING)
     @NotNull
     private CarClassTypes carClassTypes;
-    @Schema(description = "number of driver trips on this car")
-    @NotNull
-    private Long ridesCount;
     @Schema(description = "date of manufacture of the car")
     @NotNull
     private Integer year;
