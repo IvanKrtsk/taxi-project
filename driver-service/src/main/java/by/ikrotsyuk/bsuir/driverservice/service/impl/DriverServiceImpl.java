@@ -16,6 +16,7 @@ public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
 
+    @Override
     @Transactional(readOnly = true)
     public DriverResponseDTO getDriverProfileById(Long id){
         DriverEntity driverEntity = driverRepository.findById(id)
@@ -23,11 +24,13 @@ public class DriverServiceImpl implements DriverService {
         return driverMapper.toDTO(driverEntity);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Double getDriverRatingById(Long id){
         return getDriverProfileById(id).getRating();
     }
 
+    @Override
     @Transactional
     public DriverResponseDTO editDriverProfile(Long id, DriverRequestDTO driverRequestDTO){
         DriverEntity driverEntity = driverRepository.findById(id)
@@ -48,6 +51,7 @@ public class DriverServiceImpl implements DriverService {
         return driverMapper.toDTO(driverEntity);
     }
 
+    @Override
     @Transactional
     public DriverResponseDTO deleteDriverProfile(Long id){
         DriverEntity driverEntity = driverRepository.findById(id)
@@ -58,6 +62,7 @@ public class DriverServiceImpl implements DriverService {
         return driverMapper.toDTO(driverEntity);
     }
 
+    @Override
     @Transactional
     public Long checkIsEmailCorrect(Long id, String email){
         return driverRepository.findById(id)
@@ -68,6 +73,7 @@ public class DriverServiceImpl implements DriverService {
                 .orElseThrow(() -> new RuntimeException("not found"));
     }
 
+    @Override
     @Transactional
     public Boolean addDriver(String email){
         driverRepository.save(DriverEntity.builder()
