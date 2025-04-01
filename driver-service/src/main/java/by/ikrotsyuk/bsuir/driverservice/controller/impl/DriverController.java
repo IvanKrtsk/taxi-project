@@ -35,12 +35,12 @@ public class DriverController implements DriverOperations {
     }
 
     @Override
-    public ResponseEntity<?> getAllDriverCars(Long id) {
+    public ResponseEntity<?> getAllDriverVehicles(Long id) {
         return null;
     }
 
     @Override
-    public ResponseEntity<?> getDriverCurrentCar(Long id) {
+    public ResponseEntity<?> getDriverCurrentVehicle(Long id) {
         return null;
     }
 }

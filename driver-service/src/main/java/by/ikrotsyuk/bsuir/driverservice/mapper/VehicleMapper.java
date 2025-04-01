@@ -6,9 +6,13 @@ import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface VehicleMapper {
     VehicleResponseDTO toDTO(VehicleEntity vehicleEntity);
+
+    List<VehicleResponseDTO> toDTOList(List<VehicleEntity> vehicleEntityList);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "ridesCount", ignore = true)

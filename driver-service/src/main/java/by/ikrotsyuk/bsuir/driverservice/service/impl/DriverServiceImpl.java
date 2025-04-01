@@ -2,19 +2,26 @@ package by.ikrotsyuk.bsuir.driverservice.service.impl;
 
 import by.ikrotsyuk.bsuir.driverservice.dto.DriverRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
+import by.ikrotsyuk.bsuir.driverservice.dto.VehicleRequestDTO;
+import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
+import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
 import by.ikrotsyuk.bsuir.driverservice.mapper.DriverMapper;
+import by.ikrotsyuk.bsuir.driverservice.mapper.VehicleMapper;
 import by.ikrotsyuk.bsuir.driverservice.repository.DriverRepository;
 import by.ikrotsyuk.bsuir.driverservice.service.DriverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
+    private final VehicleMapper vehicleMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -85,5 +92,25 @@ public class DriverServiceImpl implements DriverService {
                         .isDeleted(false)
                 .build());
         return true;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<VehicleResponseDTO> getAllDriverVehicles(Long id) {
+        DriverEntity driverEntity = driverRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
+        List<VehicleEntity> vehicleResponseDTOList = driverEntity.getDriverVehicles();
+        if(vehicleResponseDTOList.isEmpty())
+            throw new RuntimeException("no cars");
+        return vehicleMapper.toDTOList(vehicleResponseDTOList);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public VehicleResponseDTO getDriverCurrentVehicle(Long id) {
+        return getAllDriverVehicles(id).stream()
+                .filter(VehicleResponseDTO::getIsCurrent)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("no current car"));
     }
 }
