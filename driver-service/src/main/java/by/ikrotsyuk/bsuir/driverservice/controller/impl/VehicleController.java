@@ -15,12 +15,12 @@ public class VehicleController implements VehicleOperations {
     }
 
     @Override
-    public ResponseEntity<?> setVehicleCurrent(Long id) {
+    public ResponseEntity<?> makeVehicleCurrent(Long id) {
         return null;
     }
 
     @Override
-    public ResponseEntity<?> setVehicleNotCurrent(Long id) {
+    public ResponseEntity<?> makeVehicleUncurrent(Long id) {
         return null;
     }
 

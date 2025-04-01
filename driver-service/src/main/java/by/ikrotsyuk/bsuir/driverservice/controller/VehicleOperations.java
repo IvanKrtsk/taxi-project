@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface VehicleOperations {
     ResponseEntity<?> addVehicle();
     ResponseEntity<?> editVehicle();
-    ResponseEntity<?> setVehicleCurrent(@PathVariable Long id);
-    ResponseEntity<?> setVehicleNotCurrent(@PathVariable Long id);
+    ResponseEntity<?> makeVehicleCurrent(@PathVariable Long id);
+    ResponseEntity<?> makeVehicleUncurrent(@PathVariable Long id);
     ResponseEntity<?> getAllVehiclesByType(@PathVariable String type);
 }
