@@ -1,7 +1,10 @@
 package by.ikrotsyuk.bsuir.passengerservice.exception.exceptions;
 
-public class PassengerNotFoundByIdException extends RuntimeException {
-    public PassengerNotFoundByIdException(Long id) {
-        super(String.format("Passenger with id: %d not found", id));
+import by.ikrotsyuk.bsuir.passengerservice.exception.keys.PassengerExceptionMessageKeys;
+import by.ikrotsyuk.bsuir.passengerservice.exception.template.ExceptionTemplate;
+
+public class PassengerNotFoundByIdException extends ExceptionTemplate {
+    public PassengerNotFoundByIdException(PassengerExceptionMessageKeys key, Long id) {
+        super(key.getMessageKey(), id);
     }
 }

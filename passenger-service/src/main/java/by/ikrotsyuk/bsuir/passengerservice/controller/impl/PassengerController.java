@@ -52,9 +52,4 @@ public class PassengerController implements PassengerOperations {
     public ResponseEntity<?> deletePassengerProfile(@PathVariable Long id) {
         return new ResponseEntity<>(passengerService.deletePassengerProfile(id), HttpStatus.OK);
     }
-
-    @PostMapping("/add")
-    public ResponseEntity<?> addPassenger(String email){
-        return new ResponseEntity<>(passengerService.addPassenger(email), HttpStatus.CREATED);
-    }
 }

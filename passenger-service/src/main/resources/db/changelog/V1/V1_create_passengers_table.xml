@@ -18,7 +18,7 @@
                 <constraints unique="true" nullable="false"/>
             </column>
             <column name="phone" type="varchar(15)">
-                <constraints nullable="false"/>
+                <constraints unique="true" nullable="false"/>
             </column>
             <column name="rating" type="float" defaultValue="0.0"/>
             <column name="total_rides" type="bigint" defaultValue="0"/>
@@ -32,6 +32,13 @@
         <comment>Add index on email column</comment>
         <createIndex tableName="passengers" indexName="idx_email">
             <column name="email"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="passenger-3" author="ikrtsk">
+        <comment>Add index on phone column</comment>
+        <createIndex tableName="passengers" indexName="idx_phone">
+            <column name="phone"/>
         </createIndex>
     </changeSet>
 

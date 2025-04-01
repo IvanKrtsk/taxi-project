@@ -3,28 +3,31 @@ package by.ikrotsyuk.bsuir.passengerservice.service.impl;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
 import by.ikrotsyuk.bsuir.passengerservice.entity.PassengerEntity;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerAlreadyDeletedException;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByEmailException;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByIdException;
-import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerWithSameEmailAlreadyExistsException;
+import by.ikrotsyuk.bsuir.passengerservice.exception.keys.PassengerExceptionMessageKeys;
 import by.ikrotsyuk.bsuir.passengerservice.mapper.PassengerMapper;
 import by.ikrotsyuk.bsuir.passengerservice.repository.PassengerRepository;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
-import jakarta.transaction.Transactional;
+import by.ikrotsyuk.bsuir.passengerservice.service.validation.impl.PassengerServiceValidationManagerImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class PassengerServiceImpl implements PassengerService {
     private final PassengerRepository passengerRepository;
     private final PassengerMapper passengerMapper;
+    private final PassengerServiceValidationManagerImpl passengerServiceValidationManagerImpl;
+
 
     @Override
     public PassengerResponseDTO getPassengerById(Long id){
-        Optional<PassengerEntity> optionalPassengerEntity = passengerRepository.findById(id);
-        return optionalPassengerEntity.map(passengerMapper::toDTO).orElseThrow(() -> new PassengerNotFoundByIdException(id));
+       PassengerEntity passengerEntity = passengerRepository.findById(id)
+               .orElseThrow(() -> new PassengerNotFoundByIdException(PassengerExceptionMessageKeys.PASSENGER_NOT_FOUND_BY_ID_MESSAGE_KEY, id));
+        return passengerMapper.toDTO(passengerEntity);
     }
 
     @Override
@@ -38,45 +41,48 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     @Transactional
     public PassengerResponseDTO editPassengerProfile(Long id, PassengerRequestDTO passengerRequestDTO) {
-        Optional<PassengerEntity> optionalPassengerEntity = passengerRepository.findById(id);
-        if(optionalPassengerEntity.isPresent()){
-            PassengerEntity passengerEntity = optionalPassengerEntity.get();
-            String email = passengerRequestDTO.getEmail();
-            if(!passengerEntity.getEmail().equals(email)){
-                passengerEntity.setEmail(email);
-                // activates keycloak email change
-            }
-            passengerEntity.setName(passengerRequestDTO.getName());
-            passengerEntity.setPhone(passengerRequestDTO.getPhone());
-            return passengerMapper.toDTO(passengerEntity);
-        } else{
-            throw new PassengerNotFoundByIdException(id);
+        PassengerEntity passengerEntity = passengerRepository.findById(id)
+                .orElseThrow(() -> new PassengerNotFoundByIdException(PassengerExceptionMessageKeys.PASSENGER_NOT_FOUND_BY_ID_MESSAGE_KEY, id));
+        String email = passengerRequestDTO.getEmail();
+        String phone = passengerRequestDTO.getPhone();
+        if(!passengerEntity.getEmail().equals(email)){
+            passengerServiceValidationManagerImpl.checkEmailIsUnique(email);
+            passengerEntity.setEmail(email);
+            // activates keycloak email change
         }
-
+        if(!passengerEntity.getPhone().equals(phone)){
+            passengerServiceValidationManagerImpl.checkPhoneIsUnique(phone);
+            passengerEntity.setPhone(phone);
+            // activates keycloak phone change
+        }
+        passengerEntity.setName(passengerRequestDTO.getName());
+        passengerEntity.setPhone(passengerRequestDTO.getPhone());
+        return passengerMapper.toDTO(passengerEntity);
     }
 
     @Override
     @Transactional
     public PassengerResponseDTO deletePassengerProfile(Long id) {
-        Optional<PassengerEntity> optionalPassengerEntity = passengerRepository.findById(id);
-        if(optionalPassengerEntity.isPresent()) {
-            PassengerEntity passengerEntity = optionalPassengerEntity.get();
-            passengerEntity.setIsDeleted(true);
-            return passengerMapper.toDTO(passengerEntity);
-        } else
-            throw new PassengerNotFoundByIdException(id);
+        PassengerEntity passengerEntity = passengerRepository.findById(id)
+                .orElseThrow(() -> new PassengerNotFoundByIdException(PassengerExceptionMessageKeys.PASSENGER_NOT_FOUND_BY_ID_MESSAGE_KEY, id));
+        if(passengerEntity.getIsDeleted())
+            throw new PassengerAlreadyDeletedException(PassengerExceptionMessageKeys.PASSENGER_ALREADY_DELETED_MESSAGE_KEY, id);
+        passengerEntity.setIsDeleted(true);
+        return passengerMapper.toDTO(passengerEntity);
     }
 
     /**
      * для auth service(проверяет соответствие email и id)
      */
     @Override
+    @Transactional(readOnly = true)
     public Long checkIsEmailCorrect(Long id, String email) {
         return passengerRepository.findById(id)
                 .filter(passengerEntity -> passengerEntity.getEmail().equals(email))
                 .map(PassengerEntity::getId)
-                .or(() -> passengerRepository.findByEmail(email).map(PassengerEntity::getId))
-                .orElseThrow(() -> new PassengerNotFoundByIdException(id));
+                .or(() -> passengerRepository.findByEmail(email)
+                        .map(PassengerEntity::getId))
+                .orElseThrow(() -> new PassengerNotFoundByEmailException(PassengerExceptionMessageKeys.PASSENGER_NOT_FOUND_BY_EMAIL_MESSAGE_KEY, email));
     }
 
 
@@ -86,18 +92,15 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     @Transactional
     public Boolean addPassenger(String email) {
-        Optional<PassengerEntity> optionalPassengerEntity = passengerRepository.findByEmail(email);
-        if(optionalPassengerEntity.isEmpty()) {
-            passengerRepository.save(PassengerEntity.builder()
-                    .name("not specified")
-                    .email(email)
-                    .phone("not specified")
-                    .rating(0.0)
-                    .totalRides(0L)
-                    .isDeleted(false)
-                    .build());
-            return true;
-        } else
-            throw new PassengerWithSameEmailAlreadyExistsException(email);
+        passengerServiceValidationManagerImpl.checkEmailIsUnique(email);
+        passengerRepository.save(PassengerEntity.builder()
+                .name("not specified")
+                .email(email)
+                .phone("not specified")
+                .rating(0.0)
+                .totalRides(0L)
+                .isDeleted(false)
+                .build());
+        return true;
     }
 }

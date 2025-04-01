@@ -45,7 +45,7 @@ public class RatingEntity {
     private String comment;
     @Schema(description = "when when the review was left")
     @CreationTimestamp
-    private Instant createdAt;
+    private OffsetDateTime createdAt;
     @Schema(description = "when was entity last updated date")
     @UpdateTimestamp
     private OffsetDateTime updatedAt;

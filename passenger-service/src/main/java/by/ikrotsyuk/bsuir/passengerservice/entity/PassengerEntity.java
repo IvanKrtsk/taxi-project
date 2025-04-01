@@ -10,7 +10,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 
 @Entity
@@ -35,6 +35,7 @@ public class PassengerEntity {
     @Size(max = 100)
     private String email;
     @Schema(description = "passenger phone")
+    @Column(unique = true)
     @NotBlank
     @Size(max = 15)
     private String phone;
@@ -48,8 +49,8 @@ public class PassengerEntity {
     private Boolean isDeleted;
     @Schema(description = "entity creation time")
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
     @Schema(description = "when was entity last updated date")
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 }

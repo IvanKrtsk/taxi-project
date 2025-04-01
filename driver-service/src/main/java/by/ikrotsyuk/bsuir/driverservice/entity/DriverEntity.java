@@ -7,7 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity
@@ -48,10 +48,10 @@ public class DriverEntity {
     private Boolean isDeleted;
     @Schema(description = "entity creation time")
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
     @Schema(description = "when was entity last updated date")
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private OffsetDateTime updatedAt;
     @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
     private List<VehicleEntity> driverVehicles;
 }

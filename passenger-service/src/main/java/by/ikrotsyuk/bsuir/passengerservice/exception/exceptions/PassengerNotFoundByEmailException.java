@@ -1,7 +1,11 @@
 package by.ikrotsyuk.bsuir.passengerservice.exception.exceptions;
 
-public class PassengerNotFoundByEmailException extends RuntimeException {
-    public PassengerNotFoundByEmailException(String email) {
-        super(String.format("Passenger with email: %s not found", email));
+
+import by.ikrotsyuk.bsuir.passengerservice.exception.keys.PassengerExceptionMessageKeys;
+import by.ikrotsyuk.bsuir.passengerservice.exception.template.ExceptionTemplate;
+
+public class PassengerNotFoundByEmailException extends ExceptionTemplate {
+    public PassengerNotFoundByEmailException(PassengerExceptionMessageKeys key, String email) {
+        super(key.getMessageKey(), email);
     }
 }
