@@ -24,6 +24,7 @@ public class PassengerServiceImpl implements PassengerService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public PassengerResponseDTO getPassengerById(Long id){
        PassengerEntity passengerEntity = passengerRepository.findById(id)
                .orElseThrow(() -> new PassengerNotFoundByIdException(PassengerExceptionMessageKeys.PASSENGER_NOT_FOUND_BY_ID_MESSAGE_KEY, id));
@@ -31,6 +32,7 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Double getPassengerRatingById(Long id){
         return this.getPassengerById(id).getRating();
     }
@@ -56,7 +58,6 @@ public class PassengerServiceImpl implements PassengerService {
             // activates keycloak phone change
         }
         passengerEntity.setName(passengerRequestDTO.getName());
-        passengerEntity.setPhone(passengerRequestDTO.getPhone());
         return passengerMapper.toDTO(passengerEntity);
     }
 
