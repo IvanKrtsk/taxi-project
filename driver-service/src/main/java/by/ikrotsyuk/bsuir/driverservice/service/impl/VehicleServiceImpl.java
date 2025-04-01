@@ -17,6 +17,7 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleRepository vehicleRepository;
     private final VehicleMapper vehicleMapper;
 
+
     @Override
     public VehicleResponseDTO addVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO) {
         return null;
@@ -38,17 +39,17 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<VehicleResponseDTO> getVehiclesByType(CarClassTypes type) {
+    public List<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type) {
         return List.of();
     }
 
     @Override
-    public List<VehicleResponseDTO> getVehiclesByYear(Integer year) {
+    public List<VehicleResponseDTO> getAllVehiclesByYear(Integer year) {
         return List.of();
     }
 
     @Override
-    public List<VehicleResponseDTO> getVehiclesByBrand(String brand) {
+    public List<VehicleResponseDTO> getAllVehiclesByBrand(String brand) {
         return List.of();
     }
 }

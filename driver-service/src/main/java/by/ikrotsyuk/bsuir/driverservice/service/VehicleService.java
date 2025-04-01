@@ -11,7 +11,7 @@ public interface VehicleService {
     VehicleResponseDTO editVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO);
     Boolean makeVehicleCurrent(Long driverId, Long vehicleId);
     Boolean makeVehicleUncurrent(Long driverId, Long vehicleId);
-    List<VehicleResponseDTO> getVehiclesByType(CarClassTypes type);
-    List<VehicleResponseDTO> getVehiclesByYear(Integer year);
-    List<VehicleResponseDTO> getVehiclesByBrand(String brand);
+    List<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type);
+    List<VehicleResponseDTO> getAllVehiclesByYear(Integer year);
+    List<VehicleResponseDTO> getAllVehiclesByBrand(String brand);
 }

@@ -1,6 +1,8 @@
 package by.ikrotsyuk.bsuir.driverservice.controller.impl;
 
 import by.ikrotsyuk.bsuir.driverservice.controller.VehicleOperations;
+import by.ikrotsyuk.bsuir.driverservice.dto.VehicleRequestDTO;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
 import by.ikrotsyuk.bsuir.driverservice.service.impl.VehicleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,28 +16,39 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/vehicle")
 public class VehicleController implements VehicleOperations {
     private final VehicleServiceImpl vehicleService;
+
     @Override
-    public ResponseEntity<?> addVehicle() {
+    public ResponseEntity<?> addVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO) {
         return null;
     }
 
     @Override
-    public ResponseEntity<?> editVehicle() {
+    public ResponseEntity<?> editVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO) {
         return null;
     }
 
     @Override
-    public ResponseEntity<?> makeVehicleCurrent(Long id) {
+    public ResponseEntity<?> makeVehicleCurrent(Long driverId, Long vehicleId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<?> makeVehicleUncurrent(Long id) {
+    public ResponseEntity<?> makeVehicleUncurrent(Long driverId, Long vehicleId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<?> getAllVehiclesByType(String type) {
+    public ResponseEntity<?> getAllVehiclesByType(CarClassTypes type) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> getAllVehiclesByYear(Integer year) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> getAllVehiclesByBrand(String brand) {
         return null;
     }
 }
