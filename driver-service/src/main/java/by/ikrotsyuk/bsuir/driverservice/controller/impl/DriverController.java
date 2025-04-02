@@ -7,6 +7,7 @@ import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.service.DriverService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -46,21 +47,21 @@ public class DriverController implements DriverOperations {
     }
 
     @Override
-    @GetMapping
-    public ResponseEntity<List<DriverResponseDTO>> getAllDrivers() {
-        return new ResponseEntity<>(driverService.getAllDrivers(), HttpStatus.OK);
+    @GetMapping()
+    public ResponseEntity<Page<DriverResponseDTO>> getAllDrivers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam String field, @RequestParam boolean isSortDirectionAsc) {
+        return new ResponseEntity<>(driverService.getAllDrivers(offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/cars")
-    public ResponseEntity<List<VehicleResponseDTO>> getAllDriverVehicles(Long id) {
-        return new ResponseEntity<>(driverService.getAllDriverVehicles(id), HttpStatus.OK);
+    @GetMapping("/cars/{driverId}")
+    public ResponseEntity<List<VehicleResponseDTO>> getAllDriverVehicles(@PathVariable Long driverId) {
+        return new ResponseEntity<>(driverService.getAllDriverVehicles(driverId), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/car")
-    public ResponseEntity<VehicleResponseDTO> getDriverCurrentVehicle(Long id) {
-        return new ResponseEntity<>(driverService.getDriverCurrentVehicle(id), HttpStatus.OK);
+    @GetMapping("/car/{driverId}")
+    public ResponseEntity<VehicleResponseDTO> getDriverCurrentVehicle(@PathVariable Long driverId) {
+        return new ResponseEntity<>(driverService.getDriverCurrentVehicle(driverId), HttpStatus.OK);
     }
 
     @PostMapping()

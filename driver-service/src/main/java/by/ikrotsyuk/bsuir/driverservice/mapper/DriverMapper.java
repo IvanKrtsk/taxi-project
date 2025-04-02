@@ -5,6 +5,7 @@ import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public interface DriverMapper {
     DriverResponseDTO toDTO(DriverEntity driverEntity);
 
     List<DriverResponseDTO> toDTOList(List<DriverEntity> driverEntityList);
+
+    Page<DriverResponseDTO> toDTOPage(Page<DriverEntity> driverEntityPage);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "rating", ignore = true)
