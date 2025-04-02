@@ -5,8 +5,6 @@ import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 public interface VehicleService {
     VehicleResponseDTO addVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO);
     VehicleResponseDTO editVehicle(Long driverId, Long vehicleId, VehicleRequestDTO vehicleRequestDTO);
@@ -16,4 +14,6 @@ public interface VehicleService {
     Page<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type, int offset, int itemCount, String field, boolean isSortDirectionAsc);
     Page<VehicleResponseDTO> getAllVehiclesByYear(Integer year, int offset, int itemCount, String field, boolean isSortDirectionAsc);
     Page<VehicleResponseDTO> getAllVehiclesByBrand(String brand, int offset, int itemCount, String field, boolean isSortDirectionAsc);
+    VehicleResponseDTO getVehicleByLicense(String licensePlate);
+    VehicleResponseDTO deleteVehicleById(Long driverId, Long vehicleId);
 }

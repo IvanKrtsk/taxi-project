@@ -2,6 +2,7 @@ package by.ikrotsyuk.bsuir.driverservice.exception;
 
 import by.ikrotsyuk.bsuir.driverservice.exception.dto.ExceptionDTO;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.*;
+import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.vehicle.*;
 import by.ikrotsyuk.bsuir.driverservice.exception.template.ExceptionTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -32,7 +33,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({DriverNotFoundByEmailException.class, DriverNotFoundByIdException.class, DriversNotFoundException.class, DriverVehiclesNotFoundException.class, DriverCurrentVehicleNotFoundException.class})
+    @ExceptionHandler({DriverNotFoundByEmailException.class, DriverNotFoundByIdException.class,
+            DriversNotFoundException.class, DriverVehiclesNotFoundException.class,
+            DriverCurrentVehicleNotFoundException.class, VehiclesNotFoundByBrandException.class,
+            VehicleNotFoundByIdException.class, VehicleNotFoundByLicensePlateException.class,
+            VehiclesNotFoundByYearException.class, VehiclesNotFoundByTypeException.class})
     public ResponseEntity<ExceptionDTO> handleNotFoundExceptions(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
@@ -40,7 +45,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({DriverWithSameEmailAlreadyExistsException.class, DriverWithSamePhoneAlreadyExistsException.class, DriverAlreadyDeletedException.class})
+    @ExceptionHandler({DriverWithSameEmailAlreadyExistsException.class, DriverWithSamePhoneAlreadyExistsException.class, DriverAlreadyDeletedException.class, VehicleNotBelongToDriverException.class, VehicleWithSameLicensePlateAlreadyExistsException.class})
     public ResponseEntity<ExceptionDTO> handleConflictExceptions(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource

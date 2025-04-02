@@ -18,7 +18,9 @@ import java.util.Optional;
 public interface VehicleRepository extends JpaRepository<VehicleEntity, Long> {
     Optional<List<VehicleEntity>> findAllByDriverId(Long driverId);
     boolean existsById(Long id);
+    boolean existsByLicensePlate(String licensePlate);
     Optional<Page<VehicleEntity>> findAllByCarClass(@NotNull CarClassTypes carClass, Pageable pageable);
     Optional<Page<VehicleEntity>> findAllByYear(@Max(2030) @NotNull Integer year, Pageable pageable);
     Optional<Page<VehicleEntity>> findAllByBrand(@NotBlank @Size(max = 50) String brand, Pageable pageable);
+    Optional<VehicleEntity> findByLicensePlate(String licensePlate);
 }
