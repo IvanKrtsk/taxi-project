@@ -13,6 +13,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DriverResponseDTO {
+    @Schema(description = "driver id")
+    private Long id;
     @Schema(description = "driver name")
     @NotBlank
     @Size(max = 100)
