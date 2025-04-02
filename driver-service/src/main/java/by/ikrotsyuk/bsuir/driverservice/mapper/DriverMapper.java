@@ -6,9 +6,13 @@ import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface DriverMapper {
     DriverResponseDTO toDTO(DriverEntity driverEntity);
+
+    List<DriverResponseDTO> toDTOList(List<DriverEntity> driverEntityList);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "rating", ignore = true)

@@ -13,6 +13,7 @@ public interface DriverService {
     DriverResponseDTO deleteDriverProfile(Long id);
     Long checkIsEmailCorrect(Long id, String email);
     Boolean addDriver(String email);
+    List<DriverResponseDTO> getAllDrivers();
     List<VehicleResponseDTO> getAllDriverVehicles(Long id);
     VehicleResponseDTO getDriverCurrentVehicle(Long id);
 }

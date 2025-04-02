@@ -3,6 +3,7 @@ package by.ikrotsyuk.bsuir.driverservice.entity;
 import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -40,6 +41,7 @@ public class VehicleEntity {
     @NotNull
     private Long ridesCount;
     @Schema(description = "date of manufacture of the car")
+    @Max(2030)
     @NotNull
     private Integer year;
     @Schema(description = "car number plate")

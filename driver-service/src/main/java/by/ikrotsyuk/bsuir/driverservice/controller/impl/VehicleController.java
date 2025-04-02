@@ -4,7 +4,7 @@ import by.ikrotsyuk.bsuir.driverservice.controller.VehicleOperations;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
-import by.ikrotsyuk.bsuir.driverservice.service.impl.VehicleServiceImpl;
+import by.ikrotsyuk.bsuir.driverservice.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/driver")
 public class VehicleController implements VehicleOperations {
-    private final VehicleServiceImpl vehicleService;
+    private final VehicleService vehicleService;
 
     @Override
     public ResponseEntity<VehicleResponseDTO> addVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO) {

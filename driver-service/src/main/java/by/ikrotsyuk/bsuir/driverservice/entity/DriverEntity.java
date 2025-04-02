@@ -28,6 +28,7 @@ public class DriverEntity {
     private String name;
     @Schema(description = "driver email")
     @NotBlank
+    @Email
     @Column(unique = true)
     @Size(max = 100)
     private String email;

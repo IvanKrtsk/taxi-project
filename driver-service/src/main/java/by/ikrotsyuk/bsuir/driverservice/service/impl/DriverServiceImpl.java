@@ -2,7 +2,6 @@ package by.ikrotsyuk.bsuir.driverservice.service.impl;
 
 import by.ikrotsyuk.bsuir.driverservice.dto.DriverRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
-import by.ikrotsyuk.bsuir.driverservice.dto.VehicleRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
@@ -92,6 +91,16 @@ public class DriverServiceImpl implements DriverService {
                         .isDeleted(false)
                 .build());
         return true;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<DriverResponseDTO> getAllDrivers() {
+        List<DriverEntity> driverEntityList = driverRepository.findAll();
+        if(driverEntityList.isEmpty())
+            throw new RuntimeException("not found");
+        else
+            return driverMapper.toDTOList(driverEntityList);
     }
 
     @Override
