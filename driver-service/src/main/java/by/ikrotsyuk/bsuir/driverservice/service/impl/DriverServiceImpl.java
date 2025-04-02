@@ -69,7 +69,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Long checkIsEmailCorrect(Long id, String email){
         return driverRepository.findById(id)
                 .filter(driverEntity -> driverEntity.getEmail().equals(email))

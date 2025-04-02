@@ -109,23 +109,27 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<VehicleResponseDTO> getAllVehicles() {
         return vehicleMapper.toDTOList(vehicleRepository.findAll());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type) {
         return vehicleMapper.toDTOList(vehicleRepository.findAllByCarClass(type)
                 .orElseThrow(() -> new RuntimeException("not found")));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<VehicleResponseDTO> getAllVehiclesByYear(Integer year) {
         return vehicleMapper.toDTOList(vehicleRepository.findAllByYear(year)
                 .orElseThrow(() -> new RuntimeException("not found")));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<VehicleResponseDTO> getAllVehiclesByBrand(String brand) {
         return vehicleMapper.toDTOList(vehicleRepository.findAllByBrand(brand)
                 .orElseThrow(() -> new RuntimeException("not found")));
