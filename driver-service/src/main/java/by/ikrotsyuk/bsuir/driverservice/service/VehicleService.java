@@ -8,9 +8,10 @@ import java.util.List;
 
 public interface VehicleService {
     VehicleResponseDTO addVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO);
-    VehicleResponseDTO editVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO);
-    Boolean makeVehicleCurrent(Long driverId, Long vehicleId);
-    Boolean makeVehicleUncurrent(Long driverId, Long vehicleId);
+    VehicleResponseDTO editVehicle(Long driverId, Long vehicleId, VehicleRequestDTO vehicleRequestDTO);
+    VehicleResponseDTO chooseCurrentVehicle(Long driverId, Long vehicleId);
+    VehicleResponseDTO getVehicleById(Long vehicleId);
+    List<VehicleResponseDTO> getAllVehicles();
     List<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type);
     List<VehicleResponseDTO> getAllVehiclesByYear(Integer year);
     List<VehicleResponseDTO> getAllVehiclesByBrand(String brand);

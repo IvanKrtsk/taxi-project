@@ -5,11 +5,11 @@ import by.ikrotsyuk.bsuir.driverservice.dto.VehicleRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
 import by.ikrotsyuk.bsuir.driverservice.service.VehicleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,37 +21,42 @@ public class VehicleController implements VehicleOperations {
     private final VehicleService vehicleService;
 
     @Override
-    public ResponseEntity<VehicleResponseDTO> addVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO) {
+    public ResponseEntity<VehicleResponseDTO> addVehicle(@PathVariable Long driverId,@Valid @RequestBody VehicleRequestDTO vehicleRequestDTO) {
         return null;
     }
 
     @Override
-    public ResponseEntity<VehicleResponseDTO> editVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO) {
+    public ResponseEntity<VehicleResponseDTO> editVehicle(@PathVariable Long driverId, @PathVariable Long vehicleId, @Valid @RequestBody VehicleRequestDTO vehicleRequestDTO) {
         return null;
     }
 
     @Override
-    public ResponseEntity<Boolean> makeVehicleCurrent(Long driverId, Long vehicleId) {
+    public ResponseEntity<VehicleResponseDTO> chooseCurrentVehicle(@PathVariable Long driverId, @PathVariable Long vehicleId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<Boolean> makeVehicleUncurrent(Long driverId, Long vehicleId) {
+    public ResponseEntity<List<VehicleResponseDTO>> getAllVehicles() {
         return null;
     }
 
     @Override
-    public ResponseEntity<List<VehicleResponseDTO>> getAllVehiclesByType(CarClassTypes type) {
+    public ResponseEntity<VehicleResponseDTO> getVehicleById(@PathVariable Long vehicleId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<List<VehicleResponseDTO>> getAllVehiclesByYear(Integer year) {
+    public ResponseEntity<List<VehicleResponseDTO>> getAllVehiclesByType(@RequestParam CarClassTypes type) {
         return null;
     }
 
     @Override
-    public ResponseEntity<List<VehicleResponseDTO>> getAllVehiclesByBrand(String brand) {
+    public ResponseEntity<List<VehicleResponseDTO>> getAllVehiclesByYear(@RequestParam Integer year) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<List<VehicleResponseDTO>> getAllVehiclesByBrand(@RequestParam String brand) {
         return null;
     }
 }

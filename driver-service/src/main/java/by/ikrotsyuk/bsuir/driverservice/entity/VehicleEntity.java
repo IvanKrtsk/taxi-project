@@ -36,7 +36,7 @@ public class VehicleEntity {
     @Schema(description = "driver's car class")
     @Enumerated(EnumType.STRING)
     @NotNull
-    private CarClassTypes carClassTypes;
+    private CarClassTypes carClass;
     @Schema(description = "number of driver trips on this car")
     @NotNull
     private Long ridesCount;
