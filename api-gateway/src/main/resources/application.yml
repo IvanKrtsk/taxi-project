@@ -25,7 +25,7 @@ spring:
         - id: passenger-service
           uri: lb://passenger-service
           predicates:
-            - Path=/passenger/**
+            - Path=/api/v1/passenger/**
         - id: rides-service
           uri: lb://rides-service
           predicates:
@@ -51,12 +51,12 @@ springdoc:
       - name: api-gateway
         url: /v3/api-docs
       - name: driver-service
-        url: /driver/v3/api-docs
+        url: /api/v1/driver/v3/api-docs
       - name: passenger-service
-        url: /passenger/v3/api-docs
+        url: /api/v1/passenger/v3/api-docs
       - name: rides-service
-        url: /rides/v3/api-docs
+        url: /api/v1/rides/v3/api-docs
       - name: payment-service
-        url: /payment/v3/api-docs
+        url: /api/v1/payment/v3/api-docs
       - name: rating-service
-        url: /rating/v3/api-docs
+        url: /api/v1/rating/v3/api-docs

@@ -8,7 +8,7 @@
     <changeSet id="passenger-1" author="ikrtsk">
         <comment>Create passengers table</comment>
         <createTable tableName="passengers">
-            <column name="id" type="bigint">
+            <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(100)">
@@ -18,11 +18,11 @@
                 <constraints unique="true" nullable="false"/>
             </column>
             <column name="phone" type="varchar(15)">
-                <constraints nullable="false"/>
+                <constraints unique="true" nullable="false"/>
             </column>
             <column name="rating" type="float" defaultValue="0.0"/>
             <column name="total_rides" type="bigint" defaultValue="0"/>
-            <column name="isDeleted" type="boolean" defaultValue="false"/>
+            <column name="is_deleted" type="boolean" defaultValue="false"/>
             <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
@@ -32,6 +32,13 @@
         <comment>Add index on email column</comment>
         <createIndex tableName="passengers" indexName="idx_email">
             <column name="email"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="passenger-3" author="ikrtsk">
+        <comment>Add index on phone column</comment>
+        <createIndex tableName="passengers" indexName="idx_phone">
+            <column name="phone"/>
         </createIndex>
     </changeSet>
 

@@ -15,7 +15,7 @@
     <changeSet id="driver-2" author="ikrtsk">
         <comment>Create drivers table</comment>
         <createTable tableName="drivers">
-            <column name="id" type="bigint">
+            <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(100)">
@@ -29,9 +29,7 @@
             </column>
             <column name="rating" type="float" defaultValue="0.0"/>
             <column name="total_rides" type="bigint" defaultValue="0"/>
-            <column name="is_deleted" type="boolean" defaultValue="false"/>
-            <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="updated_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="isDeleted" type="boolean" defaultValue="false"/>
         </createTable>
     </changeSet>
 
@@ -67,8 +65,6 @@
             <column name="color" type="varchar(30)"/>
             <column name="driver_id" type="bigint"/>
             <column name="isCurrent" type="boolean" defaultValue="false"/>
-            <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="updated_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
 
         <addForeignKeyConstraint
