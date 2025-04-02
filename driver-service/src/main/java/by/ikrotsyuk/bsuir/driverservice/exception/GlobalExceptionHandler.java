@@ -1,7 +1,7 @@
 package by.ikrotsyuk.bsuir.driverservice.exception;
 
 import by.ikrotsyuk.bsuir.driverservice.exception.dto.ExceptionDTO;
-import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.*;
+import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.*;
 import by.ikrotsyuk.bsuir.driverservice.exception.template.ExceptionTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;

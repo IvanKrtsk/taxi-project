@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface DriverRepository extends JpaRepository<DriverEntity, Long> {
     Optional<DriverEntity> findByEmail(String email);
     Boolean existsByEmail(String email);
-    Boolean existsByPhone(String email);
+    Boolean existsByPhone(String phone);
 }

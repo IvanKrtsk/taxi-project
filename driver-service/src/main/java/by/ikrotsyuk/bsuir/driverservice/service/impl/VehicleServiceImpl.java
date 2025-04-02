@@ -11,6 +11,9 @@ import by.ikrotsyuk.bsuir.driverservice.repository.VehicleRepository;
 import by.ikrotsyuk.bsuir.driverservice.service.VehicleService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -110,29 +113,46 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<VehicleResponseDTO> getAllVehicles() {
-        return vehicleMapper.toDTOList(vehicleRepository.findAll());
+    public Page<VehicleResponseDTO> getAllVehicles(int offset, int itemCount, String field, boolean isSortDirectionAsc) {
+        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Page<VehicleEntity> vehicleEntityPage = vehicleRepository.findAll(
+                PageRequest.of(offset, itemCount,
+                        Sort.by(sortDirection, field))
+        );
+        if(vehicleEntityPage.isEmpty())
+            throw new RuntimeException("not found");
+        else
+            return vehicleMapper.toDTOPage(vehicleEntityPage);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type) {
-        return vehicleMapper.toDTOList(vehicleRepository.findAllByCarClass(type)
-                .orElseThrow(() -> new RuntimeException("not found")));
+    public Page<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type, int offset, int itemCount, String field, boolean isSortDirectionAsc) {
+        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return vehicleMapper.toDTOPage(vehicleRepository.findAllByCarClass(type,
+                PageRequest.of(offset, itemCount,
+                        Sort.by(sortDirection, field))
+        ).orElseThrow(() -> new RuntimeException("not found")));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<VehicleResponseDTO> getAllVehiclesByYear(Integer year) {
-        return vehicleMapper.toDTOList(vehicleRepository.findAllByYear(year)
-                .orElseThrow(() -> new RuntimeException("not found")));
+    public Page<VehicleResponseDTO> getAllVehiclesByYear(Integer year, int offset, int itemCount, String field, boolean isSortDirectionAsc) {
+        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return vehicleMapper.toDTOPage(vehicleRepository.findAllByYear(year,
+                PageRequest.of(offset, itemCount,
+                        Sort.by(sortDirection, field))
+        ).orElseThrow(() -> new RuntimeException("not found")));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<VehicleResponseDTO> getAllVehiclesByBrand(String brand) {
-        return vehicleMapper.toDTOList(vehicleRepository.findAllByBrand(brand)
-                .orElseThrow(() -> new RuntimeException("not found")));
+    public Page<VehicleResponseDTO> getAllVehiclesByBrand(String brand, int offset, int itemCount, String field, boolean isSortDirectionAsc) {
+        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return vehicleMapper.toDTOPage(vehicleRepository.findAllByBrand(brand,
+                PageRequest.of(offset, itemCount,
+                        Sort.by(sortDirection, field))
+        ).orElseThrow(() -> new RuntimeException("not found")));
     }
 
     private boolean checkCarClassValid(CarClassTypes type){

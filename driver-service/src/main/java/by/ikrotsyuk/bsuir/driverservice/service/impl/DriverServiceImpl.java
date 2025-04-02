@@ -5,12 +5,13 @@ import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
-import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.*;
+import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.*;
 import by.ikrotsyuk.bsuir.driverservice.exception.keys.DriverExceptionMessageKeys;
 import by.ikrotsyuk.bsuir.driverservice.mapper.DriverMapper;
 import by.ikrotsyuk.bsuir.driverservice.mapper.VehicleMapper;
 import by.ikrotsyuk.bsuir.driverservice.repository.DriverRepository;
 import by.ikrotsyuk.bsuir.driverservice.service.DriverService;
+import by.ikrotsyuk.bsuir.driverservice.service.validation.DriverServiceValidationManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,7 @@ public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
     private final VehicleMapper vehicleMapper;
+    private final DriverServiceValidationManager driverServiceValidationManager;
 
     @Override
     @Transactional(readOnly = true)
@@ -49,12 +51,12 @@ public class DriverServiceImpl implements DriverService {
         String email = driverRequestDTO.getEmail();
         String phone = driverRequestDTO.getPhone();
         if(!driverEntity.getEmail().equals(email)){
-            // check email unique
+            driverServiceValidationManager.checkEmailIsUnique(email);
             driverEntity.setEmail(email);
             // activates keycloak email change
         }
         if(!driverEntity.getPhone().equals(phone)){
-            // check phone unique
+            driverServiceValidationManager.checkPhoneIsUnique(phone);
             driverEntity.setPhone(phone);
             // activates keycloak phone change
         }
@@ -105,7 +107,8 @@ public class DriverServiceImpl implements DriverService {
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Page<DriverEntity> driverEntityPage = driverRepository.findAll(
                 PageRequest.of(offset, itemCount,
-                        Sort.by(sortDirection, field)));
+                        Sort.by(sortDirection, field))
+        );
         if(driverEntityPage.isEmpty())
             throw new DriversNotFoundException(DriverExceptionMessageKeys.DRIVERS_NOT_FOUND_MESSAGE_KEY);
         else
