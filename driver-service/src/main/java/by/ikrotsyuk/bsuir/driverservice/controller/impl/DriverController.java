@@ -54,7 +54,7 @@ public class DriverController implements DriverOperations {
     }
 
     @Override
-    @GetMapping("/driverwithvehicles/{driverId}")
+    @GetMapping("/driver-with-vehicles/{driverId}")
     public ResponseEntity<DriverVehicleResponseDTO> getDriverWithVehicle(@PathVariable Long driverId) {
         return new ResponseEntity<>(driverService.getDriverWithVehicleById(driverId), HttpStatus.OK);
     }
