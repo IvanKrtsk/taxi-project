@@ -24,6 +24,9 @@ public record DriverVehicleResponseDTO (
     @Schema(description = "number of driver trips")
     Long total_rides,
 
+    @Schema(description = "is driver deleted")
+    Boolean isDeleted,
+
     @Schema(description = "vehicles assigned to a driver")
     List<VehicleEntity> driverVehicles
 ){}
