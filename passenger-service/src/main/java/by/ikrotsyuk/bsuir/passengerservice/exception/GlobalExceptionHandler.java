@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({PassengerNotFoundByIdException.class, PassengerNotFoundByEmailException.class})
+    @ExceptionHandler({PassengerNotFoundByIdException.class, PassengerNotFoundByEmailException.class, PassengersNotFoundException.class})
     public ResponseEntity<ExceptionDTO> handlePassengerNotFoundByIdException(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
