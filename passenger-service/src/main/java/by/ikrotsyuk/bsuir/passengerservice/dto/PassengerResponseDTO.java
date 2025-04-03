@@ -19,5 +19,8 @@ public record PassengerResponseDTO(
     Double rating,
 
     @Schema(description = "passenger rides count")
-    Long total_rides
+    Long total_rides,
+
+    @Schema(description = "is passenger deleted")
+    Boolean isDeleted
 ){}
