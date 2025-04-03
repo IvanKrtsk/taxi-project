@@ -125,14 +125,14 @@ public class VehicleServiceImpl implements VehicleService {
         if(isSortDirectionAsc == null)
             isSortDirectionAsc = true;
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Page<VehicleEntity> vehicleEntityPage = vehicleRepository.findAll(
+        Page<VehicleEntity> vehicleEntities = vehicleRepository.findAll(
                 PageRequest.of(offset, itemCount,
                         Sort.by(sortDirection, field))
         );
-        if(vehicleEntityPage.isEmpty())
+        if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundException();
         else
-            return vehicleEntityPage.map(vehicleMapper::toDTO);
+            return vehicleEntities.map(vehicleMapper::toDTO);
     }
 
     @Override
