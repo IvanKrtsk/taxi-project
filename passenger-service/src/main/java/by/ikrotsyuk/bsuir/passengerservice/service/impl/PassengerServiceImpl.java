@@ -6,7 +6,6 @@ import by.ikrotsyuk.bsuir.passengerservice.entity.PassengerEntity;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerAlreadyDeletedException;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByEmailException;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByIdException;
-import by.ikrotsyuk.bsuir.passengerservice.exception.keys.PassengerExceptionMessageKeys;
 import by.ikrotsyuk.bsuir.passengerservice.mapper.PassengerMapper;
 import by.ikrotsyuk.bsuir.passengerservice.repository.PassengerRepository;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
@@ -27,7 +26,7 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional(readOnly = true)
     public PassengerResponseDTO getPassengerById(Long id){
        PassengerEntity passengerEntity = passengerRepository.findById(id)
-               .orElseThrow(() -> new PassengerNotFoundByIdException(PassengerExceptionMessageKeys.PASSENGER_NOT_FOUND_BY_ID_MESSAGE_KEY, id));
+               .orElseThrow(() -> new PassengerNotFoundByIdException(id));
         return passengerMapper.toDTO(passengerEntity);
     }
 
@@ -44,7 +43,7 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public PassengerResponseDTO editPassengerProfile(Long id, PassengerRequestDTO passengerRequestDTO) {
         PassengerEntity passengerEntity = passengerRepository.findById(id)
-                .orElseThrow(() -> new PassengerNotFoundByIdException(PassengerExceptionMessageKeys.PASSENGER_NOT_FOUND_BY_ID_MESSAGE_KEY, id));
+                .orElseThrow(() -> new PassengerNotFoundByIdException(id));
         String email = passengerRequestDTO.email();
         String phone = passengerRequestDTO.phone();
         if(!passengerEntity.getEmail().equals(email)){
@@ -65,9 +64,9 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public PassengerResponseDTO deletePassengerProfile(Long id) {
         PassengerEntity passengerEntity = passengerRepository.findById(id)
-                .orElseThrow(() -> new PassengerNotFoundByIdException(PassengerExceptionMessageKeys.PASSENGER_NOT_FOUND_BY_ID_MESSAGE_KEY, id));
+                .orElseThrow(() -> new PassengerNotFoundByIdException(id));
         if(passengerEntity.getIsDeleted())
-            throw new PassengerAlreadyDeletedException(PassengerExceptionMessageKeys.PASSENGER_ALREADY_DELETED_MESSAGE_KEY, id);
+            throw new PassengerAlreadyDeletedException(id);
         passengerEntity.setIsDeleted(true);
         return passengerMapper.toDTO(passengerEntity);
     }
@@ -83,7 +82,7 @@ public class PassengerServiceImpl implements PassengerService {
                 .map(PassengerEntity::getId)
                 .or(() -> passengerRepository.findByEmail(email)
                         .map(PassengerEntity::getId))
-                .orElseThrow(() -> new PassengerNotFoundByEmailException(PassengerExceptionMessageKeys.PASSENGER_NOT_FOUND_BY_EMAIL_MESSAGE_KEY, email));
+                .orElseThrow(() -> new PassengerNotFoundByEmailException(email));
     }
 
 

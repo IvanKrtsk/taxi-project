@@ -2,7 +2,6 @@ package by.ikrotsyuk.bsuir.passengerservice.service.validation.impl;
 
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerWithSameEmailAlreadyExistsException;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerWithSamePhoneAlreadyExistsException;
-import by.ikrotsyuk.bsuir.passengerservice.exception.keys.PassengerExceptionMessageKeys;
 import by.ikrotsyuk.bsuir.passengerservice.repository.PassengerRepository;
 import by.ikrotsyuk.bsuir.passengerservice.service.validation.PassengerServiceValidationManager;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +17,13 @@ public class PassengerServiceValidationManagerImpl implements PassengerServiceVa
     @Transactional(readOnly = true)
     public void checkEmailIsUnique(String email) {
         if(passengerRepository.existsByEmail(email))
-            throw new PassengerWithSameEmailAlreadyExistsException(PassengerExceptionMessageKeys.PASSENGER_WITH_SAME_EMAIL_ALREADY_EXISTS_MESSAGE_KEY, email);
+            throw new PassengerWithSameEmailAlreadyExistsException(email);
     }
 
     @Override
     @Transactional(readOnly = true)
     public void checkPhoneIsUnique(String phone) {
         if(passengerRepository.existsByPhone(phone))
-            throw new PassengerWithSamePhoneAlreadyExistsException(PassengerExceptionMessageKeys.PASSENGER_WITH_SAME_PHONE_ALREADY_EXISTS_MESSAGE_KEY, phone);
+            throw new PassengerWithSamePhoneAlreadyExistsException(phone);
     }
 }
