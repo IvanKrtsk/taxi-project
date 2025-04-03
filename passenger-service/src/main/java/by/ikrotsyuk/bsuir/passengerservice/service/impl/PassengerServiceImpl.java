@@ -3,10 +3,7 @@ package by.ikrotsyuk.bsuir.passengerservice.service.impl;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
 import by.ikrotsyuk.bsuir.passengerservice.entity.PassengerEntity;
-import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerAlreadyDeletedException;
-import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByEmailException;
-import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByIdException;
-import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengersNotFoundException;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.*;
 import by.ikrotsyuk.bsuir.passengerservice.mapper.PassengerMapper;
 import by.ikrotsyuk.bsuir.passengerservice.repository.PassengerRepository;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
@@ -96,19 +93,30 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     @Transactional
     public PassengerResponseDTO addPassenger(String email, String phone) {
-        passengerServiceValidationManagerImpl.checkEmailIsUnique(email);
-        passengerServiceValidationManagerImpl.checkPhoneIsUnique(phone);
-        return passengerMapper.toDTO(passengerRepository.save(PassengerEntity.builder()
-                .name("not specified")
-                .email(email)
-                .phone(phone)
-                .rating(0.0)
-                .totalRides(0L)
-                .isDeleted(false)
-                .build()));
+        if(passengerRepository.existsByEmail(email)){
+            PassengerEntity passengerEntity = passengerRepository.findByEmail(email)
+                    .orElseThrow(() -> new PassengerNotFoundByEmailException(email));
+            if(passengerEntity.getIsDeleted()) {
+                passengerEntity.setIsDeleted(true);
+                return passengerMapper.toDTO(passengerEntity);
+            } else
+                throw new PassengerWithSameEmailAlreadyExistsException(email);
+        } else {
+            passengerServiceValidationManagerImpl.checkEmailIsUnique(email);
+            passengerServiceValidationManagerImpl.checkPhoneIsUnique(phone);
+            return passengerMapper.toDTO(passengerRepository.save(PassengerEntity.builder()
+                    .name("not specified")
+                    .email(email)
+                    .phone(phone)
+                    .rating(0.0)
+                    .totalRides(0L)
+                    .isDeleted(false)
+                    .build()));
+        }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<PassengerResponseDTO> getAllPassengers(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         if(field == null)
             field = "id";
