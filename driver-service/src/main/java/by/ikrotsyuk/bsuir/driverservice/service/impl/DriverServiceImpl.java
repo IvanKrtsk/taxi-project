@@ -5,7 +5,6 @@ import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.*;
 import by.ikrotsyuk.bsuir.driverservice.mapper.DriverMapper;
-import by.ikrotsyuk.bsuir.driverservice.mapper.VehicleMapper;
 import by.ikrotsyuk.bsuir.driverservice.repository.DriverRepository;
 import by.ikrotsyuk.bsuir.driverservice.service.DriverService;
 import by.ikrotsyuk.bsuir.driverservice.service.validation.DriverServiceValidationManager;
@@ -23,7 +22,6 @@ import java.util.List;
 public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
-    private final VehicleMapper vehicleMapper;
     private final DriverServiceValidationManager driverServiceValidationManager;
 
     @Override
@@ -37,7 +35,7 @@ public class DriverServiceImpl implements DriverService {
     @Override
     @Transactional(readOnly = true)
     public Double getDriverRatingById(Long driverId){
-        return getDriverProfileById(driverId).getRating();
+        return getDriverProfileById(driverId).rating();
     }
 
     @Override
@@ -45,8 +43,8 @@ public class DriverServiceImpl implements DriverService {
     public DriverResponseDTO editDriverProfile(Long driverId, DriverRequestDTO driverRequestDTO){
         DriverEntity driverEntity = driverRepository.findById(driverId)
                 .orElseThrow(() -> new DriverNotFoundByIdException(driverId));
-        String email = driverRequestDTO.getEmail();
-        String phone = driverRequestDTO.getPhone();
+        String email = driverRequestDTO.email();
+        String phone = driverRequestDTO.phone();
         if(!driverEntity.getEmail().equals(email)){
             driverServiceValidationManager.checkEmailIsUnique(email);
             driverEntity.setEmail(email);
@@ -57,7 +55,7 @@ public class DriverServiceImpl implements DriverService {
             driverEntity.setPhone(phone);
             // activates keycloak phone change
         }
-        driverEntity.setName(driverRequestDTO.getName());
+        driverEntity.setName(driverRequestDTO.name());
         return driverMapper.toDTO(driverEntity);
     }
 
@@ -85,52 +83,45 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public Boolean addDriver(String email){
-        driverServiceValidationManager.checkEmailIsUnique(email);
-        String NOT_SPECIFIED = "not specified";
-        driverRepository.save(DriverEntity.builder()
-                        .name(NOT_SPECIFIED)
-                        .email(email)
-                        .phone(NOT_SPECIFIED)
-                        .rating(0.0)
-                        .total_rides(0L)
-                        .isDeleted(false)
-                .build());
-        return true;
+    public DriverResponseDTO addDriver(String email){
+        if(driverRepository.existsByEmail(email)) {
+            DriverEntity driverEntity = driverRepository.findByEmail(email)
+                    .orElseThrow(() -> new DriverNotFoundByEmailException(email));
+            if(driverEntity.getIsDeleted()) {
+                driverEntity.setIsDeleted(false);
+                return driverMapper.toDTO(driverEntity);
+            } else
+                throw new DriverWithSameEmailAlreadyExistsException(email);
+        } else {
+            driverServiceValidationManager.checkEmailIsUnique(email);
+            String NOT_SPECIFIED = "not specified";
+            return driverMapper.toDTO(driverRepository.save(DriverEntity.builder()
+                    .name(NOT_SPECIFIED)
+                    .email(email)
+                    .phone(NOT_SPECIFIED)
+                    .rating(0.0)
+                    .total_rides(0L)
+                    .isDeleted(false)
+                    .build()));
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<DriverResponseDTO> getAllDrivers(int offset, int itemCount, String field, boolean isSortDirectionAsc) {
+    public Page<DriverResponseDTO> getAllDrivers(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+        if(field == null)
+            field = "id";
+        if(isSortDirectionAsc == null)
+            isSortDirectionAsc = true;
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Page<DriverEntity> driverEntityPage = driverRepository.findAll(
+        Page<DriverEntity> driverEntities = driverRepository.findAll(
                 PageRequest.of(offset, itemCount,
                         Sort.by(sortDirection, field))
         );
-        if(driverEntityPage.isEmpty())
+        if(driverEntities.hasContent())
             throw new DriversNotFoundException();
         else
-            return driverEntityPage.map(driverMapper::toDTO);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<VehicleResponseDTO> getAllDriverVehicles(Long driverId) {
-        DriverEntity driverEntity = driverRepository.findById(driverId)
-                .orElseThrow(() -> new DriverNotFoundByIdException(driverId));
-        List<VehicleEntity> vehicleResponseDTOList = driverEntity.getDriverVehicles();
-        if(vehicleResponseDTOList.isEmpty())
-            throw new DriverVehiclesNotFoundException(driverId);
-        return vehicleMapper.toDTOList(vehicleResponseDTOList);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public VehicleResponseDTO getDriverCurrentVehicle(Long driverId) {
-        return getAllDriverVehicles(driverId).stream()
-                .filter(VehicleResponseDTO::getIsCurrent)
-                .findFirst()
-                .orElseThrow(() -> new DriverCurrentVehicleNotFoundException(driverId));
+            return driverEntities.map(driverMapper::toDTO);
     }
 
     @Override

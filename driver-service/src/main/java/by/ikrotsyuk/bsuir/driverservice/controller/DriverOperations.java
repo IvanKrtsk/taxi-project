@@ -8,16 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 public interface DriverOperations {
-    ResponseEntity<DriverResponseDTO> getDriverProfile(@PathVariable Long id);
-    ResponseEntity<Double> getDriverRating(@PathVariable Long id);
-    ResponseEntity<DriverResponseDTO> editDriverProfile(@PathVariable Long id, @Valid @RequestBody DriverRequestDTO driverRequestDTO);
-    ResponseEntity<DriverResponseDTO> deleteDriverProfile(@PathVariable Long id);
-    ResponseEntity<Page<DriverResponseDTO>> getAllDrivers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam String field, @RequestParam boolean isSortDirectionAsc);
-    ResponseEntity<List<VehicleResponseDTO>> getAllDriverVehicles(@PathVariable Long driverId);
-    ResponseEntity<VehicleResponseDTO> getDriverCurrentVehicle(@PathVariable Long driverId);
-    ResponseEntity<DriverVehicleResponseDTO> getDriverWithVehiclesById(@PathVariable Long driverId);
-    ResponseEntity<Boolean> add(@Valid String email);
+    ResponseEntity<DriverResponseDTO> getDriverProfile(@PathVariable Long driverId);
+    ResponseEntity<Double> getDriverRating(@PathVariable Long driverId);
+    ResponseEntity<DriverResponseDTO> editDriverProfile(@PathVariable Long driverId, @Valid @RequestBody DriverRequestDTO driverRequestDTO);
+    ResponseEntity<DriverResponseDTO> deleteDriverProfile(@PathVariable Long driverId);
+    ResponseEntity<Page<DriverResponseDTO>> getAllDrivers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
+    ResponseEntity<DriverResponseDTO> addDriver(@Valid String email);
+    ResponseEntity<DriverVehicleResponseDTO> getDriverWithVehicle(@PathVariable Long driverId);
 }

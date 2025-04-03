@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Validated
 @RestController
@@ -21,54 +19,43 @@ public class DriverController implements DriverOperations {
     private final DriverService driverService;
 
     @Override
-    @GetMapping("/profile/{id}")
-    public ResponseEntity<DriverResponseDTO> getDriverProfile(@PathVariable Long id) {
-        return new ResponseEntity<>(driverService.getDriverProfileById(id), HttpStatus.OK);
+    @GetMapping("/profile/{driverId}")
+    public ResponseEntity<DriverResponseDTO> getDriverProfile(@PathVariable Long driverId) {
+        return new ResponseEntity<>(driverService.getDriverProfileById(driverId), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/rating/{id}")
-    public ResponseEntity<Double> getDriverRating(@PathVariable Long id) {
-        return new ResponseEntity<>(driverService.getDriverRatingById(id), HttpStatus.OK);
+    @GetMapping("/rating/{driverId}")
+    public ResponseEntity<Double> getDriverRating(@PathVariable Long driverId) {
+        return new ResponseEntity<>(driverService.getDriverRatingById(driverId), HttpStatus.OK);
     }
 
     @Override
-    @PatchMapping("/{id}")
-    public ResponseEntity<DriverResponseDTO> editDriverProfile(@PathVariable Long id, @Valid @RequestBody DriverRequestDTO driverRequestDTO) {
-        return new ResponseEntity<>(driverService.editDriverProfile(id, driverRequestDTO), HttpStatus.OK);
+    @PatchMapping("/{driverId}")
+    public ResponseEntity<DriverResponseDTO> editDriverProfile(@PathVariable Long driverId, @Valid @RequestBody DriverRequestDTO driverRequestDTO) {
+        return new ResponseEntity<>(driverService.editDriverProfile(driverId, driverRequestDTO), HttpStatus.OK);
     }
 
     @Override
-    @DeleteMapping("/{id}")
-    public ResponseEntity<DriverResponseDTO> deleteDriverProfile(@PathVariable Long id) {
-        return new ResponseEntity<>(driverService.deleteDriverProfile(id), HttpStatus.OK);
+    @DeleteMapping("/{driverId}")
+    public ResponseEntity<DriverResponseDTO> deleteDriverProfile(@PathVariable Long driverId) {
+        return new ResponseEntity<>(driverService.deleteDriverProfile(driverId), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping()
-    public ResponseEntity<Page<DriverResponseDTO>> getAllDrivers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam String field, @RequestParam boolean isSortDirectionAsc) {
+    @GetMapping
+    public ResponseEntity<Page<DriverResponseDTO>> getAllDrivers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(driverService.getAllDrivers(offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 
-    @Override
-    @GetMapping("/cars/{driverId}")
-    public ResponseEntity<List<VehicleResponseDTO>> getAllDriverVehicles(@PathVariable Long driverId) {
-        return new ResponseEntity<>(driverService.getAllDriverVehicles(driverId), HttpStatus.OK);
-    }
-
-    @Override
-    @GetMapping("/car/{driverId}")
-    public ResponseEntity<VehicleResponseDTO> getDriverCurrentVehicle(@PathVariable Long driverId) {
-        return new ResponseEntity<>(driverService.getDriverCurrentVehicle(driverId), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<DriverVehicleResponseDTO> getDriverWithVehiclesById(@PathVariable Long driverId) {
-        return null;
-    }
-
-    @PostMapping()
-    public ResponseEntity<Boolean> add(@Valid String email){
+    @PostMapping
+    public ResponseEntity<DriverResponseDTO> addDriver(@Valid String email){
         return new ResponseEntity<>(driverService.addDriver(email), HttpStatus.CREATED);
+    }
+
+    @Override
+    @GetMapping("/driverwithvehicles/{driverId}")
+    public ResponseEntity<DriverVehicleResponseDTO> getDriverWithVehicle(@PathVariable Long driverId) {
+        return new ResponseEntity<>(driverService.getDriverWithVehicleById(driverId), HttpStatus.OK);
     }
 }

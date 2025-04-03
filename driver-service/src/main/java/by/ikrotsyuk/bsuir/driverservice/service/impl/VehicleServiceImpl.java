@@ -5,6 +5,7 @@ import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
+import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.DriverCurrentVehicleNotFoundException;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.DriverNotFoundByIdException;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.DriverVehiclesNotFoundException;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.vehicle.*;
@@ -52,11 +53,11 @@ public class VehicleServiceImpl implements VehicleService {
         DriverEntity driverEntity = driverRepository.findById(driverId)
                 .orElseThrow(() -> new DriverNotFoundByIdException(driverId));
 
-        vehicleServiceValidationManager.checkLicensePlateIsUnique(vehicleRequestDTO.getLicensePlate());
+        vehicleServiceValidationManager.checkLicensePlateIsUnique(vehicleRequestDTO.licensePlate());
 
-        CarClassTypes type = vehicleRequestDTO.getCarClass();
+        CarClassTypes type = vehicleRequestDTO.carClass();
         if(!checkCarClassValid(type))
-            vehicleRequestDTO.setCarClass(CarClassTypes.ECONOMY);
+            vehicleRequestDTO = new VehicleRequestDTO(vehicleRequestDTO.brand(), vehicleRequestDTO.model(), CarClassTypes.ECONOMY, vehicleRequestDTO.year(), vehicleRequestDTO.licensePlate(), vehicleRequestDTO.color());
 
         VehicleEntity vehicleEntity = vehicleMapper.toEntityWithDefault(vehicleRequestDTO);
         vehicleEntity.setDriver(driverEntity);
@@ -70,20 +71,20 @@ public class VehicleServiceImpl implements VehicleService {
     @Transactional
     public VehicleResponseDTO editVehicle(Long driverId, Long vehicleId, VehicleRequestDTO vehicleRequestDTO) {
         checkDriverAndVehicleId(driverId, vehicleId);
-        vehicleServiceValidationManager.checkLicensePlateIsUnique(vehicleRequestDTO.getLicensePlate());
+        vehicleServiceValidationManager.checkLicensePlateIsUnique(vehicleRequestDTO.licensePlate());
 
         VehicleEntity vehicleEntity = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new VehicleNotFoundByIdException(vehicleId));
 
-        vehicleEntity.setBrand(vehicleRequestDTO.getBrand());
-        vehicleEntity.setModel(vehicleRequestDTO.getModel());
-        CarClassTypes type = vehicleRequestDTO.getCarClass();
+        vehicleEntity.setBrand(vehicleRequestDTO.brand());
+        vehicleEntity.setModel(vehicleRequestDTO.model());
+        CarClassTypes type = vehicleRequestDTO.carClass();
         if(!checkCarClassValid(type))
             type = CarClassTypes.ECONOMY;
         vehicleEntity.setCarClass(type);
-        vehicleEntity.setYear(vehicleRequestDTO.getYear());
-        vehicleEntity.setLicensePlate(vehicleRequestDTO.getLicensePlate());
-        vehicleEntity.setColor(vehicleRequestDTO.getColor());
+        vehicleEntity.setYear(vehicleRequestDTO.year());
+        vehicleEntity.setLicensePlate(vehicleRequestDTO.licensePlate());
+        vehicleEntity.setColor(vehicleRequestDTO.color());
         return vehicleMapper.toDTO(vehicleEntity);
     }
 
@@ -112,7 +113,11 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<VehicleResponseDTO> getAllVehicles(int offset, int itemCount, String field, boolean isSortDirectionAsc) {
+    public Page<VehicleResponseDTO> getAllVehicles(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+        if(field == null)
+            field = "id";
+        if(isSortDirectionAsc == null)
+            isSortDirectionAsc = true;
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Page<VehicleEntity> vehicleEntityPage = vehicleRepository.findAll(
                 PageRequest.of(offset, itemCount,
@@ -126,35 +131,56 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type, int offset, int itemCount, String field, boolean isSortDirectionAsc) {
+    public Page<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+        if(field == null)
+            field = "id";
+        if(isSortDirectionAsc == null)
+            isSortDirectionAsc = true;
+
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        return vehicleRepository.findAllByCarClass(type,
+        Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByCarClass(type,
                 PageRequest.of(offset, itemCount,
-                        Sort.by(sortDirection, field)))
-                .orElseThrow(() -> new VehiclesNotFoundByTypeException(type))
-                .map(vehicleMapper::toDTO);
+                        Sort.by(sortDirection, field)));
+
+        if(!vehicleEntities.hasContent())
+            throw new VehiclesNotFoundByTypeException(type);
+        return vehicleEntities.map(vehicleMapper::toDTO);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<VehicleResponseDTO> getAllVehiclesByYear(Integer year, int offset, int itemCount, String field, boolean isSortDirectionAsc) {
+    public Page<VehicleResponseDTO> getAllVehiclesByYear(Integer year, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+        if(field == null)
+            field = "id";
+        if(isSortDirectionAsc == null)
+            isSortDirectionAsc = true;
+
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        return vehicleRepository.findAllByYear(year,
+        Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByYear(year,
                 PageRequest.of(offset, itemCount,
-                        Sort.by(sortDirection, field)))
-                .orElseThrow(() -> new VehiclesNotFoundByYearException(year))
-                .map(vehicleMapper::toDTO);
+                        Sort.by(sortDirection, field)));
+
+        if(!vehicleEntities.hasContent())
+            throw new VehiclesNotFoundByYearException(year);
+        return vehicleEntities.map(vehicleMapper::toDTO);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<VehicleResponseDTO> getAllVehiclesByBrand(String brand, int offset, int itemCount, String field, boolean isSortDirectionAsc) {
+    public Page<VehicleResponseDTO> getAllVehiclesByBrand(String brand, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+        if(field == null)
+            field = "id";
+        if(isSortDirectionAsc == null)
+            isSortDirectionAsc = true;
+
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        return vehicleRepository.findAllByBrand(brand,
+        Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByBrand(brand,
                 PageRequest.of(offset, itemCount,
-                        Sort.by(sortDirection, field)))
-                .orElseThrow(() -> new VehiclesNotFoundByBrandException(brand))
-                .map(vehicleMapper::toDTO);
+                        Sort.by(sortDirection, field)));
+
+        if(!vehicleEntities.hasContent())
+            throw new VehiclesNotFoundByBrandException(brand);
+        return vehicleEntities.map(vehicleMapper::toDTO);
     }
 
     @Override
@@ -188,5 +214,25 @@ public class VehicleServiceImpl implements VehicleService {
 
         if(!vehicleEntity.getDriver().getId().equals(driverId))
             throw new VehicleNotBelongToDriverException(vehicleId, driverId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<VehicleResponseDTO> getAllDriverVehicles(Long driverId) {
+        DriverEntity driverEntity = driverRepository.findById(driverId)
+                .orElseThrow(() -> new DriverNotFoundByIdException(driverId));
+        List<VehicleEntity> vehicleResponseDTOList = driverEntity.getDriverVehicles();
+        if(vehicleResponseDTOList.isEmpty())
+            throw new DriverVehiclesNotFoundException(driverId);
+        return vehicleMapper.toDTOList(vehicleResponseDTOList);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public VehicleResponseDTO getDriverCurrentVehicle(Long driverId) {
+        return getAllDriverVehicles(driverId).stream()
+                .filter(VehicleResponseDTO::isCurrent)
+                .findFirst()
+                .orElseThrow(() -> new DriverCurrentVehicleNotFoundException(driverId));
     }
 }
