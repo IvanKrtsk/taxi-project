@@ -20,7 +20,7 @@ public interface VehicleMapper {
     default VehicleEntity toEntityWithDefault(VehicleRequestDTO vehicleRequestDTO){
         VehicleEntity vehicleEntity = toEntity(vehicleRequestDTO);
         vehicleEntity.setRidesCount(0L);
-        vehicleEntity.setIsCurrent(false);
+        vehicleEntity.setIsCurrent(true);
         return vehicleEntity;
     }
 }

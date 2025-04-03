@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -58,6 +59,11 @@ public class VehicleServiceImpl implements VehicleService {
         CarClassTypes type = vehicleRequestDTO.carClass();
         if(!checkCarClassValid(type))
             vehicleRequestDTO = new VehicleRequestDTO(vehicleRequestDTO.brand(), vehicleRequestDTO.model(), CarClassTypes.ECONOMY, vehicleRequestDTO.year(), vehicleRequestDTO.licensePlate(), vehicleRequestDTO.color());
+
+        Optional<List<VehicleEntity>> optionalVehicleEntityList = vehicleRepository.findAllByDriverId(driverId);
+        optionalVehicleEntityList.ifPresent(vehicleEntityList -> vehicleEntityList.forEach(vehicle ->
+                vehicle.setIsCurrent(false)
+        ));
 
         VehicleEntity vehicleEntity = vehicleMapper.toEntityWithDefault(vehicleRequestDTO);
         vehicleEntity.setDriver(driverEntity);

@@ -5,8 +5,6 @@ import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.DriverVehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -18,13 +16,6 @@ public interface DriverMapper {
 
     List<DriverResponseDTO> toDTOList(List<DriverEntity> driverEntityList);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "rating", ignore = true)
-    @Mapping(target = "total_rides", ignore = true)
-    @Mapping(target = "isDeleted", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "driverVehicles", ignore = true)
     DriverEntity toEntityWithoutIsDeleted(DriverRequestDTO driverRequestDTO);
 
     default DriverEntity toEntity(DriverRequestDTO driverRequestDTO, boolean isDeleted){
