@@ -6,11 +6,15 @@ import by.ikrotsyuk.bsuir.passengerservice.entity.PassengerEntity;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerAlreadyDeletedException;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByEmailException;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByIdException;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengersNotFoundException;
 import by.ikrotsyuk.bsuir.passengerservice.mapper.PassengerMapper;
 import by.ikrotsyuk.bsuir.passengerservice.repository.PassengerRepository;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
 import by.ikrotsyuk.bsuir.passengerservice.service.validation.impl.PassengerServiceValidationManagerImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,5 +105,22 @@ public class PassengerServiceImpl implements PassengerService {
                 .totalRides(0L)
                 .isDeleted(false)
                 .build()));
+    }
+
+    @Override
+    public Page<PassengerResponseDTO> getAllPassengers(String brand, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+        if(field == null)
+            field = "id";
+        if(isSortDirectionAsc == null)
+            isSortDirectionAsc = true;
+
+        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Page<PassengerEntity> passengerEntityPage = passengerRepository.findAll(
+                PageRequest.of(offset, itemCount,
+                        Sort.by(sortDirection, field))
+        );
+        if(!passengerEntityPage.hasContent())
+            throw new PassengersNotFoundException();
+        return passengerEntityPage.map(passengerMapper::toDTO);
     }
 }

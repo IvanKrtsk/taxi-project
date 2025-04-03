@@ -6,6 +6,7 @@ import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -58,5 +59,11 @@ public class PassengerController implements PassengerOperations {
     @PostMapping
     public ResponseEntity<PassengerResponseDTO> addDriver(@Valid String email){
         return new ResponseEntity<>(passengerService.addPassenger(email), HttpStatus.CREATED);
+    }
+
+    @Override
+    @GetMapping
+    public ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc) {
+        return null;
     }
 }
