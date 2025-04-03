@@ -34,7 +34,7 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     @Transactional(readOnly = true)
     public Double getPassengerRatingById(Long id){
-        return this.getPassengerById(id).getRating();
+        return this.getPassengerById(id).rating();
     }
 
     /**
@@ -45,8 +45,8 @@ public class PassengerServiceImpl implements PassengerService {
     public PassengerResponseDTO editPassengerProfile(Long id, PassengerRequestDTO passengerRequestDTO) {
         PassengerEntity passengerEntity = passengerRepository.findById(id)
                 .orElseThrow(() -> new PassengerNotFoundByIdException(PassengerExceptionMessageKeys.PASSENGER_NOT_FOUND_BY_ID_MESSAGE_KEY, id));
-        String email = passengerRequestDTO.getEmail();
-        String phone = passengerRequestDTO.getPhone();
+        String email = passengerRequestDTO.email();
+        String phone = passengerRequestDTO.phone();
         if(!passengerEntity.getEmail().equals(email)){
             passengerServiceValidationManagerImpl.checkEmailIsUnique(email);
             passengerEntity.setEmail(email);
@@ -57,7 +57,7 @@ public class PassengerServiceImpl implements PassengerService {
             passengerEntity.setPhone(phone);
             // activates keycloak phone change
         }
-        passengerEntity.setName(passengerRequestDTO.getName());
+        passengerEntity.setName(passengerRequestDTO.name());
         return passengerMapper.toDTO(passengerEntity);
     }
 
@@ -92,16 +92,15 @@ public class PassengerServiceImpl implements PassengerService {
      */
     @Override
     @Transactional
-    public Boolean addPassenger(String email) {
+    public PassengerResponseDTO addPassenger(String email) {
         passengerServiceValidationManagerImpl.checkEmailIsUnique(email);
-        passengerRepository.save(PassengerEntity.builder()
+        return passengerMapper.toDTO(passengerRepository.save(PassengerEntity.builder()
                 .name("not specified")
                 .email(email)
                 .phone("not specified")
                 .rating(0.0)
                 .totalRides(0L)
                 .isDeleted(false)
-                .build());
-        return true;
+                .build()));
     }
 }

@@ -53,4 +53,10 @@ public class PassengerController implements PassengerOperations {
     public ResponseEntity<PassengerResponseDTO> deletePassengerProfile(@PathVariable Long id) {
         return new ResponseEntity<>(passengerService.deletePassengerProfile(id), HttpStatus.OK);
     }
+
+    @Override
+    @PostMapping
+    public ResponseEntity<PassengerResponseDTO> addDriver(@Valid String email){
+        return new ResponseEntity<>(passengerService.addPassenger(email), HttpStatus.CREATED);
+    }
 }
