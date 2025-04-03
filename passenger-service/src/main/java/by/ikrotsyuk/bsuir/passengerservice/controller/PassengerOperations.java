@@ -12,4 +12,5 @@ public interface PassengerOperations {
     ResponseEntity<Double> getPassengerRating(@PathVariable Long id);
     ResponseEntity<PassengerResponseDTO> editPassengerProfile(@PathVariable Long id, @Valid @RequestBody PassengerRequestDTO passengerRequestDTO);
     ResponseEntity<PassengerResponseDTO> deletePassengerProfile(@PathVariable Long id);
+    ResponseEntity<PassengerResponseDTO> addDriver(@Valid String email);
 }
