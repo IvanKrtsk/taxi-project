@@ -118,7 +118,7 @@ public class DriverServiceImpl implements DriverService {
                 PageRequest.of(offset, itemCount,
                         Sort.by(sortDirection, field))
         );
-        if(driverEntities.hasContent())
+        if(!driverEntities.hasContent())
             throw new DriversNotFoundException();
         else
             return driverEntities.map(driverMapper::toDTO);
