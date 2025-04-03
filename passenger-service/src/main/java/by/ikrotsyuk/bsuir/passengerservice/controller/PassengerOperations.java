@@ -3,6 +3,9 @@ package by.ikrotsyuk.bsuir.passengerservice.controller;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +17,6 @@ public interface PassengerOperations {
     ResponseEntity<Double> getPassengerRating(@PathVariable Long id);
     ResponseEntity<PassengerResponseDTO> editPassengerProfile(@PathVariable Long id, @Valid @RequestBody PassengerRequestDTO passengerRequestDTO);
     ResponseEntity<PassengerResponseDTO> deletePassengerProfile(@PathVariable Long id);
-    ResponseEntity<PassengerResponseDTO> addDriver(@Valid String email);
+    ResponseEntity<PassengerResponseDTO> addDriver(@NotBlank @Email String email, @NotBlank @Size(max = 15) String phone);
     ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
 }
