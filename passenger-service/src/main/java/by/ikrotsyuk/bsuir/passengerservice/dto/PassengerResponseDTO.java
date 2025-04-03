@@ -3,6 +3,9 @@ package by.ikrotsyuk.bsuir.passengerservice.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record PassengerResponseDTO(
+    @Schema(description = "passenger id")
+    Long id,
+
     @Schema(description = "passenger name")
     String name,
 
