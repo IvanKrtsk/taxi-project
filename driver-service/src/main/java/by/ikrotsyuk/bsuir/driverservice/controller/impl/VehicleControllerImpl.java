@@ -20,7 +20,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/api/v1/driver/vehicles")
-public class VehicleController implements VehicleOperations {
+public class VehicleControllerImpl implements VehicleOperations {
     private final VehicleService vehicleService;
 
     /**
