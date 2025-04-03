@@ -2,6 +2,9 @@ package by.ikrotsyuk.bsuir.driverservice.controller;
 
 import by.ikrotsyuk.bsuir.driverservice.dto.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +17,6 @@ public interface DriverOperations {
     ResponseEntity<DriverResponseDTO> editDriverProfile(@PathVariable Long driverId, @Valid @RequestBody DriverRequestDTO driverRequestDTO);
     ResponseEntity<DriverResponseDTO> deleteDriverProfile(@PathVariable Long driverId);
     ResponseEntity<Page<DriverResponseDTO>> getAllDrivers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
-    ResponseEntity<DriverResponseDTO> addDriver(@Valid String email);
+    ResponseEntity<DriverResponseDTO> addDriver(@NotBlank @Email String email, @NotBlank @Size(max = 15) String phone);
     ResponseEntity<DriverVehicleResponseDTO> getDriverWithVehicle(@PathVariable Long driverId);
 }

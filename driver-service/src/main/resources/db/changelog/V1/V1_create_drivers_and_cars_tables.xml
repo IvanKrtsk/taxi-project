@@ -25,7 +25,7 @@
                 <constraints unique="true" nullable="false"/>
             </column>
             <column name="phone" type="varchar(15)">
-                <constraints nullable="false"/>
+                <constraints unique="true" nullable="false"/>
             </column>
             <column name="rating" type="float" defaultValue="0.0"/>
             <column name="total_rides" type="bigint" defaultValue="0"/>

@@ -4,6 +4,9 @@ import by.ikrotsyuk.bsuir.driverservice.controller.DriverOperations;
 import by.ikrotsyuk.bsuir.driverservice.dto.*;
 import by.ikrotsyuk.bsuir.driverservice.service.DriverService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -49,8 +52,8 @@ public class DriverControllerImpl implements DriverOperations {
     }
 
     @PostMapping
-    public ResponseEntity<DriverResponseDTO> addDriver(@Valid String email){
-        return new ResponseEntity<>(driverService.addDriver(email), HttpStatus.CREATED);
+    public ResponseEntity<DriverResponseDTO> addDriver(@NotBlank @Email String email, @NotBlank @Size(max = 15) String phone){
+        return new ResponseEntity<>(driverService.addDriver(email, phone), HttpStatus.CREATED);
     }
 
     @Override

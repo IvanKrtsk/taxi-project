@@ -83,7 +83,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public DriverResponseDTO addDriver(String email){
+    public DriverResponseDTO addDriver(String email, String phone){
         if(driverRepository.existsByEmail(email)) {
             DriverEntity driverEntity = driverRepository.findByEmail(email)
                     .orElseThrow(() -> new DriverNotFoundByEmailException(email));
@@ -94,11 +94,12 @@ public class DriverServiceImpl implements DriverService {
                 throw new DriverWithSameEmailAlreadyExistsException(email);
         } else {
             driverServiceValidationManager.checkEmailIsUnique(email);
+            driverServiceValidationManager.checkPhoneIsUnique(phone);
             String NOT_SPECIFIED = "not specified";
             return driverMapper.toDTO(driverRepository.save(DriverEntity.builder()
                     .name(NOT_SPECIFIED)
                     .email(email)
-                    .phone(NOT_SPECIFIED)
+                    .phone(phone)
                     .rating(0.0)
                     .total_rides(0L)
                     .isDeleted(false)
