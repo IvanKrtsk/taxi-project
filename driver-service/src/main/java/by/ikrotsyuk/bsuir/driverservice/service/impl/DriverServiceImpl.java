@@ -1,12 +1,9 @@
 package by.ikrotsyuk.bsuir.driverservice.service.impl;
 
-import by.ikrotsyuk.bsuir.driverservice.dto.DriverRequestDTO;
-import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
-import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
+import by.ikrotsyuk.bsuir.driverservice.dto.*;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.*;
-import by.ikrotsyuk.bsuir.driverservice.exception.keys.DriverExceptionMessageKeys;
 import by.ikrotsyuk.bsuir.driverservice.mapper.DriverMapper;
 import by.ikrotsyuk.bsuir.driverservice.mapper.VehicleMapper;
 import by.ikrotsyuk.bsuir.driverservice.repository.DriverRepository;
@@ -33,7 +30,7 @@ public class DriverServiceImpl implements DriverService {
     @Transactional(readOnly = true)
     public DriverResponseDTO getDriverProfileById(Long driverId){
         DriverEntity driverEntity = driverRepository.findById(driverId)
-                .orElseThrow(() -> new DriverNotFoundByIdException(DriverExceptionMessageKeys.DRIVER_NOT_FOUND_BY_EMAIL_MESSAGE_KEY, driverId));
+                .orElseThrow(() -> new DriverNotFoundByIdException(driverId));
         return driverMapper.toDTO(driverEntity);
     }
 
@@ -47,7 +44,7 @@ public class DriverServiceImpl implements DriverService {
     @Transactional
     public DriverResponseDTO editDriverProfile(Long driverId, DriverRequestDTO driverRequestDTO){
         DriverEntity driverEntity = driverRepository.findById(driverId)
-                .orElseThrow(() -> new DriverNotFoundByIdException(DriverExceptionMessageKeys.DRIVER_NOT_FOUND_BY_EMAIL_MESSAGE_KEY, driverId));
+                .orElseThrow(() -> new DriverNotFoundByIdException(driverId));
         String email = driverRequestDTO.getEmail();
         String phone = driverRequestDTO.getPhone();
         if(!driverEntity.getEmail().equals(email)){
@@ -68,9 +65,9 @@ public class DriverServiceImpl implements DriverService {
     @Transactional
     public DriverResponseDTO deleteDriverProfile(Long driverId){
         DriverEntity driverEntity = driverRepository.findById(driverId)
-                .orElseThrow(() -> new DriverNotFoundByIdException(DriverExceptionMessageKeys.DRIVER_NOT_FOUND_BY_EMAIL_MESSAGE_KEY, driverId));
+                .orElseThrow(() -> new DriverNotFoundByIdException(driverId));
         if(driverEntity.getIsDeleted())
-            throw new DriverAlreadyDeletedException(DriverExceptionMessageKeys.DRIVER_ALREADY_DELETED_MESSAGE_KEY, driverId);
+            throw new DriverAlreadyDeletedException(driverId);
         driverEntity.setIsDeleted(true);
         return driverMapper.toDTO(driverEntity);
     }
@@ -83,12 +80,13 @@ public class DriverServiceImpl implements DriverService {
                 .map(DriverEntity::getId)
                 .or(() -> driverRepository.findByEmail(email)
                         .map(DriverEntity::getId))
-                .orElseThrow(() -> new DriverNotFoundByEmailException(DriverExceptionMessageKeys.DRIVER_NOT_FOUND_BY_EMAIL_MESSAGE_KEY, email));
+                .orElseThrow(() -> new DriverNotFoundByEmailException(email));
     }
 
     @Override
     @Transactional
     public Boolean addDriver(String email){
+        driverServiceValidationManager.checkEmailIsUnique(email);
         String NOT_SPECIFIED = "not specified";
         driverRepository.save(DriverEntity.builder()
                         .name(NOT_SPECIFIED)
@@ -110,19 +108,19 @@ public class DriverServiceImpl implements DriverService {
                         Sort.by(sortDirection, field))
         );
         if(driverEntityPage.isEmpty())
-            throw new DriversNotFoundException(DriverExceptionMessageKeys.DRIVERS_NOT_FOUND_MESSAGE_KEY);
+            throw new DriversNotFoundException();
         else
-            return driverMapper.toDTOPage(driverEntityPage);
+            return driverEntityPage.map(driverMapper::toDTO);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<VehicleResponseDTO> getAllDriverVehicles(Long driverId) {
         DriverEntity driverEntity = driverRepository.findById(driverId)
-                .orElseThrow(() -> new DriverNotFoundByIdException(DriverExceptionMessageKeys.DRIVER_NOT_FOUND_BY_EMAIL_MESSAGE_KEY, driverId));
+                .orElseThrow(() -> new DriverNotFoundByIdException(driverId));
         List<VehicleEntity> vehicleResponseDTOList = driverEntity.getDriverVehicles();
         if(vehicleResponseDTOList.isEmpty())
-            throw new DriverVehiclesNotFoundException(DriverExceptionMessageKeys.DRIVER_VEHICLES_NOT_FOUND_MESSAGE_KEY, driverId);
+            throw new DriverVehiclesNotFoundException(driverId);
         return vehicleMapper.toDTOList(vehicleResponseDTOList);
     }
 
@@ -132,6 +130,15 @@ public class DriverServiceImpl implements DriverService {
         return getAllDriverVehicles(driverId).stream()
                 .filter(VehicleResponseDTO::getIsCurrent)
                 .findFirst()
-                .orElseThrow(() -> new DriverCurrentVehicleNotFoundException(DriverExceptionMessageKeys.DRIVER_CURRENT_VEHICLE_NOT_FOUND, driverId));
+                .orElseThrow(() -> new DriverCurrentVehicleNotFoundException(driverId));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DriverVehicleResponseDTO getDriverWithVehicleById(Long driverId) {
+        DriverEntity driverEntity = driverRepository.findById(driverId)
+                .orElseThrow(() -> new DriverNotFoundByIdException(driverId));
+        List<VehicleEntity> vehicleEntityList = driverEntity.getDriverVehicles();
+        return driverMapper.toDVDTO(driverEntity);
     }
 }

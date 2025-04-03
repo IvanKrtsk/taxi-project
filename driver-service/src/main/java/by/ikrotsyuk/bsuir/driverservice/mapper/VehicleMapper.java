@@ -13,8 +13,6 @@ import java.util.List;
 public interface VehicleMapper {
     VehicleResponseDTO toDTO(VehicleEntity vehicleEntity);
 
-    Page<VehicleResponseDTO> toDTOPage(Page<VehicleEntity> vehicleEntityPage);
-
     List<VehicleResponseDTO> toDTOList(List<VehicleEntity> vehicleEntityList);
 
     @Mapping(target = "id", ignore = true)
@@ -22,6 +20,13 @@ public interface VehicleMapper {
     @Mapping(target = "driver", ignore = true)
     @Mapping(target = "isCurrent", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     VehicleEntity toEntity(VehicleRequestDTO vehicleRequestDTO);
+
+    default VehicleEntity toEntityWithDefault(VehicleRequestDTO vehicleRequestDTO){
+        VehicleEntity vehicleEntity = toEntity(vehicleRequestDTO);
+        vehicleEntity.setRidesCount(0L);
+        vehicleEntity.setIsCurrent(false);
+        return vehicleEntity;
+    }
 }

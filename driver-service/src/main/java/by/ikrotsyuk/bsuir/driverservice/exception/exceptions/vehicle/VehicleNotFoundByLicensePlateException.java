@@ -4,7 +4,7 @@ import by.ikrotsyuk.bsuir.driverservice.exception.keys.VehicleExceptionMessageKe
 import by.ikrotsyuk.bsuir.driverservice.exception.template.ExceptionTemplate;
 
 public class VehicleNotFoundByLicensePlateException extends ExceptionTemplate {
-    public VehicleNotFoundByLicensePlateException(VehicleExceptionMessageKeys key, String licensePlate) {
-        super(key.getMessageKey(), licensePlate);
+    public VehicleNotFoundByLicensePlateException(String licensePlate) {
+        super(VehicleExceptionMessageKeys.VEHICLE_NOT_FOUND_BY_LICENSE_PLATE_MESSAGE_KEY.getMessageKey(), licensePlate);
     }
 }

@@ -4,7 +4,7 @@ import by.ikrotsyuk.bsuir.driverservice.exception.keys.VehicleExceptionMessageKe
 import by.ikrotsyuk.bsuir.driverservice.exception.template.ExceptionTemplate;
 
 public class VehicleWithSameLicensePlateAlreadyExistsException extends ExceptionTemplate {
-    public VehicleWithSameLicensePlateAlreadyExistsException(VehicleExceptionMessageKeys key, String licensePlate) {
-        super(key.getMessageKey(), licensePlate);
+    public VehicleWithSameLicensePlateAlreadyExistsException(String licensePlate) {
+        super(VehicleExceptionMessageKeys.VEHICLE_WITH_SAME_LICENSE_PLATE_ALREADY_EXISTS_MESSAGE_KEY.getMessageKey(), licensePlate);
     }
 }

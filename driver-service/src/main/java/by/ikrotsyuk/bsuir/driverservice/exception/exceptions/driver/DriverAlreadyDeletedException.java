@@ -4,7 +4,7 @@ import by.ikrotsyuk.bsuir.driverservice.exception.keys.DriverExceptionMessageKey
 import by.ikrotsyuk.bsuir.driverservice.exception.template.ExceptionTemplate;
 
 public class DriverAlreadyDeletedException extends ExceptionTemplate {
-    public DriverAlreadyDeletedException(DriverExceptionMessageKeys key, Long id) {
-        super(key.getMessageKey(), id);
+    public DriverAlreadyDeletedException(Long id) {
+        super(DriverExceptionMessageKeys.DRIVER_ALREADY_DELETED_MESSAGE_KEY.getMessageKey(), id);
     }
 }

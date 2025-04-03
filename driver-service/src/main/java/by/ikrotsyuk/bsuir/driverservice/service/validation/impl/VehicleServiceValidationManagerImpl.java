@@ -1,7 +1,6 @@
 package by.ikrotsyuk.bsuir.driverservice.service.validation.impl;
 
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.vehicle.VehicleWithSameLicensePlateAlreadyExistsException;
-import by.ikrotsyuk.bsuir.driverservice.exception.keys.VehicleExceptionMessageKeys;
 import by.ikrotsyuk.bsuir.driverservice.repository.VehicleRepository;
 import by.ikrotsyuk.bsuir.driverservice.service.validation.VehicleServiceValidationManager;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +13,6 @@ public class VehicleServiceValidationManagerImpl implements VehicleServiceValida
     @Override
     public void checkLicensePlateIsUnique(String licensePlate) {
         if(vehicleRepository.existsByLicensePlate(licensePlate))
-            throw new VehicleWithSameLicensePlateAlreadyExistsException(VehicleExceptionMessageKeys.VEHICLE_WITH_SAME_LICENSE_PLATE_ALREADY_EXISTS_MESSAGE_KEY, licensePlate);
+            throw new VehicleWithSameLicensePlateAlreadyExistsException(licensePlate);
     }
 }

@@ -4,7 +4,7 @@ import by.ikrotsyuk.bsuir.driverservice.exception.keys.DriverExceptionMessageKey
 import by.ikrotsyuk.bsuir.driverservice.exception.template.ExceptionTemplate;
 
 public class DriverNotFoundByEmailException extends ExceptionTemplate {
-    public DriverNotFoundByEmailException(DriverExceptionMessageKeys key, String email) {
-        super(key.getMessageKey(), email);
+    public DriverNotFoundByEmailException(String email) {
+        super(DriverExceptionMessageKeys.DRIVER_NOT_FOUND_BY_EMAIL_MESSAGE_KEY.getMessageKey(), email);
     }
 }

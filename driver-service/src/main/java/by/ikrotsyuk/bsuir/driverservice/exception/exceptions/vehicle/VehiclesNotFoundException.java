@@ -4,7 +4,7 @@ import by.ikrotsyuk.bsuir.driverservice.exception.keys.VehicleExceptionMessageKe
 import by.ikrotsyuk.bsuir.driverservice.exception.template.ExceptionTemplate;
 
 public class VehiclesNotFoundException extends ExceptionTemplate {
-    public VehiclesNotFoundException(VehicleExceptionMessageKeys key) {
-        super(key.getMessageKey(), new Object());
+    public VehiclesNotFoundException() {
+        super(VehicleExceptionMessageKeys.VEHICLES_NOT_FOUND_MESSAGE_KEY.getMessageKey(), new Object());
     }
 }

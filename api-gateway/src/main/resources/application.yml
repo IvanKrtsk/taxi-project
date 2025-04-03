@@ -21,7 +21,7 @@ spring:
         - id: driver-service
           uri: lb://driver-service
           predicates:
-            - Path=/driver/**
+            - Path=/api/v1/driver/**
         - id: passenger-service
           uri: lb://passenger-service
           predicates:

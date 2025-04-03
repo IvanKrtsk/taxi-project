@@ -1,9 +1,7 @@
 package by.ikrotsyuk.bsuir.driverservice.controller.impl;
 
 import by.ikrotsyuk.bsuir.driverservice.controller.DriverOperations;
-import by.ikrotsyuk.bsuir.driverservice.dto.DriverRequestDTO;
-import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
-import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
+import by.ikrotsyuk.bsuir.driverservice.dto.*;
 import by.ikrotsyuk.bsuir.driverservice.service.DriverService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +60,11 @@ public class DriverController implements DriverOperations {
     @GetMapping("/car/{driverId}")
     public ResponseEntity<VehicleResponseDTO> getDriverCurrentVehicle(@PathVariable Long driverId) {
         return new ResponseEntity<>(driverService.getDriverCurrentVehicle(driverId), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<DriverVehicleResponseDTO> getDriverWithVehiclesById(@PathVariable Long driverId) {
+        return null;
     }
 
     @PostMapping()

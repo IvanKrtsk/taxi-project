@@ -1,8 +1,6 @@
 package by.ikrotsyuk.bsuir.driverservice.service;
 
-import by.ikrotsyuk.bsuir.driverservice.dto.DriverRequestDTO;
-import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
-import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
+import by.ikrotsyuk.bsuir.driverservice.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,4 +16,5 @@ public interface DriverService {
     Page<DriverResponseDTO> getAllDrivers(int offset, int itemCount, String field, boolean isSortDirectionAsc);
     List<VehicleResponseDTO> getAllDriverVehicles(Long driverId);
     VehicleResponseDTO getDriverCurrentVehicle(Long driverId);
+    DriverVehicleResponseDTO getDriverWithVehicleById(Long driverId);
 }

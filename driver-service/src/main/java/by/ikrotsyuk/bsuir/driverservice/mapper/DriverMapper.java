@@ -2,6 +2,7 @@ package by.ikrotsyuk.bsuir.driverservice.mapper;
 
 import by.ikrotsyuk.bsuir.driverservice.dto.DriverRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
+import by.ikrotsyuk.bsuir.driverservice.dto.DriverVehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,9 +14,9 @@ import java.util.List;
 public interface DriverMapper {
     DriverResponseDTO toDTO(DriverEntity driverEntity);
 
-    List<DriverResponseDTO> toDTOList(List<DriverEntity> driverEntityList);
+    DriverVehicleResponseDTO toDVDTO(DriverEntity driverEntity);
 
-    Page<DriverResponseDTO> toDTOPage(Page<DriverEntity> driverEntityPage);
+    List<DriverResponseDTO> toDTOList(List<DriverEntity> driverEntityList);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "rating", ignore = true)

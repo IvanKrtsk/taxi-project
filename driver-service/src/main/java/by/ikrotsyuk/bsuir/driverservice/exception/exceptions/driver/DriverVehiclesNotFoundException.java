@@ -4,7 +4,7 @@ import by.ikrotsyuk.bsuir.driverservice.exception.keys.DriverExceptionMessageKey
 import by.ikrotsyuk.bsuir.driverservice.exception.template.ExceptionTemplate;
 
 public class DriverVehiclesNotFoundException extends ExceptionTemplate {
-    public DriverVehiclesNotFoundException(DriverExceptionMessageKeys key, Long id) {
-        super(key.getMessageKey(), id);
+    public DriverVehiclesNotFoundException(Long id) {
+        super(DriverExceptionMessageKeys.DRIVER_VEHICLES_NOT_FOUND_MESSAGE_KEY.getMessageKey(), id);
     }
 }
