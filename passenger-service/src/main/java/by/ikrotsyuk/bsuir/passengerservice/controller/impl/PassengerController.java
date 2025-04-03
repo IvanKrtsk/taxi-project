@@ -5,6 +5,9 @@ import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -57,13 +60,13 @@ public class PassengerController implements PassengerOperations {
 
     @Override
     @PostMapping
-    public ResponseEntity<PassengerResponseDTO> addDriver(@Valid String email){
-        return new ResponseEntity<>(passengerService.addPassenger(email), HttpStatus.CREATED);
+    public ResponseEntity<PassengerResponseDTO> addDriver(@NotBlank @Email String email, @NotBlank @Size(max = 15) String phone){
+        return new ResponseEntity<>(passengerService.addPassenger(email, phone), HttpStatus.CREATED);
     }
 
     @Override
     @GetMapping
     public ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc) {
-        return null;
+        return new ResponseEntity<>(passengerService.getAllPassengers(offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 }

@@ -95,12 +95,13 @@ public class PassengerServiceImpl implements PassengerService {
      */
     @Override
     @Transactional
-    public PassengerResponseDTO addPassenger(String email) {
+    public PassengerResponseDTO addPassenger(String email, String phone) {
         passengerServiceValidationManagerImpl.checkEmailIsUnique(email);
+        passengerServiceValidationManagerImpl.checkPhoneIsUnique(phone);
         return passengerMapper.toDTO(passengerRepository.save(PassengerEntity.builder()
                 .name("not specified")
                 .email(email)
-                .phone("not specified")
+                .phone(phone)
                 .rating(0.0)
                 .totalRides(0L)
                 .isDeleted(false)
@@ -108,7 +109,7 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public Page<PassengerResponseDTO> getAllPassengers(String brand, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+    public Page<PassengerResponseDTO> getAllPassengers(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         if(field == null)
             field = "id";
         if(isSortDirectionAsc == null)
