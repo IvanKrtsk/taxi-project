@@ -3,6 +3,7 @@ package by.ikrotsyuk.bsuir.passengerservice.exception;
 import by.ikrotsyuk.bsuir.passengerservice.exception.dto.ExceptionDTO;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.*;
 import by.ikrotsyuk.bsuir.passengerservice.exception.template.ExceptionTemplate;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -33,7 +34,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({PassengerNotFoundByIdException.class, PassengerNotFoundByEmailException.class})
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> handleConstraintViolation(ConstraintViolationException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getConstraintViolations().forEach(violation -> {
+            String fieldName = violation.getPropertyPath().toString();
+            String errorMessage = violation.getMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({PassengerNotFoundByIdException.class, PassengerNotFoundByEmailException.class, PassengersNotFoundException.class})
     public ResponseEntity<ExceptionDTO> handlePassengerNotFoundByIdException(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
