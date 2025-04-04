@@ -11,6 +11,7 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -39,7 +40,7 @@ public class RideEntity {
     @NotBlank
     @Size(max = 255)
     private String endLocation;
-    private Double cost;
+    private BigDecimal cost;
     @Schema(description = "ride status")
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -58,6 +59,8 @@ public class RideEntity {
     @CreationTimestamp
     @NotNull
     private OffsetDateTime bookedAt;
+    @Schema(description = "estimated waiting time")
+    private Integer estimatedWaitingTime;
     @Schema(description = "taxi driver's confirmation time")
     private OffsetDateTime acceptedAt;
     @Schema(description = "trip start time")

@@ -35,7 +35,7 @@
             <column name="end_location" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="cost" type="float" defaultValue="0.0">
+            <column name="cost" type="numeric" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="ride_status_types">
@@ -46,6 +46,9 @@
             </column>
             <column name="rating" type="float"/>
             <column name="booked_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="estimated_waiting_time" type="int">
+                <constraints nullable="false"/>
+            </column>
             <column name="accepted_at" type="timestamptz"/>
             <column name="began_at" type="timestamptz"/>
             <column name="ended_at" type="timestamptz"/>
