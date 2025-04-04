@@ -22,52 +22,27 @@ import java.time.OffsetDateTime;
 @Setter
 @Builder
 public class RideEntity {
-    @Schema(description = "ride id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Schema(description = "trip passenger id")
-    @NotNull
     private Long passengerId;
-    @Schema(description = "trip driver id")
-    @NotNull
     private Long driverId;
-    @Schema(description = "starting address")
-    @NotBlank
-    @Size(max = 255)
     private String startLocation;
-    @Schema(description = "destination address")
-    @NotBlank
-    @Size(max = 255)
     private String endLocation;
     private BigDecimal cost;
-    @Schema(description = "ride status")
-    @NotNull
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
     private RideStatusTypes rideStatus;
-    @Schema(description = "payment type")
-    @NotNull
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
     private PaymentTypeTypes paymentType;
-    @Schema(description = "rating by user")
-    @DecimalMin(value = "0.0")
-    @DecimalMax(value = "10.0")
     private Double rating;
-    @Schema(description = "taxi call time")
     @CreationTimestamp
-    @NotNull
     private OffsetDateTime bookedAt;
-    @Schema(description = "estimated waiting time")
     private Integer estimatedWaitingTime;
-    @Schema(description = "taxi driver's confirmation time")
     private OffsetDateTime acceptedAt;
-    @Schema(description = "trip start time")
     private OffsetDateTime beganAt;
-    @Schema(description = "trip end time")
     private OffsetDateTime endedAt;
-    @Schema(description = "when was entity last updated date")
     @UpdateTimestamp
     private OffsetDateTime updatedAt;
 }
