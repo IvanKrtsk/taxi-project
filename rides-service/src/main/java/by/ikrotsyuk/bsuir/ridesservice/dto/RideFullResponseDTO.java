@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-public record RideResponseDTO(
+public record RideFullResponseDTO(
         @Schema(description = "ride id")
         Long id,
 
@@ -32,10 +32,22 @@ public record RideResponseDTO(
         @Schema(description = "payment type")
         PaymentTypeTypes paymentType,
 
+        @Schema(description = "trip rating")
+        Double rating,
+
         @Schema(description = "taxi call time")
         OffsetDateTime bookedAt,
 
         @Schema(description = "estimated waiting time")
-        Integer estimatedWaitingTime
+        Integer estimatedWaitingTime,
+
+        @Schema(description = "taxi driver's acceptance time")
+        OffsetDateTime acceptedAt,
+
+        @Schema(description = "trip start time")
+        OffsetDateTime beganAt,
+
+        @Schema(description = "trip end time")
+        OffsetDateTime endedAt
 ) {
 }
