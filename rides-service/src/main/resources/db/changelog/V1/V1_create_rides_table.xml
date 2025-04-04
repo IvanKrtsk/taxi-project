@@ -28,13 +28,14 @@
             <column name="passenger_id" type="bigserial">
                 <constraints nullable="false"/>
             </column>
-            <column name="driver_id" type="bigserial">
-                <constraints nullable="false"/>
-            </column>
+            <column name="driver_id" type="bigserial"/>
             <column name="start_location" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="end_location" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost" type="float" defaultValue="0.0">
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="ride_status_types">

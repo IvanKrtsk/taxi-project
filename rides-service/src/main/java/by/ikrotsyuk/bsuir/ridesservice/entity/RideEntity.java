@@ -7,7 +7,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.time.OffsetDateTime;
 
@@ -37,11 +39,16 @@ public class RideEntity {
     @NotBlank
     @Size(max = 255)
     private String endLocation;
+    private Double cost;
     @Schema(description = "ride status")
     @NotNull
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     private RideStatusTypes rideStatus;
     @Schema(description = "payment type")
     @NotNull
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     private PaymentTypeTypes paymentType;
     @Schema(description = "rating by user")
     @DecimalMin(value = "0.0")
