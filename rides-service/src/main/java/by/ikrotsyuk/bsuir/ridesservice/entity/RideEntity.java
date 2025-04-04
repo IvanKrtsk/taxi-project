@@ -2,9 +2,7 @@ package by.ikrotsyuk.bsuir.ridesservice.entity;
 
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.PaymentTypeTypes;
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
