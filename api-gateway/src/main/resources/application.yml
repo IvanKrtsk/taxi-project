@@ -29,7 +29,7 @@ spring:
         - id: rides-service
           uri: lb://rides-service
           predicates:
-            - Path=/rides/**
+            - Path=/api/v1/rides/**
         - id: payment-service
           uri: lb://payment-service
           predicates:
