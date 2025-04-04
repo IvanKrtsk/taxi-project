@@ -4,15 +4,13 @@ import by.ikrotsyuk.bsuir.ridesservice.controller.RidePassengerOperations;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideRequestDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideResponseDTO;
+import by.ikrotsyuk.bsuir.ridesservice.service.RidePassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
@@ -21,25 +19,35 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping("/api/v1/rides/passenger")
 public class RidePassengerControllerImpl implements RidePassengerOperations {
+    private final RidePassengerService ridePassengerService;
 
     @Override
-    @GetMapping("/{passengerId}")
+    @GetMapping("/cost/{passengerId}")
     public ResponseEntity<BigDecimal> getCostOfRide(@PathVariable Long passengerId, String startLocation, String endLocation) {
         return new ResponseEntity<>(BigDecimal.TEN, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Page<RideFullResponseDTO>> getRidesStory(Long passengerId) {
+    @GetMapping("/all/{passengerId}")
+    public ResponseEntity<Page<RideFullResponseDTO>> getRidesStory(@PathVariable Long passengerId) {
         return null;
     }
 
     @Override
-    public ResponseEntity<RideResponseDTO> bookRide(Long passengerId, RideRequestDTO rideRequestDTO) {
+    @PostMapping("/{passengerId}")
+    public ResponseEntity<RideResponseDTO> bookRide(@PathVariable Long passengerId, RideRequestDTO rideRequestDTO) {
         return null;
     }
 
     @Override
-    public ResponseEntity<RideFullResponseDTO> getCurrentRideInfo(Long passengerId, Long rideId) {
+    @GetMapping("/{passengerId}")
+    public ResponseEntity<RideFullResponseDTO> getCurrentRideInfo(@PathVariable Long passengerId, Long rideId) {
+        return null;
+    }
+
+    @Override
+    @GetMapping("ride/{passengerId}")
+    public ResponseEntity<RideFullResponseDTO> getRideInfo(@PathVariable Long passengerId, Long rideId) {
         return null;
     }
 }

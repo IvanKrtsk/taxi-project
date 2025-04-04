@@ -19,4 +19,5 @@ public interface RidePassengerOperations {
     ResponseEntity<Page<RideFullResponseDTO>> getRidesStory(@PathVariable Long passengerId);
     ResponseEntity<RideResponseDTO> bookRide(@PathVariable Long passengerId, @Valid @RequestBody RideRequestDTO rideRequestDTO);
     ResponseEntity<RideFullResponseDTO> getCurrentRideInfo(@PathVariable Long passengerId, @RequestParam Long rideId);
+    ResponseEntity<RideFullResponseDTO> getRideInfo(@PathVariable Long passengerId, @RequestParam Long rideId);
 }
