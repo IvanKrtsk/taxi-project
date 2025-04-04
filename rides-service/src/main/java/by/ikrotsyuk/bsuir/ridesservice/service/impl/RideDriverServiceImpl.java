@@ -16,7 +16,7 @@ public class RideDriverServiceImpl implements RideDriverService {
     private final RideRepository rideRepository;
 
     @Override
-    public Page<RideResponseDTO> getAvailableRides(Long driverId) {
+    public Page<RideResponseDTO> getAvailableRides(Long driverId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return null;
     }
 
@@ -41,7 +41,7 @@ public class RideDriverServiceImpl implements RideDriverService {
     }
 
     @Override
-    public Page<RideFullResponseDTO> getRidesHistory(Long driverId) {
+    public Page<RideFullResponseDTO> getRidesHistory(Long driverId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return null;
     }
 

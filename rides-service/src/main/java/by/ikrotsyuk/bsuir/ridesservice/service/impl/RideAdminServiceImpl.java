@@ -1,5 +1,6 @@
 package by.ikrotsyuk.bsuir.ridesservice.service.impl;
 
+import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullRequestDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
 import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
@@ -15,7 +16,7 @@ public class RideAdminServiceImpl implements RideAdminService {
     private final RideRepository rideRepository;
 
     @Override
-    public RideFullResponseDTO editRide(Long rideId) {
+    public RideFullResponseDTO editRide(Long rideId, RideFullRequestDTO rideFullRequestDTO) {
         return null;
     }
 
@@ -25,7 +26,7 @@ public class RideAdminServiceImpl implements RideAdminService {
     }
 
     @Override
-    public Page<RideFullResponseDTO> getAllRides() {
+    public Page<RideFullResponseDTO> getAllRides(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return null;
     }
 

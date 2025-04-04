@@ -23,31 +23,31 @@ public class RidePassengerControllerImpl implements RidePassengerOperations {
 
     @Override
     @GetMapping("/cost/{passengerId}")
-    public ResponseEntity<BigDecimal> getCostOfRide(@PathVariable Long passengerId, String startLocation, String endLocation) {
-        return new ResponseEntity<>(BigDecimal.TEN, HttpStatus.OK);
+    public ResponseEntity<BigDecimal> getCostOfRide(@PathVariable Long passengerId, RideRequestDTO rideRequestDTO) {
+        return new ResponseEntity<>(ridePassengerService.getCostOfRide(passengerId, rideRequestDTO), HttpStatus.OK);
     }
 
     @Override
     @GetMapping("/all/{passengerId}")
-    public ResponseEntity<Page<RideFullResponseDTO>> getRidesStory(@PathVariable Long passengerId) {
-        return null;
+    public ResponseEntity<Page<RideFullResponseDTO>> getRidesStory(@PathVariable Long passengerId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+        return new ResponseEntity<>(ridePassengerService.getRidesStory(passengerId, offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/{passengerId}")
     public ResponseEntity<RideResponseDTO> bookRide(@PathVariable Long passengerId, RideRequestDTO rideRequestDTO) {
-        return null;
+        return new ResponseEntity<>(ridePassengerService.bookRide(passengerId, rideRequestDTO), HttpStatus.CREATED);
     }
 
     @Override
     @GetMapping("/{passengerId}")
     public ResponseEntity<RideFullResponseDTO> getCurrentRideInfo(@PathVariable Long passengerId, Long rideId) {
-        return null;
+        return new ResponseEntity<>(ridePassengerService.getCurrentRideInfo(passengerId, rideId), HttpStatus.OK);
     }
 
     @Override
     @GetMapping("ride/{passengerId}")
     public ResponseEntity<RideFullResponseDTO> getRideInfo(@PathVariable Long passengerId, Long rideId) {
-        return null;
+        return new ResponseEntity<>(ridePassengerService.getRideInfo(passengerId, rideId), HttpStatus.OK);
     }
 }

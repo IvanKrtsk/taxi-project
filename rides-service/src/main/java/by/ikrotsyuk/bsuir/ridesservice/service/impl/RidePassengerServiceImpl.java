@@ -19,12 +19,12 @@ public class RidePassengerServiceImpl implements RidePassengerService {
     private final RideRepository rideRepository;
 
     @Override
-    public BigDecimal getCostOfRide(Long passengerId, String startLocation, String endLocation) {
+    public BigDecimal getCostOfRide(Long passengerId, RideRequestDTO rideRequestDTO) {
         return null;
     }
 
     @Override
-    public Page<RideFullResponseDTO> getRidesStory(Long passengerId) {
+    public Page<RideFullResponseDTO> getRidesStory(Long passengerId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return null;
     }
 
