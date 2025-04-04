@@ -3,14 +3,21 @@ package by.ikrotsyuk.bsuir.ridesservice.service.impl;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideRequestDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideResponseDTO;
+import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
+import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
 import by.ikrotsyuk.bsuir.ridesservice.service.RidePassengerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
+@RequiredArgsConstructor
 @Service
 public class RidePassengerServiceImpl implements RidePassengerService {
+    private final RideMapper rideMapper;
+    private final RideRepository rideRepository;
+
     @Override
     public BigDecimal getCostOfRide(Long passengerId, String startLocation, String endLocation) {
         return null;
