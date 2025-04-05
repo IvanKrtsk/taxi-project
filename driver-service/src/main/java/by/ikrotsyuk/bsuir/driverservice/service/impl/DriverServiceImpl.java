@@ -3,6 +3,7 @@ package by.ikrotsyuk.bsuir.driverservice.service.impl;
 import by.ikrotsyuk.bsuir.driverservice.dto.*;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypes;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.*;
 import by.ikrotsyuk.bsuir.driverservice.mapper.DriverMapper;
 import by.ikrotsyuk.bsuir.driverservice.repository.DriverRepository;
@@ -103,6 +104,7 @@ public class DriverServiceImpl implements DriverService {
                     .rating(0.0)
                     .total_rides(0L)
                     .isDeleted(false)
+                    .status(StatusTypes.AVAILABLE)
                     .build()));
         }
     }
@@ -110,14 +112,9 @@ public class DriverServiceImpl implements DriverService {
     @Override
     @Transactional(readOnly = true)
     public Page<DriverResponseDTO> getAllDrivers(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
-        if(field == null)
-            field = "id";
-        if(isSortDirectionAsc == null)
-            isSortDirectionAsc = true;
-        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Page<DriverEntity> driverEntities = driverRepository.findAll(
                 PageRequest.of(offset, itemCount,
-                        Sort.by(sortDirection, field))
+                        getSort(isSortDirectionAsc, field))
         );
         if(!driverEntities.hasContent())
             throw new DriversNotFoundException();
@@ -132,5 +129,14 @@ public class DriverServiceImpl implements DriverService {
                 .orElseThrow(() -> new DriverNotFoundByIdException(driverId));
         List<VehicleEntity> vehicleEntityList = driverEntity.getDriverVehicles();
         return driverMapper.toDVDTO(driverEntity);
+    }
+
+    private Sort getSort(Boolean isSortDirectionAsc, String field){
+        if(field == null)
+            field = "id";
+        if(isSortDirectionAsc == null)
+            isSortDirectionAsc = true;
+        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return Sort.by(sortDirection, field);
     }
 }

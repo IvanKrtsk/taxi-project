@@ -13,6 +13,13 @@
     </changeSet>
 
     <changeSet id="driver-2" author="ikrtsk">
+        <comment>Create status types</comment>
+        <sql>
+            CREATE TYPE status_types_1 AS ENUM('AVAILABLE', 'IN_RIDE');
+        </sql>
+    </changeSet>
+
+    <changeSet id="driver-3" author="ikrtsk">
         <comment>Create drivers table</comment>
         <createTable tableName="drivers">
             <column name="id" type="bigserial">
@@ -29,27 +36,30 @@
             </column>
             <column name="rating" type="float" defaultValue="0.0"/>
             <column name="total_rides" type="bigint" defaultValue="0"/>
+            <column name="status" type="status_types">
+                <constraints nullable="false"/>
+            </column>
             <column name="is_deleted" type="boolean" defaultValue="false"/>
             <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
     </changeSet>
 
-    <changeSet id="driver-3" author="ikrtsk">
+    <changeSet id="driver-4" author="ikrtsk">
         <comment>Add index on email column in drivers</comment>
         <createIndex tableName="drivers" indexName="idx_drivers_email">
             <column name="email"/>
         </createIndex>
     </changeSet>
 
-    <changeSet id="driver-4" author="ikrtsk">
+    <changeSet id="driver-5" author="ikrtsk">
         <comment>Add index on phone column in drivers</comment>
         <createIndex tableName="drivers" indexName="idx_drivers_phone">
             <column name="phone"/>
         </createIndex>
     </changeSet>
 
-    <changeSet id="driver-5" author="ikrtsk">
+    <changeSet id="driver-6" author="ikrtsk">
         <comment>Create vehicles table</comment>
         <createTable tableName="vehicles">
             <column name="id" type="bigserial">

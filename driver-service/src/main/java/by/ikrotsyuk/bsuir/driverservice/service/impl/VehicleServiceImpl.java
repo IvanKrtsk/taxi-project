@@ -120,14 +120,9 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     @Transactional(readOnly = true)
     public Page<VehicleResponseDTO> getAllVehicles(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
-        if(field == null)
-            field = "id";
-        if(isSortDirectionAsc == null)
-            isSortDirectionAsc = true;
-        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAll(
                 PageRequest.of(offset, itemCount,
-                        Sort.by(sortDirection, field))
+                        getSort(isSortDirectionAsc, field))
         );
         if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundException();
@@ -138,15 +133,9 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     @Transactional(readOnly = true)
     public Page<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
-        if(field == null)
-            field = "id";
-        if(isSortDirectionAsc == null)
-            isSortDirectionAsc = true;
-
-        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByCarClass(type,
                 PageRequest.of(offset, itemCount,
-                        Sort.by(sortDirection, field)));
+                        getSort(isSortDirectionAsc, field)));
 
         if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundByTypeException(type);
@@ -156,15 +145,9 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     @Transactional(readOnly = true)
     public Page<VehicleResponseDTO> getAllVehiclesByYear(Integer year, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
-        if(field == null)
-            field = "id";
-        if(isSortDirectionAsc == null)
-            isSortDirectionAsc = true;
-
-        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByYear(year,
                 PageRequest.of(offset, itemCount,
-                        Sort.by(sortDirection, field)));
+                        getSort(isSortDirectionAsc, field)));
 
         if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundByYearException(year);
@@ -174,15 +157,9 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     @Transactional(readOnly = true)
     public Page<VehicleResponseDTO> getAllVehiclesByBrand(String brand, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
-        if(field == null)
-            field = "id";
-        if(isSortDirectionAsc == null)
-            isSortDirectionAsc = true;
-
-        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByBrand(brand,
                 PageRequest.of(offset, itemCount,
-                        Sort.by(sortDirection, field)));
+                        getSort(isSortDirectionAsc, field)));
 
         if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundByBrandException(brand);
@@ -240,5 +217,14 @@ public class VehicleServiceImpl implements VehicleService {
                 .filter(VehicleResponseDTO::isCurrent)
                 .findFirst()
                 .orElseThrow(() -> new DriverCurrentVehicleNotFoundException(driverId));
+    }
+
+    private Sort getSort(Boolean isSortDirectionAsc, String field){
+        if(field == null)
+            field = "id";
+        if(isSortDirectionAsc == null)
+            isSortDirectionAsc = true;
+        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return Sort.by(sortDirection, field);
     }
 }
