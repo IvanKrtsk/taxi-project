@@ -41,12 +41,6 @@ public class RidePassengerController implements RidePassengerOperations {
 
     @Override
     @GetMapping("/{passengerId}")
-    public ResponseEntity<RideFullResponseDTO> getCurrentRideInfo(@PathVariable Long passengerId, Long rideId) {
-        return new ResponseEntity<>(ridePassengerService.getCurrentRideInfo(passengerId, rideId), HttpStatus.OK);
-    }
-
-    @Override
-    @GetMapping("ride/{passengerId}")
     public ResponseEntity<RideFullResponseDTO> getRideInfo(@PathVariable Long passengerId, Long rideId) {
         return new ResponseEntity<>(ridePassengerService.getRideInfo(passengerId, rideId), HttpStatus.OK);
     }

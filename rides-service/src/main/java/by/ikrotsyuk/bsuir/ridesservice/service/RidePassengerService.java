@@ -11,6 +11,5 @@ public interface RidePassengerService {
     BigDecimal getCostOfRide(Long passengerId, RideRequestDTO rideRequestDTO);
     Page<RideFullResponseDTO> getRidesStory(Long passengerId, int offset, int itemCount, String field, Boolean isSortDirectionAsc);
     RideResponseDTO bookRide(Long passengerId, RideRequestDTO rideRequestDTO);
-    RideFullResponseDTO getCurrentRideInfo(Long passengerId, Long rideId);
     RideFullResponseDTO getRideInfo(Long passengerId, Long rideId);
 }
