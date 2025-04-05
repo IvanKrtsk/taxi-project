@@ -3,11 +3,8 @@ package by.ikrotsyuk.bsuir.passengerservice.controller.impl;
 import by.ikrotsyuk.bsuir.passengerservice.controller.PassengerOperations;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypes;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -68,5 +65,11 @@ public class PassengerController implements PassengerOperations {
     @GetMapping
     public ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(passengerService.getAllPassengers(offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
+    }
+
+    @Override
+    @PatchMapping("/payment/{id}")
+    public ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long id, String paymentType) {
+        return new ResponseEntity<>(passengerService.changePaymentType(id, paymentType), HttpStatus.OK);
     }
 }

@@ -12,4 +12,5 @@ public interface PassengerService {
     Long checkIsEmailCorrect(Long id, String email);
     PassengerResponseDTO addPassenger(String email, String phone);
     Page<PassengerResponseDTO> getAllPassengers(int offset, int itemCount, String field, Boolean isSortDirectionAsc);
+    PassengerResponseDTO changePaymentType(Long id, String paymentType);
 }

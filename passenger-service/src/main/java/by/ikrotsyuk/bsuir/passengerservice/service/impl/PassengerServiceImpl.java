@@ -3,6 +3,8 @@ package by.ikrotsyuk.bsuir.passengerservice.service.impl;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
 import by.ikrotsyuk.bsuir.passengerservice.entity.PassengerEntity;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypes;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.StatusTypes;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.*;
 import by.ikrotsyuk.bsuir.passengerservice.mapper.PassengerMapper;
 import by.ikrotsyuk.bsuir.passengerservice.repository.PassengerRepository;
@@ -111,6 +113,8 @@ public class PassengerServiceImpl implements PassengerService {
                     .rating(0.0)
                     .totalRides(0L)
                     .isDeleted(false)
+                    .status(StatusTypes.AVAILABLE)
+                    .paymentType(PaymentTypeTypes.CASH)
                     .build()));
         }
     }
@@ -118,18 +122,37 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     @Transactional(readOnly = true)
     public Page<PassengerResponseDTO> getAllPassengers(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
-        if(field == null)
-            field = "id";
-        if(isSortDirectionAsc == null)
-            isSortDirectionAsc = true;
-
-        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Page<PassengerEntity> passengerEntityPage = passengerRepository.findAll(
                 PageRequest.of(offset, itemCount,
-                        Sort.by(sortDirection, field))
+                        getSort(isSortDirectionAsc, field))
         );
         if(!passengerEntityPage.hasContent())
             throw new PassengersNotFoundException();
         return passengerEntityPage.map(passengerMapper::toDTO);
+    }
+
+    @Override
+    @Transactional
+    public PassengerResponseDTO changePaymentType(Long id, String paymentType) {
+        PassengerEntity passengerEntity = passengerRepository.findById(id)
+                .orElseThrow(() -> new PassengerNotFoundByIdException(id));
+
+        PaymentTypeTypes type;
+        if(PaymentTypeTypes.CARD.name().equals(paymentType))
+            type = PaymentTypeTypes.CARD;
+        else
+            type = PaymentTypeTypes.CASH;
+
+        passengerEntity.setPaymentType(type);
+        return passengerMapper.toDTO(passengerEntity);
+    }
+
+    private Sort getSort(Boolean isSortDirectionAsc, String field){
+        if(field == null)
+            field = "id";
+        if(isSortDirectionAsc == null)
+            isSortDirectionAsc = true;
+        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return Sort.by(sortDirection, field);
     }
 }

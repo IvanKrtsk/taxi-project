@@ -1,5 +1,6 @@
 package by.ikrotsyuk.bsuir.passengerservice.dto;
 
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record PassengerResponseDTO(
@@ -22,5 +23,8 @@ public record PassengerResponseDTO(
     Long total_rides,
 
     @Schema(description = "is passenger deleted")
-    Boolean isDeleted
+    Boolean isDeleted,
+
+    @Schema(description = "passenger payment type")
+    PaymentTypeTypes paymentType
 ){}

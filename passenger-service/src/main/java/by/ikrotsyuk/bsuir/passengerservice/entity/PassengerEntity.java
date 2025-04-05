@@ -1,14 +1,13 @@
 package by.ikrotsyuk.bsuir.passengerservice.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypes;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.StatusTypes;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.time.OffsetDateTime;
 
@@ -32,6 +31,12 @@ public class PassengerEntity {
     private Double rating;
     private Long totalRides;
     private Boolean isDeleted;
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    private StatusTypes status;
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    private PaymentTypeTypes paymentType;
     @CreationTimestamp
     private OffsetDateTime createdAt;
     @UpdateTimestamp

@@ -19,4 +19,5 @@ public interface PassengerOperations {
     ResponseEntity<PassengerResponseDTO> deletePassengerProfile(@PathVariable Long id);
     ResponseEntity<PassengerResponseDTO> addPassenger(@NotBlank @Email String email, @NotBlank @Size(max = 15) String phone);
     ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
+    ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long id, @RequestParam @NotBlank @Size(max = 4) String paymentType);
 }
