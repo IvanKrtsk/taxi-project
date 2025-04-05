@@ -17,6 +17,6 @@ public interface PassengerOperations {
     ResponseEntity<Double> getPassengerRating(@PathVariable Long id);
     ResponseEntity<PassengerResponseDTO> editPassengerProfile(@PathVariable Long id, @Valid @RequestBody PassengerRequestDTO passengerRequestDTO);
     ResponseEntity<PassengerResponseDTO> deletePassengerProfile(@PathVariable Long id);
-    ResponseEntity<PassengerResponseDTO> addDriver(@NotBlank @Email String email, @NotBlank @Size(max = 15) String phone);
+    ResponseEntity<PassengerResponseDTO> addPassenger(@NotBlank @Email String email, @NotBlank @Size(max = 15) String phone);
     ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
 }

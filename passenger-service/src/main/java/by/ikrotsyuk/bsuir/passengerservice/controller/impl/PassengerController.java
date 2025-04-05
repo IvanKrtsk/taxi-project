@@ -45,7 +45,7 @@ public class PassengerController implements PassengerOperations {
      */
     @Override
     @PatchMapping("/{id}")
-    public ResponseEntity<PassengerResponseDTO> editPassengerProfile(@PathVariable Long id, @Valid @RequestBody PassengerRequestDTO passengerRequestDTO){
+    public ResponseEntity<PassengerResponseDTO> editPassengerProfile(@PathVariable Long id, PassengerRequestDTO passengerRequestDTO){
         return new ResponseEntity<>(passengerService.editPassengerProfile(id, passengerRequestDTO), HttpStatus.OK);
     }
 
@@ -60,13 +60,13 @@ public class PassengerController implements PassengerOperations {
 
     @Override
     @PostMapping
-    public ResponseEntity<PassengerResponseDTO> addDriver(@NotBlank @Email String email, @NotBlank @Size(max = 15) String phone){
+    public ResponseEntity<PassengerResponseDTO> addPassenger(String email, String phone){
         return new ResponseEntity<>(passengerService.addPassenger(email, phone), HttpStatus.CREATED);
     }
 
     @Override
     @GetMapping
-    public ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc) {
+    public ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(passengerService.getAllPassengers(offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 }
