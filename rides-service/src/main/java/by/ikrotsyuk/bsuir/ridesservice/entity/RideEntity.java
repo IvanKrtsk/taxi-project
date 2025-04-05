@@ -1,5 +1,6 @@
 package by.ikrotsyuk.bsuir.ridesservice.entity;
 
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypes;
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.PaymentTypeTypes;
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
 import jakarta.persistence.*;
@@ -34,6 +35,9 @@ public class RideEntity {
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
     private PaymentTypeTypes paymentType;
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    private CarClassTypes carClass;
     private Double rating;
     @CreationTimestamp
     private OffsetDateTime bookedAt;

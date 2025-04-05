@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @Validated
 @RestController
 @RequestMapping("/api/v1/rides/passenger")
-public class RidePassengerControllerImpl implements RidePassengerOperations {
+public class RidePassengerController implements RidePassengerOperations {
     private final RidePassengerService ridePassengerService;
 
     @Override

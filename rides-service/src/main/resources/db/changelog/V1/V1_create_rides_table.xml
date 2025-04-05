@@ -20,6 +20,13 @@
     </changeSet>
 
     <changeSet id="rides-3" author="ikrtsk">
+        <comment>Create car class type</comment>
+        <sql>
+            CREATE TYPE car_class_types_1 AS ENUM('ECONOMY', 'COMFORT', 'COMFORT_PLUS', 'BUSINESS', 'ELECTRIC', 'TRUCK', 'ULTIMA', 'DELIVERY');
+        </sql>
+    </changeSet>
+
+    <changeSet id="rides-4" author="ikrtsk">
         <comment>Create rides table</comment>
         <createTable tableName="rides">
             <column name="id" type="bigserial">
@@ -42,6 +49,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="payment_type" type="payment_type_types">
+                <constraints nullable="false"/>
+            </column>
+            <column name="car_class" type="car_class_types_1">
                 <constraints nullable="false"/>
             </column>
             <column name="rating" type="float"/>

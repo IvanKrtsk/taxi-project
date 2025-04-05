@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/rides/admin")
-public class RideAdminControllerImpl implements RideAdminOperations {
+public class RideAdminController implements RideAdminOperations {
     private final RideAdminService rideAdminService;
 
     @Override

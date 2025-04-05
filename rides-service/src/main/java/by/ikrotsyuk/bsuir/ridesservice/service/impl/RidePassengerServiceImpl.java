@@ -20,7 +20,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
 
     @Override
     public BigDecimal getCostOfRide(Long passengerId, RideRequestDTO rideRequestDTO) {
-        return null;
+        return BigDecimal.TEN;
     }
 
     @Override
@@ -41,5 +41,9 @@ public class RidePassengerServiceImpl implements RidePassengerService {
     @Override
     public RideFullResponseDTO getRideInfo(Long passengerId, Long rideId) {
         return null;
+    }
+
+    private BigDecimal getCostOfRide(String startAddress, String endAddress){
+        return BigDecimal.ONE;
     }
 }
