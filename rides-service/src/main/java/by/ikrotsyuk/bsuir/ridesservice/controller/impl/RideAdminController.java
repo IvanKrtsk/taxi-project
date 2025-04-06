@@ -4,6 +4,7 @@ import by.ikrotsyuk.bsuir.ridesservice.controller.RideAdminOperations;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullRequestDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.service.RideAdminService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class RideAdminController implements RideAdminOperations {
 
     @Override
     @PatchMapping("/{rideId}")
-    public ResponseEntity<RideFullResponseDTO> editRide(@PathVariable Long rideId, RideFullRequestDTO rideFullRequestDTO) {
+    public ResponseEntity<RideFullResponseDTO> editRide(@PathVariable Long rideId, @Valid @RequestBody RideFullRequestDTO rideFullRequestDTO) {
         return new ResponseEntity<>(rideAdminService.editRide(rideId, rideFullRequestDTO), HttpStatus.OK);
     }
 

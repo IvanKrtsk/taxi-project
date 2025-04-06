@@ -1,7 +1,7 @@
 package by.ikrotsyuk.bsuir.ridesservice.dto;
 
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypes;
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.PaymentTypeTypes;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypesRides;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.PaymentTypeTypesRides;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,10 +20,10 @@ public record RideRequestDTO(
 
         @Schema(description = "payment type(CASH/CARD)")
         @NotNull
-        PaymentTypeTypes paymentType,
+        PaymentTypeTypesRides paymentType,
 
         @Schema(description = "car class")
         @NotNull
-        CarClassTypes carClass
+        CarClassTypesRides carClass
 ) {
 }

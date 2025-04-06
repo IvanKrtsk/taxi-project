@@ -12,4 +12,5 @@ public interface RidePassengerService {
     Page<RideFullResponseDTO> getRidesStory(Long passengerId, int offset, int itemCount, String field, Boolean isSortDirectionAsc);
     RideResponseDTO bookRide(Long passengerId, RideRequestDTO rideRequestDTO);
     RideFullResponseDTO getRideInfo(Long passengerId, Long rideId);
+    RideFullResponseDTO refuseRide(Long passengerId, Long rideId);
 }

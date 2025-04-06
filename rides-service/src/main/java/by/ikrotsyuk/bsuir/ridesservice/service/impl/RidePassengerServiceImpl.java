@@ -4,7 +4,8 @@ import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideRequestDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.entity.RideEntity;
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypes;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypesRides;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypesRides;
 import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
 import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
 import by.ikrotsyuk.bsuir.ridesservice.service.RidePassengerService;
@@ -50,6 +51,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
         Random rand = new Random();
         rideEntity.setCost(calculatePrice(rideRequestDTO));
         rideEntity.setPassengerId(passengerId);
+        rideEntity.setRideStatus(RideStatusTypesRides.PENDING);
         rideEntity.setEstimatedWaitingTime(rand.nextInt(500) + 100); // analyze drivers positions
         return rideMapper.toDTO(rideRepository.save(rideEntity));
     }
@@ -64,6 +66,17 @@ public class RidePassengerServiceImpl implements RidePassengerService {
         return rideMapper.toFullDTO(rideEntity);
     }
 
+    @Override
+    @Transactional
+    public RideFullResponseDTO refuseRide(Long passengerId, Long rideId) {
+        RideEntity rideEntity = rideRepository.findById(rideId)
+                .orElseThrow(() -> new RuntimeException("ex"));
+        if(!rideEntity.getPassengerId().equals(passengerId))
+            throw new RuntimeException("ex");
+        rideEntity.setRideStatus(RideStatusTypesRides.CANCELED);
+        return rideMapper.toFullDTO(rideEntity);
+    }
+
     private BigDecimal calculatePrice(RideRequestDTO rideRequestDTO){
         int hash = Objects.hash(rideRequestDTO.startLocation(), rideRequestDTO.endLocation());
         hash = Math.abs(hash);
@@ -71,7 +84,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
         return price.multiply(getMultiplier(rideRequestDTO.carClass()));
     }
 
-    private static BigDecimal getMultiplier(CarClassTypes carClass) {
+    private static BigDecimal getMultiplier(CarClassTypesRides carClass) {
         return switch (carClass) {
             case ECONOMY -> BigDecimal.valueOf(1.0);
             case COMFORT -> BigDecimal.valueOf(1.2);

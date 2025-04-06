@@ -49,7 +49,7 @@ public class RideDriverController implements RideDriverOperations {
     }
 
     @Override
-    @GetMapping("/history/{driverId}")
+    @GetMapping("/all/{driverId}")
     public ResponseEntity<Page<RideFullResponseDTO>> getRidesHistory(@PathVariable Long driverId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(rideDriverService.getRidesHistory(driverId, offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }

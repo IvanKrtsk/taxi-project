@@ -5,6 +5,7 @@ import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideRequestDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.service.RidePassengerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class RidePassengerController implements RidePassengerOperations {
 
     @Override
     @GetMapping("/cost/{passengerId}")
-    public ResponseEntity<BigDecimal> getCostOfRide(@PathVariable Long passengerId, RideRequestDTO rideRequestDTO) {
+    public ResponseEntity<BigDecimal> getCostOfRide(@PathVariable Long passengerId, @Valid RideRequestDTO rideRequestDTO) {
         return new ResponseEntity<>(ridePassengerService.getCostOfRide(passengerId, rideRequestDTO), HttpStatus.OK);
     }
 
@@ -35,7 +36,7 @@ public class RidePassengerController implements RidePassengerOperations {
 
     @Override
     @PostMapping("/{passengerId}")
-    public ResponseEntity<RideResponseDTO> bookRide(@PathVariable Long passengerId, RideRequestDTO rideRequestDTO) {
+    public ResponseEntity<RideResponseDTO> bookRide(@PathVariable Long passengerId, @Valid @RequestBody RideRequestDTO rideRequestDTO) {
         return new ResponseEntity<>(ridePassengerService.bookRide(passengerId, rideRequestDTO), HttpStatus.CREATED);
     }
 
@@ -43,5 +44,11 @@ public class RidePassengerController implements RidePassengerOperations {
     @GetMapping("/{passengerId}")
     public ResponseEntity<RideFullResponseDTO> getRideInfo(@PathVariable Long passengerId, Long rideId) {
         return new ResponseEntity<>(ridePassengerService.getRideInfo(passengerId, rideId), HttpStatus.OK);
+    }
+
+    @Override
+    @PatchMapping("/refuse/{passengerId}")
+    public ResponseEntity<RideFullResponseDTO> refuseRide(@PathVariable Long passengerId, Long rideId) {
+        return new ResponseEntity<>(ridePassengerService.refuseRide(passengerId, rideId), HttpStatus.OK);
     }
 }

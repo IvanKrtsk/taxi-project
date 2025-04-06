@@ -3,7 +3,7 @@ package by.ikrotsyuk.bsuir.ridesservice.service.impl;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.entity.RideEntity;
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypesRides;
 import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
 import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
 import by.ikrotsyuk.bsuir.ridesservice.service.RideDriverService;
@@ -28,7 +28,7 @@ public class RideDriverServiceImpl implements RideDriverService {
     @Transactional(readOnly = true)
     public Page<RideResponseDTO> getAvailableRides(Long driverId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         // get drivers car class
-        Page<RideEntity> rideEntities = rideRepository.findAllByRideStatus(RideStatusTypes.PENDING,
+        Page<RideEntity> rideEntities = rideRepository.findAllByRideStatus(RideStatusTypesRides.PENDING,
                 PageRequest.of(offset, itemCount,
                         SortTool.getSort(field, isSortDirectionAsc)));
         if(!rideEntities.hasContent())
@@ -41,7 +41,10 @@ public class RideDriverServiceImpl implements RideDriverService {
     public RideFullResponseDTO acceptRide(Long driverId, Long rideId) {
         RideEntity rideEntity = rideRepository.findById(rideId)
                 .orElseThrow(() -> new RuntimeException("ex"));
+        if(rideEntity.getDriverId() != null)
+            throw new RuntimeException("ex");
         rideEntity.setDriverId(driverId);
+        rideEntity.setRideStatus(RideStatusTypesRides.IN_PROGRESS);
         rideEntity.setAcceptedAt(OffsetDateTime.now());
         return rideMapper.toFullDTO(rideEntity);
     }
@@ -51,13 +54,15 @@ public class RideDriverServiceImpl implements RideDriverService {
     public RideFullResponseDTO refuseRide(Long driverId, Long rideId) {
         RideEntity rideEntity = rideRepository.findById(rideId)
                 .orElseThrow(() -> new RuntimeException("ex"));
+        if(!rideEntity.getDriverId().equals(driverId))
+            throw new RuntimeException("ex");
         Random rand = new Random();
         rideEntity.setDriverId(null);
-        rideEntity.setRideStatus(RideStatusTypes.CANCELED);
+        rideEntity.setRideStatus(RideStatusTypesRides.PENDING);
         rideEntity.setAcceptedAt(null);
         rideEntity.setBeganAt(null);
         rideEntity.setEstimatedWaitingTime(rand.nextInt(500) + 100);
-        return null;
+        return rideMapper.toFullDTO(rideEntity);
     }
 
     @Override
@@ -70,7 +75,6 @@ public class RideDriverServiceImpl implements RideDriverService {
         OffsetDateTime now = OffsetDateTime.now();
         long timeDifferenceInSeconds = Duration.between(rideEntity.getAcceptedAt(), now).getSeconds();
         rideEntity.setBeganAt(now);
-        rideEntity.setRideStatus(RideStatusTypes.IN_PROGRESS);
         rideEntity.setEstimatedWaitingTime((int) timeDifferenceInSeconds);
         return rideMapper.toFullDTO(rideEntity);
     }
@@ -82,7 +86,7 @@ public class RideDriverServiceImpl implements RideDriverService {
                 .orElseThrow(() -> new RuntimeException("ex"));
         if(!rideEntity.getDriverId().equals(driverId))
             throw new RuntimeException("ex");
-        rideEntity.setRideStatus(RideStatusTypes.COMPLETED);
+        rideEntity.setRideStatus(RideStatusTypesRides.COMPLETED);
         rideEntity.setEndedAt(OffsetDateTime.now());
         return rideMapper.toFullDTO(rideEntity);
     }
@@ -101,7 +105,7 @@ public class RideDriverServiceImpl implements RideDriverService {
     @Override
     @Transactional(readOnly = true)
     public RideFullResponseDTO getCurrentRide(Long driverId) {
-        RideEntity rideEntity = rideRepository.findByDriverIdAndRideStatus(driverId, RideStatusTypes.IN_PROGRESS)
+        RideEntity rideEntity = rideRepository.findByDriverIdAndRideStatus(driverId, RideStatusTypesRides.IN_PROGRESS)
                 .orElseThrow(() -> new RuntimeException("ex"));
         return rideMapper.toFullDTO(rideEntity);
     }

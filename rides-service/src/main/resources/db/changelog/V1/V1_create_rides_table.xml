@@ -35,7 +35,7 @@
             <column name="passenger_id" type="bigserial">
                 <constraints nullable="false"/>
             </column>
-            <column name="driver_id" type="bigserial"/>
+            <column name="driver_id" type="bigint"/>
             <column name="start_location" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -45,7 +45,7 @@
             <column name="cost" type="numeric" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" type="ride_status_types_rides">
+            <column name="ride_status" type="ride_status_types_rides">
                 <constraints nullable="false"/>
             </column>
             <column name="payment_type" type="payment_type_types_rides">
