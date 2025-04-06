@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class RatingAdminServiceImpl implements RatingAdminService {
 
     @Override
-    public RatingResponseDTO getRatingById(Long id) {
+    public RatingResponseDTO getRatingById(String id) {
         return null;
     }
 
@@ -20,12 +20,12 @@ public class RatingAdminServiceImpl implements RatingAdminService {
     }
 
     @Override
-    public RatingResponseDTO editRating(Long id, RatingRequestDTO requestDTO) {
+    public RatingResponseDTO editRating(String id, RatingRequestDTO requestDTO) {
         return null;
     }
 
     @Override
-    public RatingResponseDTO deleteRating(Long id) {
+    public RatingResponseDTO deleteRating(String id) {
         return null;
     }
 }
