@@ -8,14 +8,14 @@
     <changeSet id="driver-1" author="ikrtsk">
         <comment>Create car class type</comment>
         <sql>
-            CREATE TYPE car_class_types AS ENUM('ECONOMY', 'COMFORT', 'COMFORT_PLUS', 'BUSINESS', 'ELECTRIC', 'TRUCK', 'ULTIMA', 'DELIVERY');
+            CREATE TYPE car_class_types_driver AS ENUM('ECONOMY', 'COMFORT', 'COMFORT_PLUS', 'BUSINESS', 'ELECTRIC', 'TRUCK', 'ULTIMA', 'DELIVERY');
         </sql>
     </changeSet>
 
     <changeSet id="driver-2" author="ikrtsk">
         <comment>Create status types</comment>
         <sql>
-            CREATE TYPE status_types_1 AS ENUM('AVAILABLE', 'IN_RIDE');
+            CREATE TYPE status_types_driver AS ENUM('AVAILABLE', 'IN_RIDE');
         </sql>
     </changeSet>
 
@@ -36,7 +36,7 @@
             </column>
             <column name="rating" type="float" defaultValue="0.0"/>
             <column name="total_rides" type="bigint" defaultValue="0"/>
-            <column name="status" type="status_types">
+            <column name="status" type="status_types_driver">
                 <constraints nullable="false"/>
             </column>
             <column name="is_deleted" type="boolean" defaultValue="false"/>
@@ -71,7 +71,7 @@
             <column name="model" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="car_class" type="car_class_types">
+            <column name="car_class" type="car_class_types_driver">
                 <constraints nullable="false"/>
             </column>
             <column name="rides_count" type="bigint" defaultValue="0"/>
