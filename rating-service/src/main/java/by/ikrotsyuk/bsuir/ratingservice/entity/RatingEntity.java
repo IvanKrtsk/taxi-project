@@ -1,13 +1,14 @@
 package by.ikrotsyuk.bsuir.ratingservice.entity;
 
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypesRating;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.OffsetDateTime;
+import java.util.Date;
 
 @Document(collection = "reviews")
 @AllArgsConstructor
@@ -17,14 +18,13 @@ import java.time.OffsetDateTime;
 @Builder
 public class RatingEntity {
     @Id
-    private Long id;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId id;
     private Long rideId;
     private Long reviewerId;
-    private ReviewerTypesRating reviewer;
+    private ReviewerTypesRating reviewerType;
     private Double rating;
     private String comment;
-    @CreationTimestamp
-    private OffsetDateTime createdAt;
-    @UpdateTimestamp
-    private OffsetDateTime updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 }
