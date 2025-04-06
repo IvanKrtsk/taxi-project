@@ -15,7 +15,12 @@ public class RatingReviewerServiceImpl implements RatingReviewerService {
     }
 
     @Override
-    public Page<RatingResponseDTO> viewLeavedReviews(Long reviewerId, ReviewerTypesRating reviewerType) {
+    public Page<RatingResponseDTO> viewLeavedReviews(Long reviewerId, ReviewerTypesRating reviewerType, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+        return null;
+    }
+
+    @Override
+    public RatingResponseDTO getReviewById(Long reviewId) {
         return null;
     }
 }
