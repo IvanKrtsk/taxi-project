@@ -31,7 +31,6 @@ public class RideAdminServiceImpl implements RideAdminService {
         rideEntity.setRideStatus(rideFullRequestDTO.rideStatus());
         rideEntity.setPaymentType(rideFullRequestDTO.paymentType());
 
-        rideEntity.setRating(rideFullRequestDTO.rating());
         rideEntity.setEstimatedWaitingTime(rideFullRequestDTO.estimatedWaitingTime());
         return rideMapper.toFullDTO(rideEntity);
     }
