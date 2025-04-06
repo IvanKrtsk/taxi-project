@@ -49,6 +49,6 @@ public class RidePassengerController implements RidePassengerOperations {
     @Override
     @PatchMapping("/refuse/{passengerId}")
     public ResponseEntity<RideFullResponseDTO> refuseRide(@PathVariable Long passengerId, Long rideId) {
-        return new ResponseEntity<>(ridePassengerService.refuseRide(passengerId, rideId), HttpStatus.OK);
+        return new ResponseEntity<>(ridePassengerService.cancelRide(passengerId, rideId), HttpStatus.OK);
     }
 }

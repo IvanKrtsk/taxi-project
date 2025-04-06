@@ -6,6 +6,9 @@ import by.ikrotsyuk.bsuir.ridesservice.dto.RideResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.entity.RideEntity;
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypesRides;
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypesRides;
+import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotBelongToPassengerException;
+import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotFoundByIdException;
+import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RidesNotFoundException;
 import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
 import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
 import by.ikrotsyuk.bsuir.ridesservice.service.RidePassengerService;
@@ -39,7 +42,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
                 findAllByPassengerId(passengerId, PageRequest.of(offset, itemCount,
                         SortTool.getSort(field, isSortDirectionAsc)));
         if(!rideEntities.hasContent())
-            throw new RuntimeException("ex");
+            throw new RidesNotFoundException();
         return rideEntities.map(rideMapper::toFullDTO);
     }
 
@@ -60,19 +63,19 @@ public class RidePassengerServiceImpl implements RidePassengerService {
     @Transactional(readOnly = true)
     public RideFullResponseDTO getRideInfo(Long passengerId, Long rideId) {
         RideEntity rideEntity = rideRepository.findById(rideId)
-                .orElseThrow(() -> new RuntimeException("ex"));
+                .orElseThrow(() -> new RideNotFoundByIdException(rideId));
         if(!rideEntity.getPassengerId().equals(passengerId))
-            throw new RuntimeException("ex");
+            throw new RideNotBelongToPassengerException(rideId, passengerId);
         return rideMapper.toFullDTO(rideEntity);
     }
 
     @Override
     @Transactional
-    public RideFullResponseDTO refuseRide(Long passengerId, Long rideId) {
+    public RideFullResponseDTO cancelRide(Long passengerId, Long rideId) {
         RideEntity rideEntity = rideRepository.findById(rideId)
-                .orElseThrow(() -> new RuntimeException("ex"));
+                .orElseThrow(() -> new RideNotFoundByIdException(rideId));
         if(!rideEntity.getPassengerId().equals(passengerId))
-            throw new RuntimeException("ex");
+            throw new RideNotBelongToPassengerException(rideId, passengerId);
         rideEntity.setRideStatus(RideStatusTypesRides.CANCELED);
         return rideMapper.toFullDTO(rideEntity);
     }

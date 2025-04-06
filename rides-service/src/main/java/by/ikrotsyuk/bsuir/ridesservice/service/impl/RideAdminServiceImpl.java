@@ -3,6 +3,8 @@ package by.ikrotsyuk.bsuir.ridesservice.service.impl;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullRequestDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.entity.RideEntity;
+import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotFoundByIdException;
+import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RidesNotFoundException;
 import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
 import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
 import by.ikrotsyuk.bsuir.ridesservice.service.RideAdminService;
@@ -23,7 +25,7 @@ public class RideAdminServiceImpl implements RideAdminService {
     @Transactional
     public RideFullResponseDTO editRide(Long rideId, RideFullRequestDTO rideFullRequestDTO) {
         RideEntity rideEntity = rideRepository.findById(rideId)
-                .orElseThrow(() -> new RuntimeException("ex"));
+                .orElseThrow(() -> new RideNotFoundByIdException(rideId));
         rideEntity.setStartLocation(rideFullRequestDTO.startLocation());
         rideEntity.setEndLocation(rideFullRequestDTO.endLocation());
         rideEntity.setCost(rideFullRequestDTO.cost());
@@ -39,7 +41,7 @@ public class RideAdminServiceImpl implements RideAdminService {
     @Transactional
     public RideFullResponseDTO deleteRide(Long rideId) {
         RideEntity rideEntity = rideRepository.findById(rideId)
-                .orElseThrow(() -> new RuntimeException("ex"));
+                .orElseThrow(() -> new RideNotFoundByIdException(rideId));
         rideRepository.deleteById(rideId);
         return rideMapper.toFullDTO(rideEntity);
     }
@@ -52,7 +54,7 @@ public class RideAdminServiceImpl implements RideAdminService {
                         SortTool.getSort(field, isSortDirectionAsc))
         );
         if(!rideEntities.hasContent())
-            throw new RuntimeException("ex");
+            throw new RidesNotFoundException();
         return rideEntities.map(rideMapper::toFullDTO);
     }
 
@@ -60,6 +62,6 @@ public class RideAdminServiceImpl implements RideAdminService {
     @Transactional(readOnly = true)
     public RideFullResponseDTO getRideById(Long rideId) {
         return rideMapper.toFullDTO(rideRepository.findById(rideId)
-                .orElseThrow(() -> new RuntimeException("ex")));
+                .orElseThrow(() -> new RideNotFoundByIdException(rideId)));
     }
 }
