@@ -21,7 +21,7 @@ public class RatingAdminController implements RatingAdminOperations {
 
     @Override
     @GetMapping
-    public ResponseEntity<RatingResponseDTO> getRatingById(Long id) {
+    public ResponseEntity<RatingResponseDTO> getRatingById(String id) {
         return new ResponseEntity<>(ratingAdminService.getRatingById(id), HttpStatus.OK);
     }
 
@@ -33,13 +33,13 @@ public class RatingAdminController implements RatingAdminOperations {
 
     @Override
     @PatchMapping
-    public ResponseEntity<RatingResponseDTO> editRating(Long id, @Valid @RequestBody RatingRequestDTO requestDTO) {
+    public ResponseEntity<RatingResponseDTO> editRating(String id, @Valid @RequestBody RatingRequestDTO requestDTO) {
         return new ResponseEntity<>(ratingAdminService.editRating(id, requestDTO), HttpStatus.OK);
     }
 
     @Override
     @DeleteMapping
-    public ResponseEntity<RatingResponseDTO> deleteRating(Long id) {
+    public ResponseEntity<RatingResponseDTO> deleteRating(String id) {
         return new ResponseEntity<>(ratingAdminService.deleteRating(id), HttpStatus.OK);
     }
 }
