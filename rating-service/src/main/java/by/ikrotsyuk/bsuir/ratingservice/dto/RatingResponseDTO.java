@@ -8,14 +8,8 @@ public record RatingResponseDTO(
         @Schema(description = "review id")
         ObjectId id,
 
-        @Schema(description = "id of the rated trip")
-        Long rideId,
-
-        @Schema(description = "passenger ig")
-        Long passengerId,
-
-        @Schema(description = "driver id")
-        Long driverId,
+        @Schema(description = "reviewer id")
+        Long reviewerId,
 
         @Schema(description = "who left the review")
         ReviewerTypesRating reviewer,
