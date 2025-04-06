@@ -3,7 +3,6 @@ package by.ikrotsyuk.bsuir.ratingservice.entity;
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypesRating;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.bson.types.ObjectId;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,7 +17,7 @@ import java.time.OffsetDateTime;
 @Builder
 public class RatingEntity {
     @Id
-    private ObjectId id;
+    private Long id;
     private Long rideId;
     private Long reviewerId;
     private ReviewerTypesRating reviewer;
