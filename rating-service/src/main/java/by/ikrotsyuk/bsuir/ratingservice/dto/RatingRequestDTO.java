@@ -18,7 +18,7 @@ public record RatingRequestDTO(
 
         @Schema(description = "who left the review")
         @NotNull
-        ReviewerTypesRating reviewer,
+        ReviewerTypesRating reviewerType,
 
         @Schema(description = "rating")
         @NotNull

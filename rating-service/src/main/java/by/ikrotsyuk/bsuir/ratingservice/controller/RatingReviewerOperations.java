@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface RatingReviewerOperations {
     ResponseEntity<RatingResponseDTO> leaveReview(@Valid @RequestBody RatingRequestDTO ratingRequestDTO);
     ResponseEntity<Page<RatingResponseDTO>> viewLeavedReviews(@PathVariable Long reviewerId, @RequestParam ReviewerTypesRating reviewerType, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
-    ResponseEntity<RatingResponseDTO> getReviewById(@RequestParam Long reviewId);
+    ResponseEntity<RatingResponseDTO> getReviewById(@RequestParam String reviewId);
 }
