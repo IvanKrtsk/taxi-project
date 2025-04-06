@@ -35,12 +35,6 @@ public record RideFullRequestDTO(
         @NotNull
         CarClassTypes carClass,
 
-        @Schema(description = "trip rating")
-        @NotNull
-        @DecimalMin("0.0")
-        @DecimalMax("10.0")
-        Double rating,
-
         @Schema(description = "estimated waiting time")
         @NotNull
         @Max(1000)

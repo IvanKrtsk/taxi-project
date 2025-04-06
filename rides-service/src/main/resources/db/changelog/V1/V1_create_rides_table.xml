@@ -54,7 +54,6 @@
             <column name="car_class" type="car_class_types_1">
                 <constraints nullable="false"/>
             </column>
-            <column name="rating" type="float"/>
             <column name="booked_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="estimated_waiting_time" type="int">
                 <constraints nullable="false"/>

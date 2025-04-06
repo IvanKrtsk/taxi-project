@@ -32,9 +32,6 @@ public record RideFullResponseDTO(
         @Schema(description = "payment type")
         PaymentTypeTypes paymentType,
 
-        @Schema(description = "trip rating")
-        Double rating,
-
         @Schema(description = "taxi call time")
         OffsetDateTime bookedAt,
 

@@ -38,7 +38,6 @@ public class RideEntity {
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
     private CarClassTypes carClass;
-    private Double rating;
     @CreationTimestamp
     private OffsetDateTime bookedAt;
     private Integer estimatedWaitingTime;
