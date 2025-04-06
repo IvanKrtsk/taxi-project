@@ -46,12 +46,9 @@ public class RatingReviewerServiceImpl implements RatingReviewerService {
 
     @Override
     public RatingResponseDTO getReviewById(String reviewId) {
-        if (!ObjectId.isValid(reviewId)) {
+        if (!ObjectId.isValid(reviewId))
             throw new RuntimeException("ex");
-        }
-        ObjectId objectId = new ObjectId(reviewId);
-
-        RatingEntity ratingEntity = ratingRepository.findById(objectId)
+        RatingEntity ratingEntity = ratingRepository.findById(new ObjectId(reviewId))
                 .orElseThrow(() -> new RuntimeException("ex"));
 
         return ratingMapper.toDTO(ratingEntity);

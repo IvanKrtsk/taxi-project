@@ -1,5 +1,6 @@
 package by.ikrotsyuk.bsuir.ratingservice.mapper;
 
+import by.ikrotsyuk.bsuir.ratingservice.dto.RatingAdminResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
@@ -10,4 +11,6 @@ public interface RatingMapper {
     RatingEntity toEntity(RatingRequestDTO requestDTO);
 
     RatingResponseDTO toDTO(RatingEntity ratingEntity);
+
+    RatingAdminResponseDTO toAdminDTO(RatingEntity ratingEntity);
 }
