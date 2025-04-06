@@ -43,13 +43,13 @@ spring:
 springdoc:
   api-docs:
     enabled: true
-    path: /v3/api-docs
+    path: /api/v1/v3/api-docs
   swagger-ui:
     enabled: true
     config-url: /v3/api-docs/swagger-config
     urls:
       - name: api-gateway
-        url: /v3/api-docs
+        url: /api/v1/v3/api-docs
       - name: driver-service
         url: /api/v1/drivers/v3/api-docs
       - name: passenger-service
