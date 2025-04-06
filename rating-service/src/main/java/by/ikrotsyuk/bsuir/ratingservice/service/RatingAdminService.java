@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 
 public interface RatingAdminService {
     RatingResponseDTO getRatingById(Long id);
-    Page<RatingResponseDTO> getAllRatings();
+    Page<RatingResponseDTO> getAllRatings(int offset, int itemCount, String field, Boolean isSortDirectionAsc);
     RatingResponseDTO editRating(Long id, RatingRequestDTO requestDTO);
     RatingResponseDTO deleteRating(Long id);
 }

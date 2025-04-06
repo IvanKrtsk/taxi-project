@@ -15,7 +15,7 @@ public class RatingAdminServiceImpl implements RatingAdminService {
     }
 
     @Override
-    public Page<RatingResponseDTO> getAllRatings() {
+    public Page<RatingResponseDTO> getAllRatings(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return null;
     }
 

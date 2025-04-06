@@ -7,5 +7,6 @@ import org.springframework.data.domain.Page;
 
 public interface RatingReviewerService {
     RatingResponseDTO leaveReview(RatingRequestDTO ratingRequestDTO);
-    Page<RatingResponseDTO> viewLeavedReviews(Long reviewerId, ReviewerTypesRating reviewerType);
+    Page<RatingResponseDTO> viewLeavedReviews(Long reviewerId, ReviewerTypesRating reviewerType, int offset, int itemCount, String field, Boolean isSortDirectionAsc);
+    RatingResponseDTO getReviewById(Long reviewId);
 }
