@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.driverservice.dto;
 
-import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypes;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypesDriver;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record DriverResponseDTO (
@@ -26,5 +26,5 @@ public record DriverResponseDTO (
     Boolean isDeleted,
 
     @Schema(description = "driver status")
-    StatusTypes status
+    StatusTypesDriver status
 ){}

@@ -4,7 +4,7 @@ import by.ikrotsyuk.bsuir.driverservice.dto.VehicleRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
-import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypesDriver;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.DriverCurrentVehicleNotFoundException;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.DriverNotFoundByIdException;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.DriverVehiclesNotFoundException;
@@ -41,7 +41,7 @@ public class VehicleServiceImpl implements VehicleService {
      */
     @PostConstruct
     public void init(){
-        for(CarClassTypes carClass : CarClassTypes.values())
+        for(CarClassTypesDriver carClass : CarClassTypesDriver.values())
             carClassSet.add(carClass.name());
     }
 
@@ -56,9 +56,9 @@ public class VehicleServiceImpl implements VehicleService {
 
         vehicleServiceValidationManager.checkLicensePlateIsUnique(vehicleRequestDTO.licensePlate());
 
-        CarClassTypes type = vehicleRequestDTO.carClass();
+        CarClassTypesDriver type = vehicleRequestDTO.carClass();
         if(!checkCarClassValid(type))
-            vehicleRequestDTO = new VehicleRequestDTO(vehicleRequestDTO.brand(), vehicleRequestDTO.model(), CarClassTypes.ECONOMY, vehicleRequestDTO.year(), vehicleRequestDTO.licensePlate(), vehicleRequestDTO.color());
+            vehicleRequestDTO = new VehicleRequestDTO(vehicleRequestDTO.brand(), vehicleRequestDTO.model(), CarClassTypesDriver.ECONOMY, vehicleRequestDTO.year(), vehicleRequestDTO.licensePlate(), vehicleRequestDTO.color());
 
         Optional<List<VehicleEntity>> optionalVehicleEntityList = vehicleRepository.findAllByDriverId(driverId);
         optionalVehicleEntityList.ifPresent(vehicleEntityList -> vehicleEntityList.forEach(vehicle ->
@@ -84,9 +84,9 @@ public class VehicleServiceImpl implements VehicleService {
 
         vehicleEntity.setBrand(vehicleRequestDTO.brand());
         vehicleEntity.setModel(vehicleRequestDTO.model());
-        CarClassTypes type = vehicleRequestDTO.carClass();
+        CarClassTypesDriver type = vehicleRequestDTO.carClass();
         if(!checkCarClassValid(type))
-            type = CarClassTypes.ECONOMY;
+            type = CarClassTypesDriver.ECONOMY;
         vehicleEntity.setCarClass(type);
         vehicleEntity.setYear(vehicleRequestDTO.year());
         vehicleEntity.setLicensePlate(vehicleRequestDTO.licensePlate());
@@ -132,7 +132,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+    public Page<VehicleResponseDTO> getAllVehiclesByType(CarClassTypesDriver type, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByCarClass(type,
                 PageRequest.of(offset, itemCount,
                         getSort(isSortDirectionAsc, field)));
@@ -183,7 +183,7 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleResponseDTO;
     }
 
-    private boolean checkCarClassValid(CarClassTypes type){
+    private boolean checkCarClassValid(CarClassTypesDriver type){
         return carClassSet.contains(type.name());
     }
 

@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.driverservice.entity;
 
-import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypesDriver;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,7 +26,7 @@ public class VehicleEntity {
     private String model;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private CarClassTypes carClass;
+    private CarClassTypesDriver carClass;
     private Long ridesCount;
     private Integer year;
     @Column(unique = true)

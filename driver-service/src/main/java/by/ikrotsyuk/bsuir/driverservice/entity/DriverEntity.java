@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.driverservice.entity;
 
-import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypes;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypesDriver;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,7 +32,7 @@ public class DriverEntity {
     private Boolean isDeleted;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private StatusTypes status;
+    private StatusTypesDriver status;
     @CreationTimestamp
     private OffsetDateTime createdAt;
     @UpdateTimestamp

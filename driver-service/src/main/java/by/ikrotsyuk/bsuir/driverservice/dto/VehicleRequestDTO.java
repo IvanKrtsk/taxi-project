@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.driverservice.dto;
 
-import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypesDriver;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,7 +23,7 @@ public record VehicleRequestDTO(
     @Schema(description = "driver's car class")
     @Enumerated(EnumType.STRING)
     @NotNull
-    CarClassTypes carClass,
+    CarClassTypesDriver carClass,
 
     @Schema(description = "date of manufacture of the car")
     @Max(2030)
