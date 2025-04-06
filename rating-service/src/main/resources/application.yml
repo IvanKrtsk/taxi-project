@@ -4,15 +4,6 @@ server:
 spring:
   application:
     name: rating-service
-  # postgresql database configuration
-  datasource:
-    url: jdbc:postgresql://localhost:5432/taxi_db
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-  jpa:
-    show-sql: true
-    open-in-view: false
   # liquibase configuration
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
@@ -25,7 +16,7 @@ spring:
 springdoc:
   api-docs:
     enabled: true
-    path: /rating/v3/api-docs
+    path: /api/v1/rating/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /rating/swagger-ui.html
+    path: /api/v1/rating/swagger-ui.html
