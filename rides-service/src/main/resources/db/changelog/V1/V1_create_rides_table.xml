@@ -8,21 +8,21 @@
     <changeSet id="rides-1" author="ikrtsk">
         <comment>Create ride status types</comment>
         <sql>
-            CREATE TYPE ride_status_types_rides AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELED');
+            CREATE TYPE ride_status_types AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELED');
         </sql>
     </changeSet>
 
     <changeSet id="rides-2" author="ikrtsk">
         <comment>Create payment type types</comment>
         <sql>
-            CREATE TYPE payment_type_types_rides AS ENUM ('CASH', 'CARD');
+            CREATE TYPE payment_type_types AS ENUM ('CASH', 'CARD');
         </sql>
     </changeSet>
 
     <changeSet id="rides-3" author="ikrtsk">
         <comment>Create car class type</comment>
         <sql>
-            CREATE TYPE car_class_types_rides AS ENUM('ECONOMY', 'COMFORT', 'COMFORT_PLUS', 'BUSINESS', 'ELECTRIC', 'TRUCK', 'ULTIMA', 'DELIVERY');
+            CREATE TYPE car_class_types_1 AS ENUM('ECONOMY', 'COMFORT', 'COMFORT_PLUS', 'BUSINESS', 'ELECTRIC', 'TRUCK', 'ULTIMA', 'DELIVERY');
         </sql>
     </changeSet>
 
