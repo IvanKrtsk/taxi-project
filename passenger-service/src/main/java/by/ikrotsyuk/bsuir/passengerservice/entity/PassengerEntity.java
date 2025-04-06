@@ -1,7 +1,7 @@
 package by.ikrotsyuk.bsuir.passengerservice.entity;
 
-import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypes;
-import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.StatusTypes;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypesPassenger;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.StatusTypesPassenger;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,10 +33,10 @@ public class PassengerEntity {
     private Boolean isDeleted;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private StatusTypes status;
+    private StatusTypesPassenger status;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private PaymentTypeTypes paymentType;
+    private PaymentTypeTypesPassenger paymentType;
     @CreationTimestamp
     private OffsetDateTime createdAt;
     @UpdateTimestamp

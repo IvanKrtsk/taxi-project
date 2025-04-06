@@ -3,8 +3,8 @@ package by.ikrotsyuk.bsuir.passengerservice.service.impl;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
 import by.ikrotsyuk.bsuir.passengerservice.entity.PassengerEntity;
-import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypes;
-import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.StatusTypes;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypesPassenger;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.StatusTypesPassenger;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.*;
 import by.ikrotsyuk.bsuir.passengerservice.mapper.PassengerMapper;
 import by.ikrotsyuk.bsuir.passengerservice.repository.PassengerRepository;
@@ -113,8 +113,8 @@ public class PassengerServiceImpl implements PassengerService {
                     .rating(0.0)
                     .totalRides(0L)
                     .isDeleted(false)
-                    .status(StatusTypes.AVAILABLE)
-                    .paymentType(PaymentTypeTypes.CASH)
+                    .status(StatusTypesPassenger.AVAILABLE)
+                    .paymentType(PaymentTypeTypesPassenger.CASH)
                     .build()));
         }
     }
@@ -137,11 +137,11 @@ public class PassengerServiceImpl implements PassengerService {
         PassengerEntity passengerEntity = passengerRepository.findById(id)
                 .orElseThrow(() -> new PassengerNotFoundByIdException(id));
 
-        PaymentTypeTypes type;
-        if(PaymentTypeTypes.CARD.name().equals(paymentType))
-            type = PaymentTypeTypes.CARD;
+        PaymentTypeTypesPassenger type;
+        if(PaymentTypeTypesPassenger.CARD.name().equals(paymentType))
+            type = PaymentTypeTypesPassenger.CARD;
         else
-            type = PaymentTypeTypes.CASH;
+            type = PaymentTypeTypesPassenger.CASH;
 
         passengerEntity.setPaymentType(type);
         return passengerMapper.toDTO(passengerEntity);

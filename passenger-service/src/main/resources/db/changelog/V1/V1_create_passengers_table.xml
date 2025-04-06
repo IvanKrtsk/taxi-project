@@ -8,14 +8,14 @@
     <changeSet id="passenger-1" author="ikrtsk">
         <comment>Create status types</comment>
         <sql>
-            CREATE TYPE status_types AS ENUM('AVAILABLE', 'IN_RIDE');
+            CREATE TYPE status_types_passenger AS ENUM('AVAILABLE', 'IN_RIDE');
         </sql>
     </changeSet>
 
     <changeSet id="passenger-2" author="ikrtsk">
         <comment>Create payment types</comment>
         <sql>
-            CREATE TYPE payment_type_types AS ENUM('CASH', 'CARD');
+            CREATE TYPE payment_type_types_passenger AS ENUM('CASH', 'CARD');
         </sql>
     </changeSet>
 
@@ -37,10 +37,10 @@
             <column name="rating" type="float" defaultValue="0.0"/>
             <column name="total_rides" type="bigint" defaultValue="0"/>
             <column name="is_deleted" type="boolean" defaultValue="false"/>
-            <column name="status" type="status_types">
+            <column name="status" type="status_types_passenger">
                 <constraints nullable="false"/>
             </column>
-            <column name="payment_type" type="payment_type_types">
+            <column name="payment_type" type="payment_type_types_passenger">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>

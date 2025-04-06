@@ -3,7 +3,6 @@ package by.ikrotsyuk.bsuir.passengerservice.controller.impl;
 import by.ikrotsyuk.bsuir.passengerservice.controller.PassengerOperations;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
-import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypes;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
