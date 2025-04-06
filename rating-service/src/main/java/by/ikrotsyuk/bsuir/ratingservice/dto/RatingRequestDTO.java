@@ -12,7 +12,7 @@ public record RatingRequestDTO(
         @NotNull
         Long rideId,
 
-        @Schema(description = "reviewer ig")
+        @Schema(description = "reviewer id")
         @NotNull
         Long reviewerId,
 
