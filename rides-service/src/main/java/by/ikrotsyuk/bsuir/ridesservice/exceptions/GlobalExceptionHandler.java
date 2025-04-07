@@ -1,7 +1,5 @@
 package by.ikrotsyuk.bsuir.ridesservice.exceptions;
 
-import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullRequestDTO;
-import by.ikrotsyuk.bsuir.ridesservice.dto.RideRequestDTO;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.dto.ExceptionDTO;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.*;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.keys.GeneralExceptionMessageKeys;
