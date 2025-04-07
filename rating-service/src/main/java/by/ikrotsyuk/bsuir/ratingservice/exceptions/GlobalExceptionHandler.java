@@ -11,6 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,7 +30,7 @@ public class GlobalExceptionHandler {
     private final MessageSource messageSource;
     private final String DTO_PACKAGE_PATH = "by.ikrotsyuk.bsuir.ratingservice.dto.";
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
@@ -62,6 +63,38 @@ public class GlobalExceptionHandler {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        Throwable cause = ex.getCause();
+        if (cause instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException) {
+            com.fasterxml.jackson.databind.exc.InvalidFormatException invalidFormatException =
+                    (com.fasterxml.jackson.databind.exc.InvalidFormatException) cause;
+
+            Class<?> targetType = invalidFormatException.getTargetType();
+            if (targetType.isEnum()) {
+                Object[] enumValues = targetType.getEnumConstants();
+                String possibleValues = Arrays.toString(enumValues);
+
+                String fieldName = invalidFormatException.getPath().get(0).getFieldName();
+                String rejectedValue = invalidFormatException.getValue().toString();
+
+                String errorMessage = messageSource.getMessage(GeneralExceptionMessageKeys.ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
+                        new Object[]{fieldName, rejectedValue, possibleValues},
+                        LocaleContextHolder.getLocale());
+
+                errors.put(fieldName, errorMessage);
+            } else {
+                errors.put("error", "Field deserialization error");
+            }
+        } else {
+            errors.put("error", "Json reading error");
+        }
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
 
     private String capitalize(String name) {
         return name.substring(0, 1).toUpperCase() + name.substring(1);
