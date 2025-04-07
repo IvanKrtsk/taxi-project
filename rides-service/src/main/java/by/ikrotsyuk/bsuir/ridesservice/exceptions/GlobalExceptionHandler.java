@@ -1,5 +1,7 @@
 package by.ikrotsyuk.bsuir.ridesservice.exceptions;
 
+import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullRequestDTO;
+import by.ikrotsyuk.bsuir.ridesservice.dto.RideRequestDTO;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.dto.ExceptionDTO;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.*;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.keys.GeneralExceptionMessageKeys;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,17 +27,47 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     private final MessageSource messageSource;
+    private final String DTO_PACKAGE_PATH = "by.ikrotsyuk.bsuir.ridesservice.dto.";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            if (error instanceof FieldError) {
+                FieldError fieldError = (FieldError) error;
+                String fieldName = fieldError.getField();
+                Object rejectedValue = fieldError.getRejectedValue();
+                String errorMessage;
+                try {
+                    String fullQualifiedName = DTO_PACKAGE_PATH + capitalize(fieldError.getObjectName());
+
+                    Class<?> dtoClass = Class.forName(fullQualifiedName);
+                    Field field = dtoClass.getDeclaredField(fieldName);
+                    Class<?> fieldType = field.getType();
+
+                    if (fieldType.isEnum()) {
+                        Object[] enumValues = fieldType.getEnumConstants();
+                        String possibleValues = Arrays.toString(enumValues);
+                        errorMessage = messageSource.getMessage(GeneralExceptionMessageKeys.ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
+                                new Object[]{fieldName, rejectedValue, possibleValues},
+                                LocaleContextHolder.getLocale());
+                    } else {
+                        errorMessage = fieldError.getDefaultMessage();
+                    }
+                } catch (ClassNotFoundException | NoSuchFieldException e) {
+                    errorMessage = String.format("Error while deserializing field %s!", fieldError.getObjectName());
+                }
+                errors.put(fieldName, errorMessage);
+            }
         });
+
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    private String capitalize(String name) {
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
+
 
     @ExceptionHandler({AvailableRidesNotFoundException.class, CurrentRideNotFoundException.class, RideNotFoundByIdException.class, RidesNotFoundException.class})
     public ResponseEntity<ExceptionDTO> handleRideNotFoundException(ExceptionTemplate ex){
