@@ -1,7 +1,10 @@
 package by.ikrotsyuk.bsuir.ratingservice.exceptions;
 
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.dto.ExceptionDTO;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.template.ExceptionTemplate;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.dto.ExceptionDTO;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.template.ExceptionTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -32,7 +35,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({AvailableRidesNotFoundException.class, CurrentRideNotFoundException.class, RideNotFoundByIdException.class, RidesNotFoundException.class})
+    @ExceptionHandler({ReviewNotFoundByIdException.class, ReviewsNotFoundException.class})
     public ResponseEntity<ExceptionDTO> handleRideNotFoundException(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
@@ -40,7 +43,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({RideAlreadyAcceptedByAnotherDriverException.class, RideAlreadyAcceptedByYouException.class, RideNotBelongToDriverException.class, RideNotBelongToPassengerException.class})
+    @ExceptionHandler({IdIsNotValidException.class})
     public ResponseEntity<ExceptionDTO> handlePassengerWithSameEmailAlreadyExistsException(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
