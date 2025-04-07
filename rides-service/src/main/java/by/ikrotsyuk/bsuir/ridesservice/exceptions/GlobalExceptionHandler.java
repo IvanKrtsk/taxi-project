@@ -4,11 +4,13 @@ import by.ikrotsyuk.bsuir.ridesservice.exceptions.dto.ExceptionDTO;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.*;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.keys.GeneralExceptionMessageKeys;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.template.ExceptionTemplate;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,7 +29,7 @@ public class GlobalExceptionHandler {
     private final MessageSource messageSource;
     private final String DTO_PACKAGE_PATH = "by.ikrotsyuk.bsuir.ridesservice.dto.";
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
@@ -53,14 +55,42 @@ public class GlobalExceptionHandler {
                         errorMessage = fieldError.getDefaultMessage();
                     }
                 } catch (ClassNotFoundException | NoSuchFieldException e) {
-                    errorMessage = String.format("Error while deserializing field %s!", fieldError.getObjectName());
+                    errorMessage = String.format("Error while deserializing field: %s!", fieldError.getObjectName());
                 }
                 errors.put(fieldName, errorMessage);
             }
         });
-
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        String rejectedValue;
+        Throwable cause = ex.getCause();
+        if (cause instanceof InvalidFormatException invalidFormatException) {
+            Class<?> targetType = invalidFormatException.getTargetType();
+            rejectedValue = invalidFormatException.getValue().toString();
+            String fieldName = invalidFormatException.getPath().get(0).getFieldName();
+            if (targetType.isEnum()) {
+                Object[] enumValues = targetType.getEnumConstants();
+                String possibleValues = Arrays.toString(enumValues);
+
+                String errorMessage = messageSource.getMessage(GeneralExceptionMessageKeys.ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
+                        new Object[]{fieldName, rejectedValue, possibleValues},
+                        LocaleContextHolder.getLocale());
+
+                errors.put(fieldName, errorMessage);
+            } else {
+                errors.put(fieldName, String.format("Error while deserializing value: %s!", rejectedValue));
+            }
+        } else {
+            errors.put("error", ex.getMessage());
+        }
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
 
     private String capitalize(String name) {
         return name.substring(0, 1).toUpperCase() + name.substring(1);
