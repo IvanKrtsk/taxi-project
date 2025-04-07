@@ -4,6 +4,9 @@ import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypesRating;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
 import by.ikrotsyuk.bsuir.ratingservice.mapper.RatingMapper;
 import by.ikrotsyuk.bsuir.ratingservice.repository.RatingRepository;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingReviewerService;
@@ -40,16 +43,16 @@ public class RatingReviewerServiceImpl implements RatingReviewerService {
                         PageRequest.of(offset, itemCount,
                                 SortTool.getSort(field, isSortDirectionAsc)));
         if(!ratingEntities.hasContent())
-            throw new RuntimeException("ex");
+            throw new ReviewsNotFoundException();
         return ratingEntities.map(ratingMapper::toDTO);
     }
 
     @Override
     public RatingResponseDTO getReviewById(String reviewId) {
         if (!ObjectId.isValid(reviewId))
-            throw new RuntimeException("ex");
+            throw new IdIsNotValidException(reviewId);
         RatingEntity ratingEntity = ratingRepository.findById(new ObjectId(reviewId))
-                .orElseThrow(() -> new RuntimeException("ex"));
+                .orElseThrow(() -> new ReviewNotFoundByIdException(reviewId));
 
         return ratingMapper.toDTO(ratingEntity);
     }

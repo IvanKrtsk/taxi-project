@@ -4,6 +4,9 @@ import by.ikrotsyuk.bsuir.ratingservice.dto.RatingAdminResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
 import by.ikrotsyuk.bsuir.ratingservice.mapper.RatingMapper;
 import by.ikrotsyuk.bsuir.ratingservice.repository.RatingRepository;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingAdminService;
@@ -26,10 +29,10 @@ public class RatingAdminServiceImpl implements RatingAdminService {
     @Override
     public RatingAdminResponseDTO getReviewById(String reviewId) {
         if (!ObjectId.isValid(reviewId))
-            throw new RuntimeException("ex");
+            throw new IdIsNotValidException(reviewId);
 
         RatingEntity ratingEntity = ratingRepository.findById(new ObjectId(reviewId))
-                .orElseThrow(() -> new RuntimeException("ex"));
+                .orElseThrow(() -> new ReviewNotFoundByIdException(reviewId));
 
         return ratingMapper.toAdminDTO(ratingEntity);
     }
@@ -40,17 +43,17 @@ public class RatingAdminServiceImpl implements RatingAdminService {
                 .findAll(PageRequest.of(offset, itemCount,
                                 SortTool.getSort(field, isSortDirectionAsc)));
         if(!ratingEntities.hasContent())
-            throw new RuntimeException("ex");
+            throw new ReviewsNotFoundException();
         return ratingEntities.map(ratingMapper::toAdminDTO);
     }
 
     @Override
     public RatingAdminResponseDTO editReview(String reviewId, RatingRequestDTO requestDTO) {
         if (!ObjectId.isValid(reviewId))
-            throw new RuntimeException("ex");
+            throw new IdIsNotValidException(reviewId);
 
         RatingEntity ratingEntity = ratingRepository.findById(new ObjectId(reviewId))
-                .orElseThrow(() -> new RuntimeException("ex"));
+                .orElseThrow(() -> new ReviewNotFoundByIdException(reviewId));
 
         ratingEntity.setRideId(requestDTO.rideId());
         ratingEntity.setReviewerId(requestDTO.reviewerId());
@@ -66,10 +69,10 @@ public class RatingAdminServiceImpl implements RatingAdminService {
     @Override
     public RatingAdminResponseDTO deleteReview(String reviewId) {
         if (!ObjectId.isValid(reviewId))
-            throw new RuntimeException("ex");
+            throw new IdIsNotValidException(reviewId);
 
         RatingEntity ratingEntity = ratingRepository.findById(new ObjectId(reviewId))
-                .orElseThrow(() -> new RuntimeException("ex"));
+                .orElseThrow(() -> new ReviewNotFoundByIdException(reviewId));
 
         RatingAdminResponseDTO ratingResponseDTO = ratingMapper.toAdminDTO(ratingEntity);
 
