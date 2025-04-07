@@ -6,6 +6,7 @@ import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundById
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.keys.GeneralExceptionMessageKeys;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.template.ExceptionTemplate;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -56,7 +57,7 @@ public class GlobalExceptionHandler {
                         errorMessage = fieldError.getDefaultMessage();
                     }
                 } catch (ClassNotFoundException | NoSuchFieldException e) {
-                    errorMessage = String.format("Error while deserializing field %s!", fieldError.getObjectName());
+                    errorMessage = String.format("Error while deserializing field: %s!", fieldError.getObjectName());
                 }
                 errors.put(fieldName, errorMessage);
             }
@@ -68,18 +69,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         Map<String, String> errors = new HashMap<>();
 
+        String rejectedValue;
         Throwable cause = ex.getCause();
-        if (cause instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException) {
-            com.fasterxml.jackson.databind.exc.InvalidFormatException invalidFormatException =
-                    (com.fasterxml.jackson.databind.exc.InvalidFormatException) cause;
-
+        if (cause instanceof InvalidFormatException invalidFormatException) {
             Class<?> targetType = invalidFormatException.getTargetType();
+            rejectedValue = invalidFormatException.getValue().toString();
+            String fieldName = invalidFormatException.getPath().get(0).getFieldName();
             if (targetType.isEnum()) {
                 Object[] enumValues = targetType.getEnumConstants();
                 String possibleValues = Arrays.toString(enumValues);
-
-                String fieldName = invalidFormatException.getPath().get(0).getFieldName();
-                String rejectedValue = invalidFormatException.getValue().toString();
 
                 String errorMessage = messageSource.getMessage(GeneralExceptionMessageKeys.ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
                         new Object[]{fieldName, rejectedValue, possibleValues},
@@ -87,10 +85,10 @@ public class GlobalExceptionHandler {
 
                 errors.put(fieldName, errorMessage);
             } else {
-                errors.put("error", "Field deserialization error");
+                errors.put(fieldName, String.format("Error while deserializing value: %s!", rejectedValue));
             }
         } else {
-            errors.put("error", "Json reading error");
+            errors.put("error", ex.getMessage());
         }
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
