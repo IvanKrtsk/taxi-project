@@ -2,7 +2,6 @@ package by.ikrotsyuk.bsuir.ratingservice.service.impl;
 
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingAdminResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
-import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
@@ -10,7 +9,7 @@ import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundExc
 import by.ikrotsyuk.bsuir.ratingservice.mapper.RatingMapper;
 import by.ikrotsyuk.bsuir.ratingservice.repository.RatingRepository;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingAdminService;
-import by.ikrotsyuk.bsuir.ratingservice.service.tools.SortTool;
+import by.ikrotsyuk.bsuir.ratingservice.service.tools.PaginationTool;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
@@ -25,6 +24,7 @@ import java.util.Date;
 public class RatingAdminServiceImpl implements RatingAdminService {
     private final RatingMapper ratingMapper;
     private final RatingRepository ratingRepository;
+    private final PaginationTool paginationTool;
 
     @Override
     public RatingAdminResponseDTO getReviewById(String reviewId) {
@@ -40,8 +40,7 @@ public class RatingAdminServiceImpl implements RatingAdminService {
     @Override
     public Page<RatingAdminResponseDTO> getAllReviews(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<RatingEntity> ratingEntities = ratingRepository
-                .findAll(PageRequest.of(offset, itemCount,
-                                SortTool.getSort(field, isSortDirectionAsc)));
+                .findAll(paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
         if(!ratingEntities.hasContent())
             throw new ReviewsNotFoundException();
         return ratingEntities.map(ratingMapper::toAdminDTO);

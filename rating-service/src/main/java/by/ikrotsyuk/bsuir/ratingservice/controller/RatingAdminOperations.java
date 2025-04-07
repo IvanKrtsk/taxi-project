@@ -2,7 +2,6 @@ package by.ikrotsyuk.bsuir.ratingservice.controller;
 
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingAdminResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
-import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
