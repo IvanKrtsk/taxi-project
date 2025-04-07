@@ -8,10 +8,9 @@ import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.*;
 import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
 import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
 import by.ikrotsyuk.bsuir.ridesservice.service.RideDriverService;
-import by.ikrotsyuk.bsuir.ridesservice.service.tools.SortTool;
+import by.ikrotsyuk.bsuir.ridesservice.service.tools.PaginationTool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +23,14 @@ import java.util.Random;
 public class RideDriverServiceImpl implements RideDriverService {
     private final RideMapper rideMapper;
     private final RideRepository rideRepository;
+    private final PaginationTool paginationTool;
 
     @Override
     @Transactional(readOnly = true)
     public Page<RideResponseDTO> getAvailableRides(Long driverId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         // get drivers car class
         Page<RideEntity> rideEntities = rideRepository.findAllByRideStatus(RideStatusTypesRides.PENDING,
-                PageRequest.of(offset, itemCount,
-                        SortTool.getSort(field, isSortDirectionAsc)));
+                paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
         if(!rideEntities.hasContent())
             throw new AvailableRidesNotFoundException(driverId);
         return rideEntities.map(rideMapper::toDTO);
@@ -99,9 +98,7 @@ public class RideDriverServiceImpl implements RideDriverService {
     @Override
     @Transactional(readOnly = true)
     public Page<RideFullResponseDTO> getRidesHistory(Long driverId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
-        Page<RideEntity> rideEntities = rideRepository.findAllByDriverId(driverId,
-                PageRequest.of(offset, itemCount,
-                        SortTool.getSort(field, isSortDirectionAsc)));
+        Page<RideEntity> rideEntities = rideRepository.findAllByDriverId(driverId, paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
         if(!rideEntities.hasContent())
             throw new RidesNotFoundException();
         return rideEntities.map(rideMapper::toFullDTO);
