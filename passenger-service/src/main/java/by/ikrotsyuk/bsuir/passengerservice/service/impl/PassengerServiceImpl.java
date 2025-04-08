@@ -109,7 +109,7 @@ public class PassengerServiceImpl implements PassengerService {
             passengerServiceValidationManagerImpl.checkEmailIsUnique(email);
             passengerServiceValidationManagerImpl.checkPhoneIsUnique(phone);
             return passengerMapper.toDTO(passengerRepository.save(PassengerEntity.builder()
-                    .name("not specified")
+                    .name(passengerRequestDTO.name())
                     .email(email)
                     .phone(phone)
                     .rating(0.0)
