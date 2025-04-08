@@ -2,6 +2,7 @@ package by.ikrotsyuk.bsuir.passengerservice.service;
 
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypesPassenger;
 import org.springframework.data.domain.Page;
 
 public interface PassengerService {
@@ -12,5 +13,5 @@ public interface PassengerService {
     Long checkIsEmailCorrect(Long id, String email);
     PassengerResponseDTO addPassenger(String email, String phone);
     Page<PassengerResponseDTO> getAllPassengers(int offset, int itemCount, String field, Boolean isSortDirectionAsc);
-    PassengerResponseDTO changePaymentType(Long id, String paymentType);
+    PassengerResponseDTO changePaymentType(Long id, PaymentTypeTypesPassenger paymentType);
 }

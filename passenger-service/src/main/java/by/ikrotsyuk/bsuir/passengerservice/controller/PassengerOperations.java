@@ -2,6 +2,7 @@ package by.ikrotsyuk.bsuir.passengerservice.controller;
 
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypesPassenger;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -19,5 +20,5 @@ public interface PassengerOperations {
     ResponseEntity<PassengerResponseDTO> deletePassengerProfile(@PathVariable Long id);
     ResponseEntity<PassengerResponseDTO> addPassenger(@NotBlank @Email String email, @NotBlank @Size(max = 15) String phone);
     ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
-    ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long id, @RequestParam @NotBlank @Size(max = 4) String paymentType);
+    ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long id, @RequestParam @NotBlank PaymentTypeTypesPassenger paymentType);
 }

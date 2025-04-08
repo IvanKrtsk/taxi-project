@@ -3,6 +3,7 @@ package by.ikrotsyuk.bsuir.passengerservice.controller.impl;
 import by.ikrotsyuk.bsuir.passengerservice.controller.PassengerOperations;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypesPassenger;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -68,7 +69,7 @@ public class PassengerController implements PassengerOperations {
 
     @Override
     @PatchMapping("/payment/{id}")
-    public ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long id, String paymentType) {
+    public ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long id, PaymentTypeTypesPassenger paymentType) {
         return new ResponseEntity<>(passengerService.changePaymentType(id, paymentType), HttpStatus.OK);
     }
 }
