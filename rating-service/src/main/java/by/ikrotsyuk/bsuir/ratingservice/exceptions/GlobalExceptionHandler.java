@@ -35,8 +35,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
-            if (error instanceof FieldError) {
-                FieldError fieldError = (FieldError) error;
+            if (error instanceof FieldError fieldError) {
                 String fieldName = fieldError.getField();
                 Object rejectedValue = fieldError.getRejectedValue();
                 String errorMessage;
@@ -57,7 +56,8 @@ public class GlobalExceptionHandler {
                         errorMessage = fieldError.getDefaultMessage();
                     }
                 } catch (ClassNotFoundException | NoSuchFieldException e) {
-                    errorMessage = String.format("Error while deserializing field: %s!", fieldError.getObjectName());
+                    errorMessage = messageSource.getMessage(GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
+                            new Object[]{fieldError.getRejectedValue()}, LocaleContextHolder.getLocale());
                 }
                 errors.put(fieldName, errorMessage);
             }
@@ -85,7 +85,8 @@ public class GlobalExceptionHandler {
 
                 errors.put(fieldName, errorMessage);
             } else {
-                errors.put(fieldName, String.format("Error while deserializing value: %s!", rejectedValue));
+                errors.put(fieldName, messageSource.getMessage(GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
+                        new Object[]{rejectedValue}, LocaleContextHolder.getLocale()));
             }
         } else {
             errors.put("error", ex.getMessage());
