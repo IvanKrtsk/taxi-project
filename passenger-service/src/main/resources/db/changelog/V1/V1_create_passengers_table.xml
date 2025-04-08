@@ -6,6 +6,20 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
 
     <changeSet id="passenger-1" author="ikrtsk">
+        <comment>Create status types</comment>
+        <sql>
+            CREATE TYPE status_types_passenger AS ENUM('AVAILABLE', 'IN_RIDE');
+        </sql>
+    </changeSet>
+
+    <changeSet id="passenger-2" author="ikrtsk">
+        <comment>Create payment types</comment>
+        <sql>
+            CREATE TYPE payment_type_types_passenger AS ENUM('CASH', 'CARD');
+        </sql>
+    </changeSet>
+
+    <changeSet id="passenger-3" author="ikrtsk">
         <comment>Create passengers table</comment>
         <createTable tableName="passengers">
             <column name="id" type="bigserial">
@@ -23,19 +37,25 @@
             <column name="rating" type="float" defaultValue="0.0"/>
             <column name="total_rides" type="bigint" defaultValue="0"/>
             <column name="is_deleted" type="boolean" defaultValue="false"/>
+            <column name="status" type="status_types_passenger">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_type" type="payment_type_types_passenger">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
     </changeSet>
 
-    <changeSet id="passenger-2" author="ikrtsk">
+    <changeSet id="passenger-4" author="ikrtsk">
         <comment>Add index on email column</comment>
         <createIndex tableName="passengers" indexName="idx_email">
             <column name="email"/>
         </createIndex>
     </changeSet>
 
-    <changeSet id="passenger-3" author="ikrtsk">
+    <changeSet id="passenger-5" author="ikrtsk">
         <comment>Add index on phone column</comment>
         <createIndex tableName="passengers" indexName="idx_phone">
             <column name="phone"/>
