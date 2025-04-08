@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping("/api/v1/passenger")
+@RequestMapping("/api/v1/passengers")
 public class PassengerController implements PassengerOperations {
     private final PassengerService passengerService;
 
