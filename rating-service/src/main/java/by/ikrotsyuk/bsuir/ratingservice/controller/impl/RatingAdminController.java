@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping("/api/v1/rating/admin")
+@RequestMapping("/api/v1/ratings/admin")
 public class RatingAdminController implements RatingAdminOperations {
     private final RatingAdminService ratingAdminService;
 

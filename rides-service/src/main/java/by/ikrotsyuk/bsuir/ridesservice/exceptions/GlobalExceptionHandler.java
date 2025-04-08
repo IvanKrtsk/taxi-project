@@ -55,7 +55,8 @@ public class GlobalExceptionHandler {
                         errorMessage = fieldError.getDefaultMessage();
                     }
                 } catch (ClassNotFoundException | NoSuchFieldException e) {
-                    errorMessage = String.format("Error while deserializing field: %s!", fieldError.getObjectName());
+                    errorMessage = messageSource.getMessage(GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
+                            new Object[]{fieldError.getRejectedValue()}, LocaleContextHolder.getLocale());
                 }
                 errors.put(fieldName, errorMessage);
             }
@@ -83,7 +84,8 @@ public class GlobalExceptionHandler {
 
                 errors.put(fieldName, errorMessage);
             } else {
-                errors.put(fieldName, String.format("Error while deserializing value: %s!", rejectedValue));
+                errors.put(fieldName, messageSource.getMessage(GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
+                        new Object[]{rejectedValue}, LocaleContextHolder.getLocale()));
             }
         } else {
             errors.put("error", ex.getMessage());
