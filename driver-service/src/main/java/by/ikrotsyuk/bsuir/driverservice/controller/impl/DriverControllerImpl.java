@@ -52,8 +52,8 @@ public class DriverControllerImpl implements DriverOperations {
     }
 
     @PostMapping
-    public ResponseEntity<DriverResponseDTO> addDriver(@NotBlank @Email String email, @NotBlank @Size(max = 15) String phone){
-        return new ResponseEntity<>(driverService.addDriver(email, phone), HttpStatus.CREATED);
+    public ResponseEntity<DriverResponseDTO> addDriver(DriverRequestDTO driverRequestDTO){
+        return new ResponseEntity<>(driverService.addDriver(driverRequestDTO), HttpStatus.CREATED);
     }
 
     @Override

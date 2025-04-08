@@ -17,6 +17,6 @@ public interface DriverOperations {
     ResponseEntity<DriverResponseDTO> editDriverProfile(@PathVariable Long driverId, @Valid @RequestBody DriverRequestDTO driverRequestDTO);
     ResponseEntity<DriverResponseDTO> deleteDriverProfile(@PathVariable Long driverId);
     ResponseEntity<Page<DriverResponseDTO>> getAllDrivers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
-    ResponseEntity<DriverResponseDTO> addDriver(@NotBlank @Email String email, @NotBlank @Size(max = 15) String phone);
+    ResponseEntity<DriverResponseDTO> addDriver(@Valid @RequestBody DriverRequestDTO driverRequestDTO);
     ResponseEntity<DriverVehicleResponseDTO> getDriverWithVehicle(@PathVariable Long driverId);
 }

@@ -12,7 +12,6 @@ import by.ikrotsyuk.bsuir.driverservice.service.tools.PaginationTool;
 import by.ikrotsyuk.bsuir.driverservice.service.validation.DriverServiceValidationManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,7 +85,9 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public DriverResponseDTO addDriver(String email, String phone){
+    public DriverResponseDTO addDriver(DriverRequestDTO driverRequestDTO){
+        String email = driverRequestDTO.email();
+        String phone = driverRequestDTO.phone();
         if(driverRepository.existsByEmail(email)) {
             DriverEntity driverEntity = driverRepository.findByEmail(email)
                     .orElseThrow(() -> new DriverNotFoundByEmailException(email));
@@ -98,9 +99,8 @@ public class DriverServiceImpl implements DriverService {
         } else {
             driverServiceValidationManager.checkEmailIsUnique(email);
             driverServiceValidationManager.checkPhoneIsUnique(phone);
-            String NOT_SPECIFIED = "not specified";
             return driverMapper.toDTO(driverRepository.save(DriverEntity.builder()
-                    .name(NOT_SPECIFIED)
+                    .name(driverRequestDTO.name())
                     .email(email)
                     .phone(phone)
                     .rating(0.0)
