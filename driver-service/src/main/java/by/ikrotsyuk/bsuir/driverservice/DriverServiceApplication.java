@@ -11,3 +11,5 @@ public class DriverServiceApplication {
     }
 
 }
+
+//         поменять в контроллере driver -> drivers, в post методе передавать через боди а не реквест парамы
