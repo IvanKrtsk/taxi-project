@@ -11,7 +11,7 @@ public interface PassengerService {
     PassengerResponseDTO editPassengerProfile(Long id, PassengerRequestDTO passengerRequestDTO);
     PassengerResponseDTO deletePassengerProfile(Long id);
     Long checkIsEmailCorrect(Long id, String email);
-    PassengerResponseDTO addPassenger(String email, String phone);
+    PassengerResponseDTO addPassenger(PassengerRequestDTO passengerRequestDTO);
     Page<PassengerResponseDTO> getAllPassengers(int offset, int itemCount, String field, Boolean isSortDirectionAsc);
     PassengerResponseDTO changePaymentType(Long id, PaymentTypeTypesPassenger paymentType);
 }

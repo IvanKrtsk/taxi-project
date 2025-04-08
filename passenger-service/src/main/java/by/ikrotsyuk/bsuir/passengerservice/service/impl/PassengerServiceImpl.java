@@ -96,7 +96,9 @@ public class PassengerServiceImpl implements PassengerService {
      */
     @Override
     @Transactional
-    public PassengerResponseDTO addPassenger(String email, String phone) {
+    public PassengerResponseDTO addPassenger(PassengerRequestDTO passengerRequestDTO) {
+        String email = passengerRequestDTO.email();
+        String phone = passengerRequestDTO.phone();
         if(passengerRepository.existsByEmail(email)){
             PassengerEntity passengerEntity = passengerRepository.findByEmail(email)
                     .orElseThrow(() -> new PassengerNotFoundByEmailException(email));

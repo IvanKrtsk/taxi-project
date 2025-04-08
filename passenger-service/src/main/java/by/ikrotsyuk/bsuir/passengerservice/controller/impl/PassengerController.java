@@ -57,8 +57,8 @@ public class PassengerController implements PassengerOperations {
 
     @Override
     @PostMapping
-    public ResponseEntity<PassengerResponseDTO> addPassenger(String email, String phone){
-        return new ResponseEntity<>(passengerService.addPassenger(email, phone), HttpStatus.CREATED);
+    public ResponseEntity<PassengerResponseDTO> addPassenger(PassengerRequestDTO passengerRequestDTO){
+        return new ResponseEntity<>(passengerService.addPassenger(passengerRequestDTO), HttpStatus.CREATED);
     }
 
     @Override
