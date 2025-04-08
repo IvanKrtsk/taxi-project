@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping("/api/v1/driver")
+@RequestMapping("/api/v1/drivers")
 public class DriverControllerImpl implements DriverOperations {
     private final DriverService driverService;
 

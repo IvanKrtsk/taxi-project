@@ -21,7 +21,7 @@ spring:
 springdoc:
   api-docs:
     enabled: true
-    path: /api/v1/driver/v3/api-docs
+    path: /api/v1/drivers/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /api/v1/driver/swagger-ui.html
+    path: /api/v1/drivers/swagger-ui.html
