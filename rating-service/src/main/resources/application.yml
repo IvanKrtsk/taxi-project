@@ -25,7 +25,7 @@ spring:
 springdoc:
   api-docs:
     enabled: true
-    path: /rating/v3/api-docs
+    path: /api/v1/ratings/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /rating/swagger-ui.html
+    path: /api/v1in /ratings/swagger-ui.html
