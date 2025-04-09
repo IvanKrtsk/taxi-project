@@ -4,6 +4,13 @@ server:
 spring:
   application:
     name: passenger-service
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+  web:
+    locale-resolver: accept_header
+    locale: en
   # database configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/taxi_db
