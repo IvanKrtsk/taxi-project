@@ -4,6 +4,7 @@ import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypesDriver;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "vehicles")
+@FieldNameConstants
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

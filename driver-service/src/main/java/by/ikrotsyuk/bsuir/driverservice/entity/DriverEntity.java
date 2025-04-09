@@ -3,6 +3,7 @@ package by.ikrotsyuk.bsuir.driverservice.entity;
 import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypesDriver;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "drivers")
+@FieldNameConstants
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
