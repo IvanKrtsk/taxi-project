@@ -14,6 +14,7 @@ import java.util.Set;
 @Component
 public class PaginationTool {
     private final Set<String> entityFields = new HashSet<>();
+    private final String DEFAULT_RIDES_SORT_FIELD = RideEntity.Fields.id.name();
 
     @PostConstruct
     protected void init(){
@@ -23,7 +24,7 @@ public class PaginationTool {
 
     public Sort getSort(String field, Boolean isSortDirectionAsc){
         if(field.isBlank() || !entityFields.contains(field))
-            field = "id";
+            field = DEFAULT_RIDES_SORT_FIELD;
         if(Objects.isNull(isSortDirectionAsc))
             isSortDirectionAsc = true;
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
