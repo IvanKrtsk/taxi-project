@@ -2,9 +2,6 @@ package by.ikrotsyuk.bsuir.driverservice.controller;
 
 import by.ikrotsyuk.bsuir.driverservice.dto.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
