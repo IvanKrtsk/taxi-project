@@ -9,37 +9,38 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Component
 public class PaginationTool {
     private final Set<String> driverEntityFields = new HashSet<>();
     private final Set<String> vehicleEntityFields = new HashSet<>();
-    private static final String DEFAULT_SORT_FIELD = "id";
+    private static final String DEFAULT_DRIVERS_SORT_FIELD = DriverEntity.Fields.id.name();
+    private static final String DEFAULT_VEHICLES_SORT_FIELD = DriverEntity.Fields.id.name();
 
 
     @PostConstruct
     protected void init(){
-        for(Field field: DriverEntity.class.getDeclaredFields())
-            driverEntityFields.add(field.getName());
+        for(DriverEntity.Fields field: DriverEntity.Fields.values())
+            driverEntityFields.add(field.name());
 
-        for(Field field: VehicleEntity.class.getDeclaredFields())
-            vehicleEntityFields.add(field.getName());
+        for(VehicleEntity.Fields field: VehicleEntity.Fields.values())
+            vehicleEntityFields.add(field.name());
     }
 
     public Sort getSort(String field, Boolean isSortDirectionAsc, Class<?> clazz){
-        if(StringUtils.isBlank(field))
-            field = DEFAULT_SORT_FIELD;
-        else
+        if(StringUtils.isBlank(field)) {
+            field = (clazz == DriverEntity.class) ? DEFAULT_DRIVERS_SORT_FIELD : DEFAULT_VEHICLES_SORT_FIELD;
+        } else
             if (clazz == DriverEntity.class && !driverEntityFields.contains(field)) {
-                field = DEFAULT_SORT_FIELD;
+                field = DEFAULT_DRIVERS_SORT_FIELD;
             } else if (clazz == VehicleEntity.class && !vehicleEntityFields.contains(field)) {
-                field = DEFAULT_SORT_FIELD;
+                field = DEFAULT_VEHICLES_SORT_FIELD;
             }
 
-        if(isSortDirectionAsc == null)
+        if(Objects.isNull(isSortDirectionAsc))
             isSortDirectionAsc = true;
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         return Sort.by(sortDirection, field);
