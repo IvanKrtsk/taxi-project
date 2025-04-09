@@ -29,6 +29,15 @@ public class RidePassengerServiceImpl implements RidePassengerService {
     private final RideRepository rideRepository;
     private final PaginationTool paginationTool;
 
+    private final BigDecimal ECONOMY_MULTIPLIER = BigDecimal.valueOf(1.0);
+    private final BigDecimal COMFORT_MULTIPLIER = BigDecimal.valueOf(1.2);
+    private final BigDecimal COMFORT_PLUS_MULTIPLIER = BigDecimal.valueOf(1.5);
+    private final BigDecimal BUSINESS_MULTIPLIER = BigDecimal.valueOf(2.0);
+    private final BigDecimal ELECTRIC_MULTIPLIER = BigDecimal.valueOf(1.3);
+    private final BigDecimal TRUCK_MULTIPLIER = BigDecimal.valueOf(3.0);
+    private final BigDecimal ULTIMA_MULTIPLIER = BigDecimal.valueOf(4.0);
+    private final BigDecimal DELIVERY_MULTIPLIER = BigDecimal.valueOf(1.1);
+
     @Override
     public BigDecimal getCostOfRide(Long passengerId, RideRequestDTO rideRequestDTO) {
         return calculatePrice(rideRequestDTO);
@@ -86,16 +95,16 @@ public class RidePassengerServiceImpl implements RidePassengerService {
         return price.multiply(getMultiplier(rideRequestDTO.carClass()));
     }
 
-    private static BigDecimal getMultiplier(CarClassTypesRides carClass) {
+    private BigDecimal getMultiplier(CarClassTypesRides carClass) {
         return switch (carClass) {
-            case ECONOMY -> BigDecimal.valueOf(1.0);
-            case COMFORT -> BigDecimal.valueOf(1.2);
-            case COMFORT_PLUS -> BigDecimal.valueOf(1.5);
-            case BUSINESS -> BigDecimal.valueOf(2.0);
-            case ELECTRIC -> BigDecimal.valueOf(1.3);
-            case TRUCK -> BigDecimal.valueOf(3.0);
-            case ULTIMA -> BigDecimal.valueOf(4.0);
-            case DELIVERY -> BigDecimal.valueOf(1.1);
+            case ECONOMY -> ECONOMY_MULTIPLIER;
+            case COMFORT -> COMFORT_MULTIPLIER;
+            case COMFORT_PLUS -> COMFORT_PLUS_MULTIPLIER;
+            case BUSINESS -> BUSINESS_MULTIPLIER;
+            case ELECTRIC -> ELECTRIC_MULTIPLIER;
+            case TRUCK -> TRUCK_MULTIPLIER;
+            case ULTIMA -> ULTIMA_MULTIPLIER;
+            case DELIVERY -> DELIVERY_MULTIPLIER;
         };
     }
 }

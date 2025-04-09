@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Component
@@ -17,17 +17,14 @@ public class PaginationTool {
 
     @PostConstruct
     protected void init(){
-        for(Field field: RideEntity.class.getDeclaredFields())
-            entityFields.add(field.getName());
+        for(RideEntity.Fields field: RideEntity.Fields.values())
+            entityFields.add(field.name());
     }
 
     public Sort getSort(String field, Boolean isSortDirectionAsc){
-        if(field == null || field.isEmpty())
+        if(field.isBlank() || !entityFields.contains(field))
             field = "id";
-        else
-            if(!entityFields.contains(field))
-                field = "id";
-        if(isSortDirectionAsc == null)
+        if(Objects.isNull(isSortDirectionAsc))
             isSortDirectionAsc = true;
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         return Sort.by(sortDirection, field);
