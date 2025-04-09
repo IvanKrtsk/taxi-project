@@ -15,18 +15,13 @@ import by.ikrotsyuk.bsuir.driverservice.repository.VehicleRepository;
 import by.ikrotsyuk.bsuir.driverservice.service.VehicleService;
 import by.ikrotsyuk.bsuir.driverservice.service.tools.PaginationTool;
 import by.ikrotsyuk.bsuir.driverservice.service.validation.VehicleServiceValidationManager;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -37,9 +32,6 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleServiceValidationManager vehicleServiceValidationManager;
     private final PaginationTool paginationTool;
 
-    /**
-     * в будущем планирую написать аннотацию для проверки принадлежности enum с помощью post processor
-     */
     @Override
     @Transactional
     public VehicleResponseDTO addVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO) {
@@ -58,9 +50,6 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleMapper.toDTO(vehicleRepository.save(vehicleEntity));
     }
 
-    /**
-     * в будущем планирую написать аннотацию для проверки принадлежности enum с помощью post processor
-     */
     @Override
     @Transactional
     public VehicleResponseDTO editVehicle(Long driverId, Long vehicleId, VehicleRequestDTO vehicleRequestDTO) {
@@ -193,14 +182,5 @@ public class VehicleServiceImpl implements VehicleService {
                 .filter(VehicleResponseDTO::isCurrent)
                 .findFirst()
                 .orElseThrow(() -> new DriverCurrentVehicleNotFoundException(driverId));
-    }
-
-    private Sort getSort(Boolean isSortDirectionAsc, String field){
-        if(field == null)
-            field = "id";
-        if(isSortDirectionAsc == null)
-            isSortDirectionAsc = true;
-        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        return Sort.by(sortDirection, field);
     }
 }

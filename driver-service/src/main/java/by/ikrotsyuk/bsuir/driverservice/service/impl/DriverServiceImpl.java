@@ -12,7 +12,6 @@ import by.ikrotsyuk.bsuir.driverservice.service.tools.PaginationTool;
 import by.ikrotsyuk.bsuir.driverservice.service.validation.DriverServiceValidationManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -129,14 +128,5 @@ public class DriverServiceImpl implements DriverService {
                 .orElseThrow(() -> new DriverNotFoundByIdException(driverId));
         List<VehicleEntity> vehicleEntityList = driverEntity.getDriverVehicles();
         return driverMapper.toDVDTO(driverEntity);
-    }
-
-    private Sort getSort(Boolean isSortDirectionAsc, String field){
-        if(field == null)
-            field = "id";
-        if(isSortDirectionAsc == null)
-            isSortDirectionAsc = true;
-        var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        return Sort.by(sortDirection, field);
     }
 }
