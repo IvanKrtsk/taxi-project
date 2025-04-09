@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "vehicles")
-@FieldNameConstants
+@FieldNameConstants(asEnum = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

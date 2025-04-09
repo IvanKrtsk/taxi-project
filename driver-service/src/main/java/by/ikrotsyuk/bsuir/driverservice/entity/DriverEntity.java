@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "drivers")
-@FieldNameConstants
+@FieldNameConstants(asEnum = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
