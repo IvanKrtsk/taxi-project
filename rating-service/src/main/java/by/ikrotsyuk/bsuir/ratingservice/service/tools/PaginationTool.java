@@ -7,26 +7,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 
 @Component
 public class PaginationTool {
     private final Set<String> entityFields = new HashSet<>();
+    private final String DEFAULT_RATING_SORT_FIELD = RatingEntity.Fields.id.name();
 
     @PostConstruct
     protected void init(){
-        for(Field field: RatingEntity.class.getDeclaredFields())
-            entityFields.add(field.getName());
+        for(RatingEntity.Fields field: RatingEntity.Fields.values())
+            entityFields.add(field.name());
     }
 
     public Sort getSort(String field, Boolean isSortDirectionAsc){
-        if(field == null || field.isEmpty())
-            field = "id";
+        if(field.isBlank() || !entityFields.contains(field))
+            field = DEFAULT_RATING_SORT_FIELD;
         else
-            if(!entityFields.contains(field))
-                field = "id";
         if(isSortDirectionAsc == null)
             isSortDirectionAsc = true;
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
