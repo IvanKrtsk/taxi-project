@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Component
@@ -24,8 +25,7 @@ public class PaginationTool {
     public Sort getSort(String field, Boolean isSortDirectionAsc){
         if(field.isBlank() || !entityFields.contains(field))
             field = DEFAULT_RATING_SORT_FIELD;
-        else
-        if(isSortDirectionAsc == null)
+        if(Objects.isNull(isSortDirectionAsc))
             isSortDirectionAsc = true;
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         return Sort.by(sortDirection, field);
