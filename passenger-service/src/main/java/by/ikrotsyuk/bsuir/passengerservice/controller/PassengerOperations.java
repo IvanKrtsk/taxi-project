@@ -4,7 +4,7 @@ import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
 import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypesPassenger;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,5 +18,5 @@ public interface PassengerOperations {
     ResponseEntity<PassengerResponseDTO> deletePassengerProfile(@PathVariable Long id);
     ResponseEntity<PassengerResponseDTO> addPassenger(@Valid @RequestBody PassengerRequestDTO passengerRequestDTO);
     ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
-    ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long id, @RequestParam @NotBlank PaymentTypeTypesPassenger paymentType);
+    ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long id, @RequestParam @NotNull PaymentTypeTypesPassenger paymentType);
 }
