@@ -5,6 +5,7 @@ import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.PaymentTypeTypesRides;
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypesRides;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -15,6 +16,7 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "rides")
+@FieldNameConstants(asEnum = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
