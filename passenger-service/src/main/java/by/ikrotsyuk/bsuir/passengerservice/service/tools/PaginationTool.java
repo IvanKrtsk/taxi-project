@@ -7,27 +7,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Component
 public class PaginationTool {
     private final Set<String> entityFields = new HashSet<>();
+    private final String DEFAULT_PASSENGERS_SORT_FIELD = PassengerEntity.Fields.id.name();
 
     @PostConstruct
     protected void init(){
-        for(Field field: PassengerEntity.class.getDeclaredFields())
-            entityFields.add(field.getName());
+        for(PassengerEntity.Fields field: PassengerEntity.Fields.values())
+            entityFields.add(field.name());
     }
 
     public Sort getSort(String field, Boolean isSortDirectionAsc){
-        if(field == null || field.isEmpty())
-            field = "id";
-        else
-        if(!entityFields.contains(field))
-            field = "id";
-        if(isSortDirectionAsc == null)
+        if(field.isBlank() || !entityFields.contains(field))
+            field = DEFAULT_PASSENGERS_SORT_FIELD;
+        if(Objects.isNull(isSortDirectionAsc))
             isSortDirectionAsc = true;
         var sortDirection = isSortDirectionAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         return Sort.by(sortDirection, field);
