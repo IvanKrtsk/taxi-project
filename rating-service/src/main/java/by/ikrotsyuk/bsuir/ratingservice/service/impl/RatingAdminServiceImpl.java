@@ -13,7 +13,6 @@ import by.ikrotsyuk.bsuir.ratingservice.service.tools.PaginationTool;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
