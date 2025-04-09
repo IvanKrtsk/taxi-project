@@ -2,6 +2,13 @@ server:
   port: 8086
 
 spring:
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+  web:
+    locale-resolver: accept_header
+    locale: en
   application:
     name: rides-service
   # postgresql database configuration
