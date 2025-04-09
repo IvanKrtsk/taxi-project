@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.bson.types.ObjectId;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,6 +15,7 @@ import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Document(collection = "reviews")
+@FieldNameConstants(asEnum = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
