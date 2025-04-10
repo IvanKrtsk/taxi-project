@@ -8,18 +8,25 @@
     <changeSet id="rides-1" author="ikrtsk">
         <comment>Create ride status types</comment>
         <sql>
-            CREATE TYPE ride_status_types AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELED');
+            CREATE TYPE ride_status_types_rides AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELED');
         </sql>
     </changeSet>
 
     <changeSet id="rides-2" author="ikrtsk">
         <comment>Create payment type types</comment>
         <sql>
-            CREATE TYPE payment_type_types AS ENUM ('CASH', 'CARD');
+            CREATE TYPE payment_type_types_rides AS ENUM ('CASH', 'CARD');
         </sql>
     </changeSet>
 
     <changeSet id="rides-3" author="ikrtsk">
+        <comment>Create car class type</comment>
+        <sql>
+            CREATE TYPE car_class_types_rides AS ENUM('ECONOMY', 'COMFORT', 'COMFORT_PLUS', 'BUSINESS', 'ELECTRIC', 'TRUCK', 'ULTIMA', 'DELIVERY');
+        </sql>
+    </changeSet>
+
+    <changeSet id="rides-4" author="ikrtsk">
         <comment>Create rides table</comment>
         <createTable tableName="rides">
             <column name="id" type="bigserial">
@@ -28,23 +35,29 @@
             <column name="passenger_id" type="bigserial">
                 <constraints nullable="false"/>
             </column>
-            <column name="driver_id" type="bigserial">
-                <constraints nullable="false"/>
-            </column>
+            <column name="driver_id" type="bigint"/>
             <column name="start_location" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="end_location" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" type="ride_status_types">
+            <column name="cost" type="numeric" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
-            <column name="payment_type" type="payment_type_types">
+            <column name="ride_status" type="ride_status_types_rides">
                 <constraints nullable="false"/>
             </column>
-            <column name="rating" type="float"/>
+            <column name="payment_type" type="payment_type_types_rides">
+                <constraints nullable="false"/>
+            </column>
+            <column name="car_class" type="car_class_types_rides">
+                <constraints nullable="false"/>
+            </column>
             <column name="booked_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="estimated_waiting_time" type="int">
+                <constraints nullable="false"/>
+            </column>
             <column name="accepted_at" type="timestamptz"/>
             <column name="began_at" type="timestamptz"/>
             <column name="ended_at" type="timestamptz"/>

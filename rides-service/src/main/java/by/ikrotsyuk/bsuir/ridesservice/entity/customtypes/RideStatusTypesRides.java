@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.ridesservice.entity.customtypes;
 
-public enum RideStatusTypes {
+public enum RideStatusTypesRides {
     PENDING,
     IN_PROGRESS,
     COMPLETED,
