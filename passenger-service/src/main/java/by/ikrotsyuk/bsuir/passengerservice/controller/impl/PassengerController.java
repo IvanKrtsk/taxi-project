@@ -23,53 +23,46 @@ public class PassengerController implements PassengerOperations {
      * id в дальнейшем будет браться из jwt
      */
     @Override
-    @GetMapping("/profile/{id}")
-    public ResponseEntity<PassengerResponseDTO> getPassengerProfile(@PathVariable Long id) {
-        return new ResponseEntity<>(passengerService.getPassengerById(id), HttpStatus.OK);
+    public ResponseEntity<PassengerResponseDTO> getPassengerProfile(Long passengerId) {
+        return new ResponseEntity<>(passengerService.getPassengerById(passengerId), HttpStatus.OK);
     }
 
     /**
      * id в дальнейшем будет браться из jwt
      */
     @Override
-    @GetMapping("/rating/{id}")
-    public ResponseEntity<Double> getPassengerRating(@PathVariable Long id) {
-        return new ResponseEntity<>(passengerService.getPassengerRatingById(id), HttpStatus.OK);
+    public ResponseEntity<Double> getPassengerRating(Long passengerId) {
+        return new ResponseEntity<>(passengerService.getPassengerRatingById(passengerId), HttpStatus.OK);
     }
 
     /**
      * id в дальнейшем будет браться из jwt
      */
     @Override
-    @PatchMapping("/{id}")
-    public ResponseEntity<PassengerResponseDTO> editPassengerProfile(@PathVariable Long id, PassengerRequestDTO passengerRequestDTO){
-        return new ResponseEntity<>(passengerService.editPassengerProfile(id, passengerRequestDTO), HttpStatus.OK);
+    public ResponseEntity<PassengerResponseDTO> editPassengerProfile(Long passengerId, PassengerRequestDTO passengerRequestDTO){
+        return new ResponseEntity<>(passengerService.editPassengerProfile(passengerId, passengerRequestDTO), HttpStatus.OK);
     }
 
     /**
      * id в дальнейшем будет браться из jwt
      */
     @Override
-    @DeleteMapping("/{id}")
-    public ResponseEntity<PassengerResponseDTO> deletePassengerProfile(@PathVariable Long id) {
-        return new ResponseEntity<>(passengerService.deletePassengerProfile(id), HttpStatus.OK);
+    public ResponseEntity<PassengerResponseDTO> deletePassengerProfile(Long passengerId) {
+        return new ResponseEntity<>(passengerService.deletePassengerProfile(passengerId), HttpStatus.NOT_FOUND);
     }
 
     @Override
-    @PostMapping
     public ResponseEntity<PassengerResponseDTO> addPassenger(PassengerRequestDTO passengerRequestDTO){
         return new ResponseEntity<>(passengerService.addPassenger(passengerRequestDTO), HttpStatus.CREATED);
     }
 
     @Override
-    @GetMapping
     public ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(passengerService.getAllPassengers(offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 
     @Override
-    @PatchMapping("/payment/{id}")
-    public ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long id, PaymentTypeTypesPassenger paymentType) {
-        return new ResponseEntity<>(passengerService.changePaymentType(id, paymentType), HttpStatus.OK);
+    public ResponseEntity<PassengerResponseDTO> changePaymentType(Long passengerId, PaymentTypeTypesPassenger paymentType) {
+        return new ResponseEntity<>(passengerService.changePaymentType(passengerId, paymentType), HttpStatus.OK);
     }
 }
