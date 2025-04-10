@@ -30,15 +30,15 @@ public class PassengerEntity {
     private String email;
     @Column(unique = true)
     private String phone;
-    private Double rating;
-    private Long totalRides;
-    private Boolean isDeleted;
+    private Double rating = 0.0;
+    private Long totalRides = 0L;
+    private Boolean isDeleted = false;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private StatusTypesPassenger status;
+    private StatusTypesPassenger status = StatusTypesPassenger.AVAILABLE;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private PaymentTypeTypesPassenger paymentType;
+    private PaymentTypeTypesPassenger paymentType = PaymentTypeTypesPassenger.CASH;
     @CreationTimestamp
     private OffsetDateTime createdAt;
     @UpdateTimestamp
