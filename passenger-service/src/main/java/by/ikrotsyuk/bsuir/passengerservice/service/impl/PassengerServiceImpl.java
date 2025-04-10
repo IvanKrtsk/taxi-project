@@ -4,14 +4,12 @@ import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
 import by.ikrotsyuk.bsuir.passengerservice.entity.PassengerEntity;
 import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypesPassenger;
-import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.StatusTypesPassenger;
 import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.*;
 import by.ikrotsyuk.bsuir.passengerservice.mapper.PassengerMapper;
 import by.ikrotsyuk.bsuir.passengerservice.repository.PassengerRepository;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
 import by.ikrotsyuk.bsuir.passengerservice.service.tools.PaginationTool;
 import by.ikrotsyuk.bsuir.passengerservice.service.validation.PassengerServiceValidationManager;
-import by.ikrotsyuk.bsuir.passengerservice.service.validation.impl.PassengerServiceValidationManagerImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -102,7 +100,7 @@ public class PassengerServiceImpl implements PassengerService {
             PassengerEntity passengerEntity = passengerRepository.findByEmail(email)
                     .orElseThrow(() -> new PassengerNotFoundByEmailException(email));
             if(passengerEntity.getIsDeleted()) {
-                passengerEntity.setIsDeleted(true);
+                passengerEntity.setIsDeleted(false);
                 return passengerMapper.toDTO(passengerEntity);
             } else
                 throw new PassengerWithSameEmailAlreadyExistsException(email);
@@ -113,11 +111,7 @@ public class PassengerServiceImpl implements PassengerService {
                     .name(passengerRequestDTO.name())
                     .email(email)
                     .phone(phone)
-                    .rating(0.0)
-                    .totalRides(0L)
-                    .isDeleted(false)
-                    .status(StatusTypesPassenger.AVAILABLE)
-                    .paymentType(PaymentTypeTypesPassenger.CASH)
+                    .totalRides(0L)             // builder.default issue(null instead of default value)
                     .build()));
         }
     }
