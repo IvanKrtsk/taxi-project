@@ -48,7 +48,7 @@ public class PassengerController implements PassengerOperations {
      */
     @Override
     public ResponseEntity<PassengerResponseDTO> deletePassengerProfile(Long passengerId) {
-        return new ResponseEntity<>(passengerService.deletePassengerProfile(passengerId), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(passengerService.deletePassengerProfile(passengerId), HttpStatus.NO_CONTENT);
     }
 
     @Override
