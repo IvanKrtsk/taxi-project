@@ -10,6 +10,7 @@ import by.ikrotsyuk.bsuir.passengerservice.mapper.PassengerMapper;
 import by.ikrotsyuk.bsuir.passengerservice.repository.PassengerRepository;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
 import by.ikrotsyuk.bsuir.passengerservice.service.tools.PaginationTool;
+import by.ikrotsyuk.bsuir.passengerservice.service.validation.PassengerServiceValidationManager;
 import by.ikrotsyuk.bsuir.passengerservice.service.validation.impl.PassengerServiceValidationManagerImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PassengerServiceImpl implements PassengerService {
     private final PassengerRepository passengerRepository;
     private final PassengerMapper passengerMapper;
-    private final PassengerServiceValidationManagerImpl passengerServiceValidationManagerImpl;
+    private final PassengerServiceValidationManager passengerServiceValidationManager;
     private final PaginationTool paginationTool;
 
 
@@ -50,12 +51,12 @@ public class PassengerServiceImpl implements PassengerService {
         String email = passengerRequestDTO.email();
         String phone = passengerRequestDTO.phone();
         if(!passengerEntity.getEmail().equals(email)){
-            passengerServiceValidationManagerImpl.checkEmailIsUnique(email);
+            passengerServiceValidationManager.checkEmailIsUnique(email);
             passengerEntity.setEmail(email);
             // activates keycloak email change
         }
         if(!passengerEntity.getPhone().equals(phone)){
-            passengerServiceValidationManagerImpl.checkPhoneIsUnique(phone);
+            passengerServiceValidationManager.checkPhoneIsUnique(phone);
             passengerEntity.setPhone(phone);
             // activates keycloak phone change
         }
@@ -106,8 +107,8 @@ public class PassengerServiceImpl implements PassengerService {
             } else
                 throw new PassengerWithSameEmailAlreadyExistsException(email);
         } else {
-            passengerServiceValidationManagerImpl.checkEmailIsUnique(email);
-            passengerServiceValidationManagerImpl.checkPhoneIsUnique(phone);
+            passengerServiceValidationManager.checkEmailIsUnique(email);
+            passengerServiceValidationManager.checkPhoneIsUnique(phone);
             return passengerMapper.toDTO(passengerRepository.save(PassengerEntity.builder()
                     .name(passengerRequestDTO.name())
                     .email(email)
