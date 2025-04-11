@@ -9,21 +9,21 @@ import jakarta.validation.constraints.Size;
 
 public record RideRequestDTO(
         @Schema(description = "pick up address")
-        @NotBlank
-        @Size(max = 255)
+        @NotBlank(message = "field.must.not.be.empty.message")
+        @Size(max = 255, message = "field.must.have.size.message")
         String startLocation,
 
         @Schema(description = "destination address")
-        @NotBlank
-        @Size(max = 255)
+        @NotBlank(message = "field.must.not.be.empty.message")
+        @Size(max = 255, message = "field.must.have.size.message")
         String endLocation,
 
         @Schema(description = "payment type(CASH/CARD)")
-        @NotNull
+        @NotNull(message = "field.must.not.be.empty.message")
         PaymentTypeTypes paymentType,
 
         @Schema(description = "car class")
-        @NotNull
+        @NotNull(message = "field.must.not.be.empty.message")
         CarClassTypes carClass
 ) {
 }

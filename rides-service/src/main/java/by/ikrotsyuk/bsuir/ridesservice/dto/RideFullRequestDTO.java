@@ -13,34 +13,34 @@ import java.math.BigDecimal;
 
 public record RideFullRequestDTO(
         @Schema(description = "starting address")
-        @NotBlank
-        @Size(max = 255)
+        @NotBlank(message = "field.must.not.be.empty.message")
+        @Size(max = 255, message = "field.must.have.size.message")
         String startLocation,
 
         @Schema(description = "destination address")
-        @NotBlank
-        @Size(max = 255)
+        @NotBlank(message = "field.must.not.be.empty.message")
+        @Size(max = 255, message = "field.must.have.size.message")
         String endLocation,
 
         @Schema(description = "price of the trip")
-        @NotNull
+        @NotNull(message = "field.must.not.be.empty.message")
         BigDecimal cost,
 
         @Schema(description = "ride status")
-        @NotNull
+        @NotNull(message = "field.must.not.be.empty.message")
         RideStatusTypes rideStatus,
 
         @Schema(description = "payment type")
-        @NotNull
+        @NotNull(message = "field.must.not.be.empty.message")
         PaymentTypeTypes paymentType,
 
         @Schema(description = "car class")
-        @NotNull
+        @NotNull(message = "field.must.not.be.empty.message")
         CarClassTypes carClass,
 
         @Schema(description = "estimated waiting time")
-        @NotNull
-        @Max(1000)
+        @NotNull(message = "field.must.not.be.empty.message")
+        @Max(value = 1000, message = "field.must.have.size.message")
         Integer estimatedWaitingTime
 ) {
 }
