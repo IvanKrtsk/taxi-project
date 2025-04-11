@@ -10,27 +10,27 @@ import jakarta.validation.constraints.Size;
 
 public record RatingRequestDTO(
         @Schema(description = "id of the rated trip")
-        @Min(1)
-        @NotNull
+        @Min(value = 1, message = "field.must.have.size.message")
+        @NotNull(message = "field.must.not.be.empty.message")
         Long rideId,
 
         @Schema(description = "reviewer id")
-        @Min(1)
-        @NotNull
+        @Min(value = 1, message = "field.must.have.size.message")
+        @NotNull(message = "field.must.not.be.empty.message")
         Long reviewerId,
 
         @Schema(description = "who left the review")
-        @NotNull
+        @NotNull(message = "field.must.not.be.empty.message")
         ReviewerTypeTypes reviewerType,
 
         @Schema(description = "rating")
-        @NotNull
-        @DecimalMin(value = "0.0")
-        @DecimalMax(value = "10.0")
+        @NotNull(message = "field.must.not.be.empty.message")
+        @DecimalMin(value = "0.0", message = "field.must.have.size.message")
+        @DecimalMax(value = "10.0", message = "field.must.have.size.message")
         Double rating,
 
         @Schema(description = "review comment")
-        @Size(max = 1000)
+        @Size(max = 1000, message = "field.must.have.size.message")
         String comment
 ) {
 }
