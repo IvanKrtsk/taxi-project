@@ -1,8 +1,8 @@
 package by.ikrotsyuk.bsuir.ridesservice.dto;
 
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypesRides;
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.PaymentTypeTypesRides;
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypesRides;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypes;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.PaymentTypeTypes;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
@@ -28,15 +28,15 @@ public record RideFullRequestDTO(
 
         @Schema(description = "ride status")
         @NotNull
-        RideStatusTypesRides rideStatus,
+        RideStatusTypes rideStatus,
 
         @Schema(description = "payment type")
         @NotNull
-        PaymentTypeTypesRides paymentType,
+        PaymentTypeTypes paymentType,
 
         @Schema(description = "car class")
         @NotNull
-        CarClassTypesRides carClass,
+        CarClassTypes carClass,
 
         @Schema(description = "estimated waiting time")
         @NotNull

@@ -1,7 +1,7 @@
 package by.ikrotsyuk.bsuir.ridesservice.dto;
 
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.PaymentTypeTypesRides;
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypesRides;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.PaymentTypeTypes;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
@@ -27,10 +27,10 @@ public record RideResponseDTO(
         BigDecimal cost,
 
         @Schema(description = "ride status")
-        RideStatusTypesRides rideStatus,
+        RideStatusTypes rideStatus,
 
         @Schema(description = "payment type")
-        PaymentTypeTypesRides paymentType,
+        PaymentTypeTypes paymentType,
 
         @Schema(description = "taxi call time")
         OffsetDateTime bookedAt,

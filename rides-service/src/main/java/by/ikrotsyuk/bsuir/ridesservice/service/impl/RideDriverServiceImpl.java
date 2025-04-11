@@ -3,7 +3,7 @@ package by.ikrotsyuk.bsuir.ridesservice.service.impl;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.entity.RideEntity;
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypesRides;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.AvailableRidesNotFoundException;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.CurrentRideNotFoundException;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideAlreadyAcceptedByAnotherDriverException;
@@ -35,7 +35,7 @@ public class RideDriverServiceImpl implements RideDriverService {
     @Transactional(readOnly = true)
     public Page<RideResponseDTO> getAvailableRides(Long driverId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         // get drivers car class
-        Page<RideEntity> rideEntities = rideRepository.findAllByRideStatus(RideStatusTypesRides.PENDING,
+        Page<RideEntity> rideEntities = rideRepository.findAllByRideStatus(RideStatusTypes.PENDING,
                 paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
         if(!rideEntities.hasContent())
             throw new AvailableRidesNotFoundException(driverId);
@@ -54,7 +54,7 @@ public class RideDriverServiceImpl implements RideDriverService {
             throw new RideAlreadyAcceptedByAnotherDriverException(rideId);
         }
         rideEntity.setDriverId(driverId);
-        rideEntity.setRideStatus(RideStatusTypesRides.IN_PROGRESS);
+        rideEntity.setRideStatus(RideStatusTypes.IN_PROGRESS);
         rideEntity.setAcceptedAt(OffsetDateTime.now());
         return rideMapper.toFullDTO(rideEntity);
     }
@@ -68,7 +68,7 @@ public class RideDriverServiceImpl implements RideDriverService {
             throw new RideNotBelongToDriverException(rideId, driverId);
         Random rand = new Random();
         rideEntity.setDriverId(null);
-        rideEntity.setRideStatus(RideStatusTypesRides.PENDING);
+        rideEntity.setRideStatus(RideStatusTypes.PENDING);
         rideEntity.setAcceptedAt(null);
         rideEntity.setBeganAt(null);
         rideEntity.setEstimatedWaitingTime(rand.nextInt(500) + 100);
@@ -96,7 +96,7 @@ public class RideDriverServiceImpl implements RideDriverService {
                 .orElseThrow(() -> new RideNotFoundByIdException(rideId));
         if(!rideEntity.getDriverId().equals(driverId))
             throw new RideNotBelongToDriverException(rideId, driverId);
-        rideEntity.setRideStatus(RideStatusTypesRides.COMPLETED);
+        rideEntity.setRideStatus(RideStatusTypes.COMPLETED);
         rideEntity.setEndedAt(OffsetDateTime.now());
         return rideMapper.toFullDTO(rideEntity);
     }
@@ -113,7 +113,7 @@ public class RideDriverServiceImpl implements RideDriverService {
     @Override
     @Transactional(readOnly = true)
     public RideFullResponseDTO getCurrentRide(Long driverId) {
-        RideEntity rideEntity = rideRepository.findByDriverIdAndRideStatus(driverId, RideStatusTypesRides.IN_PROGRESS)
+        RideEntity rideEntity = rideRepository.findByDriverIdAndRideStatus(driverId, RideStatusTypes.IN_PROGRESS)
                 .orElseThrow(() -> new CurrentRideNotFoundException(driverId));
         return rideMapper.toFullDTO(rideEntity);
     }

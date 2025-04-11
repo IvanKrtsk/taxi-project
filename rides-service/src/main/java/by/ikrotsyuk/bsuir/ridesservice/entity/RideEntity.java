@@ -1,8 +1,8 @@
 package by.ikrotsyuk.bsuir.ridesservice.entity;
 
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypesRides;
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.PaymentTypeTypesRides;
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypesRides;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypes;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.PaymentTypeTypes;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,13 +37,13 @@ public class RideEntity {
     private BigDecimal cost;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private RideStatusTypesRides rideStatus;
+    private RideStatusTypes rideStatus;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private PaymentTypeTypesRides paymentType;
+    private PaymentTypeTypes paymentType;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private CarClassTypesRides carClass;
+    private CarClassTypes carClass;
     @CreationTimestamp
     private OffsetDateTime bookedAt;
     private Integer estimatedWaitingTime;

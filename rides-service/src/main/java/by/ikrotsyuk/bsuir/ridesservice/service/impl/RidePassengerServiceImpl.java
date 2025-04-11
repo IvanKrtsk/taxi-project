@@ -4,8 +4,8 @@ import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideRequestDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.entity.RideEntity;
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypesRides;
-import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypesRides;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypes;
+import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotBelongToPassengerException;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotFoundByIdException;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RidesNotFoundException;
@@ -62,7 +62,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
         Random rand = new Random();
         rideEntity.setCost(calculatePrice(rideRequestDTO));
         rideEntity.setPassengerId(passengerId);
-        rideEntity.setRideStatus(RideStatusTypesRides.PENDING);
+        rideEntity.setRideStatus(RideStatusTypes.PENDING);
         rideEntity.setEstimatedWaitingTime(rand.nextInt(500) + 100); // analyze drivers positions
         return rideMapper.toDTO(rideRepository.save(rideEntity));
     }
@@ -84,7 +84,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
                 .orElseThrow(() -> new RideNotFoundByIdException(rideId));
         if(!rideEntity.getPassengerId().equals(passengerId))
             throw new RideNotBelongToPassengerException(rideId, passengerId);
-        rideEntity.setRideStatus(RideStatusTypesRides.CANCELED);
+        rideEntity.setRideStatus(RideStatusTypes.CANCELED);
         return rideMapper.toFullDTO(rideEntity);
     }
 
@@ -95,7 +95,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
         return price.multiply(getMultiplier(rideRequestDTO.carClass()));
     }
 
-    private BigDecimal getMultiplier(CarClassTypesRides carClass) {
+    private BigDecimal getMultiplier(CarClassTypes carClass) {
         return switch (carClass) {
             case ECONOMY -> ECONOMY_MULTIPLIER;
             case COMFORT -> COMFORT_MULTIPLIER;

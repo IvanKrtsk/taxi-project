@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.ridesservice.entity.customtypes;
 
-public enum CarClassTypesRides {
+public enum CarClassTypes {
     ECONOMY,
     COMFORT,
     COMFORT_PLUS,
