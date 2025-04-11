@@ -8,19 +8,19 @@ import jakarta.validation.constraints.Size;
 
 public record PassengerRequestDTO(
     @Schema(description = "passenger name")
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "field.must.not.be.empty.message")
+    @Size(max = 100, message = "field.must.have.size.message")
     String name,
 
     @Schema(description = "passenger email")
     @Column(unique = true)
-    @NotBlank
+    @NotBlank(message = "field.must.not.be.empty.message")
     @Email
-    @Size(max = 100)
+    @Size(max = 100, message = "field.must.have.size.message")
     String email,
 
     @Schema(description = "passenger phone")
-    @NotBlank
-    @Size(max = 15)
+    @NotBlank(message = "field.must.not.be.empty.message")
+    @Size(max = 15, message = "field.must.have.size.message")
     String phone
 ){}
