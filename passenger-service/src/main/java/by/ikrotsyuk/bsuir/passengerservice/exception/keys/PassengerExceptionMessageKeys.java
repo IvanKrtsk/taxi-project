@@ -1,8 +1,10 @@
 package by.ikrotsyuk.bsuir.passengerservice.exception.keys;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum PassengerExceptionMessageKeys {
     PASSENGER_NOT_FOUND_BY_ID_MESSAGE_KEY("passenger.not.found.by.id.message"),
     PASSENGER_NOT_FOUND_BY_EMAIL_MESSAGE_KEY("passenger.not.found.by.email.message"),
@@ -12,8 +14,4 @@ public enum PassengerExceptionMessageKeys {
     PASSENGERS_NOT_FOUND_MESSAGE_KEY("passengers.not.found.message");
 
     private final String messageKey;
-
-    PassengerExceptionMessageKeys(String messageKey) {
-        this.messageKey = messageKey;
-    }
 }
