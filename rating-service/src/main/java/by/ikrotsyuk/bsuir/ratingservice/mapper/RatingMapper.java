@@ -5,8 +5,9 @@ import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RatingMapper {
     RatingEntity toEntity(RatingRequestDTO requestDTO);
 
