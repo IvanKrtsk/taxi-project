@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class GlobalExceptionHandler {
 
     private final MessageSource messageSource;
-    private final String DTO_PACKAGE_PATH = "by.ikrotsyuk.bsuir.passengerservice.dto.";
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ExceptionDTO> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
@@ -41,18 +40,27 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
         Map<String, String> errors = new HashMap<>();
-        Throwable cause = ex.getCause();
-
-        if (cause instanceof InvalidFormatException invalidFormatException) {
-            String errorMessage = handleInvalidFormatException(invalidFormatException);
-            String fieldName = invalidFormatException.getPath().get(0).getFieldName();
-            errors.put(fieldName, errorMessage);
-        } else {
-            errors.put("error", ex.getMessage());
-        }
+        errors.put("error", ex.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    private String handleInvalidFormatException(InvalidFormatException ex) {
+        String fieldName = ex.getPath().getFirst().getFieldName();
+        Object rejectedValue = ex.getValue();
+        Class<?> targetType = ex.getTargetType();
+
+        if (targetType.isEnum()) {
+            return generateEnumErrorMessage(targetType, fieldName, rejectedValue);
+        } else {
+            return messageSource.getMessage(
+                    GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
+                    new Object[]{rejectedValue},
+                    LocaleContextHolder.getLocale()
+            );
+        }
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -123,6 +131,7 @@ public class GlobalExceptionHandler {
         String fieldName = fieldError.getField();
         Object rejectedValue = fieldError.getRejectedValue();
         try {
+            String DTO_PACKAGE_PATH = "by.ikrotsyuk.bsuir.passengerservice.dto.";
             String fullQualifiedName = DTO_PACKAGE_PATH + capitalize(fieldError.getObjectName());
             Class<?> dtoClass = Class.forName(fullQualifiedName);
             Field field = dtoClass.getDeclaredField(fieldName);
@@ -134,22 +143,6 @@ public class GlobalExceptionHandler {
                 return fieldError.getDefaultMessage();
             }
         } catch (ClassNotFoundException | NoSuchFieldException e) {
-            return messageSource.getMessage(
-                    GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
-                    new Object[]{rejectedValue},
-                    LocaleContextHolder.getLocale()
-            );
-        }
-    }
-
-    private String handleInvalidFormatException(InvalidFormatException ex) {
-        String fieldName = ex.getPath().get(0).getFieldName();
-        Object rejectedValue = ex.getValue();
-        Class<?> targetType = ex.getTargetType();
-
-        if (targetType.isEnum()) {
-            return generateEnumErrorMessage(targetType, fieldName, rejectedValue);
-        } else {
             return messageSource.getMessage(
                     GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
                     new Object[]{rejectedValue},
