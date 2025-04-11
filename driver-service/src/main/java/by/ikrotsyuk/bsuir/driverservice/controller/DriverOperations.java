@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface DriverOperations {
-    @GetMapping("/profile/{driverId}")
+    @GetMapping("/{driverId}/profile")
     ResponseEntity<DriverResponseDTO> getDriverProfile(@PathVariable Long driverId);
 
-    @GetMapping("/rating/{driverId}")
+    @GetMapping("/{driverId}/rating")
     ResponseEntity<Double> getDriverRating(@PathVariable Long driverId);
 
     @PutMapping("/{driverId}")
@@ -33,6 +33,6 @@ public interface DriverOperations {
     @PostMapping
     ResponseEntity<DriverResponseDTO> addDriver(@Valid @RequestBody DriverRequestDTO driverRequestDTO);
 
-    @GetMapping("/driver-with-vehicles/{driverId}")
+    @GetMapping("/{driverId}/vehicles")
     ResponseEntity<DriverVehicleResponseDTO> getDriverWithVehicle(@PathVariable Long driverId);
 }

@@ -19,10 +19,10 @@ public interface VehicleOperations {
     @PostMapping("/{driverId}")
     ResponseEntity<VehicleResponseDTO> addVehicle(@PathVariable Long driverId, @Valid @RequestBody VehicleRequestDTO vehicleRequestDTO);
 
-    @PatchMapping("/{driverId}/edit/{vehicleId}")
+    @PatchMapping("/{driverId}/{vehicleId}")
     ResponseEntity<VehicleResponseDTO> editVehicle(@PathVariable Long driverId, @PathVariable Long vehicleId, @Valid @RequestBody VehicleRequestDTO vehicleRequestDTO);
 
-    @PatchMapping("/{driverId}/choose/{vehicleId}")
+    @PatchMapping("/{driverId}/{vehicleId}/current")
     ResponseEntity<VehicleResponseDTO> chooseCurrentVehicle(@PathVariable Long driverId, @PathVariable Long vehicleId);
 
     @GetMapping
@@ -34,7 +34,7 @@ public interface VehicleOperations {
     @DeleteMapping("/{driverId}/{vehicleId}")
     ResponseEntity<VehicleResponseDTO> deleteVehicle(@PathVariable Long driverId, @PathVariable Long vehicleId);
 
-    @GetMapping("/{driverId}/all")
+    @GetMapping("/{driverId}/vehicles") // driverId буду брать из JWT, поэтому потом этот эндпоинт будет ресурсоориентированным
     ResponseEntity<List<VehicleResponseDTO>> getAllDriverVehicles(@PathVariable Long driverId);
 
     @GetMapping("/{driverId}/current")
