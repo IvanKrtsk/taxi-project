@@ -8,7 +8,7 @@ import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.*;
 import by.ikrotsyuk.bsuir.driverservice.mapper.DriverMapper;
 import by.ikrotsyuk.bsuir.driverservice.repository.DriverRepository;
 import by.ikrotsyuk.bsuir.driverservice.service.DriverService;
-import by.ikrotsyuk.bsuir.driverservice.service.tools.PaginationTool;
+import by.ikrotsyuk.bsuir.driverservice.service.utils.PaginationUtil;
 import by.ikrotsyuk.bsuir.driverservice.service.validation.DriverServiceValidationManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,7 @@ public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
     private final DriverServiceValidationManager driverServiceValidationManager;
-    private final PaginationTool paginationTool;
+    private final PaginationUtil paginationUtil;
 
     @Override
     @Transactional(readOnly = true)
@@ -112,7 +112,7 @@ public class DriverServiceImpl implements DriverService {
     @Transactional(readOnly = true)
     public Page<DriverResponseDTO> getAllDrivers(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<DriverEntity> driverEntities = driverRepository.findAll(
-                paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
+                paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
         if(!driverEntities.hasContent())
             throw new DriversNotFoundException();
         else
