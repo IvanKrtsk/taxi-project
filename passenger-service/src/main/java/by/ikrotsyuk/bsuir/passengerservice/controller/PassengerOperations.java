@@ -36,5 +36,5 @@ public interface PassengerOperations {
     ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
 
     @PatchMapping("/{passengerId}")
-    ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long passengerId, @RequestParam @NotNull PaymentTypeTypes paymentType);
+    ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long passengerId, @RequestParam @NotNull(message = "field.must.not.be.empty.message") PaymentTypeTypes paymentType);
 }
