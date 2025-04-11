@@ -11,32 +11,32 @@ import jakarta.validation.constraints.Size;
 
 public record VehicleRequestDTO(
     @Schema(description = "driver's car brand")
-    @NotBlank
-    @Size(max = 50)
+    @NotBlank(message = "field.must.not.be.empty.message")
+    @Size(max = 50, message = "field.must.have.size.message")
     String brand,
 
     @Schema(description = "driver's car model")
-    @NotBlank
-    @Size(max = 50)
+    @NotBlank(message = "field.must.not.be.empty.message")
+    @Size(max = 50, message = "field.must.have.size.message")
     String model,
 
     @Schema(description = "driver's car class")
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "field.must.not.be.empty.message")
     CarClassTypes carClass,
 
     @Schema(description = "date of manufacture of the car")
-    @Max(2030)
-    @NotNull
+    @Max(value = 2030, message = "field.must.have.size.message")
+    @NotNull(message = "field.must.not.be.empty.message")
     Integer year,
 
     @Schema(description = "car number plate")
-    @NotBlank
-    @Size(max = 20)
+    @NotBlank(message = "field.must.not.be.empty.message")
+    @Size(max = 20, message = "field.must.have.size.message")
     String licensePlate,
 
     @Schema(description = "driver's car color")
-    @NotBlank
-    @Size(max = 30)
+    @NotBlank(message = "field.must.not.be.empty.message")
+    @Size(max = 30, message = "field.must.have.size.message")
     String color
 ){}

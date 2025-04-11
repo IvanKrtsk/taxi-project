@@ -7,18 +7,18 @@ import jakarta.validation.constraints.Size;
 
 public record DriverRequestDTO (
     @Schema(description = "driver name")
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "field.must.not.be.empty.message")
+    @Size(max = 100, message = "field.must.have.size.message")
     String name,
 
     @Schema(description = "driver email")
-    @NotBlank
+    @NotBlank(message = "field.must.not.be.empty.message")
     @Email
-    @Size(max = 100)
+    @Size(max = 100, message = "field.must.have.size.message")
     String email,
 
     @Schema(description = "driver phone")
-    @NotBlank
-    @Size(max = 15)
+    @NotBlank(message = "field.must.not.be.empty.message")
+    @Size(max = 15, message = "field.must.have.size.message")
     String phone
 ){}
