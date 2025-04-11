@@ -1,7 +1,7 @@
 package by.ikrotsyuk.bsuir.passengerservice.entity;
 
-import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypesPassenger;
-import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.StatusTypesPassenger;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypes;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.StatusTypes;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
@@ -39,11 +39,11 @@ public class PassengerEntity {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private StatusTypesPassenger status = StatusTypesPassenger.AVAILABLE;
+    private StatusTypes status = StatusTypes.AVAILABLE;
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private PaymentTypeTypesPassenger paymentType = PaymentTypeTypesPassenger.CASH;
+    private PaymentTypeTypes paymentType = PaymentTypeTypes.CASH;
     @CreationTimestamp
     private OffsetDateTime createdAt;
     @UpdateTimestamp

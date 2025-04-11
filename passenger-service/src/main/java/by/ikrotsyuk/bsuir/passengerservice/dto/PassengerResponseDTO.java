@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.passengerservice.dto;
 
-import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypesPassenger;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record PassengerResponseDTO(
@@ -26,5 +26,5 @@ public record PassengerResponseDTO(
     Boolean isDeleted,
 
     @Schema(description = "passenger payment type")
-    PaymentTypeTypesPassenger paymentType
+    PaymentTypeTypes paymentType
 ){}

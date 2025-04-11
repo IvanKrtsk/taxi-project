@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.passengerservice.entity.customtypes;
 
-public enum PaymentTypeTypesPassenger {
+public enum PaymentTypeTypes {
     CASH,
     CARD
 }

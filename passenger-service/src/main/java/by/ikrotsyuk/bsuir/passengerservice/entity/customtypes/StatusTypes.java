@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.passengerservice.entity.customtypes;
 
-public enum StatusTypesPassenger {
+public enum StatusTypes {
     AVAILABLE,
     IN_RIDE
 }

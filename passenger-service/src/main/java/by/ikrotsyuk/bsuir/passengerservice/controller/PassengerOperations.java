@@ -2,7 +2,7 @@ package by.ikrotsyuk.bsuir.passengerservice.controller;
 
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
-import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypesPassenger;
+import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypes;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
@@ -29,5 +29,5 @@ public interface PassengerOperations {
     ResponseEntity<Page<PassengerResponseDTO>> getAllPassengers(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
 
     @PatchMapping("/{passengerId}")
-    ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long passengerId, @RequestParam @NotNull PaymentTypeTypesPassenger paymentType);
+    ResponseEntity<PassengerResponseDTO> changePaymentType(@PathVariable Long passengerId, @RequestParam @NotNull PaymentTypeTypes paymentType);
 }
