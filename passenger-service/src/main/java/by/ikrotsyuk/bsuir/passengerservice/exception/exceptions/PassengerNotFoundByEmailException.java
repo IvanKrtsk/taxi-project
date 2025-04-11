@@ -5,7 +5,7 @@ import by.ikrotsyuk.bsuir.passengerservice.exception.keys.PassengerExceptionMess
 import by.ikrotsyuk.bsuir.passengerservice.exception.template.ExceptionTemplate;
 
 public class PassengerNotFoundByEmailException extends ExceptionTemplate {
-    public PassengerNotFoundByEmailException(PassengerExceptionMessageKeys key, String email) {
-        super(key.getMessageKey(), email);
+    public PassengerNotFoundByEmailException(String email) {
+        super(PassengerExceptionMessageKeys.PASSENGER_NOT_FOUND_BY_EMAIL_MESSAGE_KEY.getMessageKey(), email);
     }
 }
