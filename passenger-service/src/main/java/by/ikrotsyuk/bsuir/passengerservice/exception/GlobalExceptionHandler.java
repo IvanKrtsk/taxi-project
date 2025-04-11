@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 @RequiredArgsConstructor
 @ControllerAdvice
@@ -36,18 +38,6 @@ public class GlobalExceptionHandler {
         String messageKey = GeneralExceptionMessageKeys.ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY.getMessageKey();
         String message = messageSource.getMessage(messageKey, new Object[]{ex.getParameterName(), ex.getMethodParameter(), ex.getParameterType()}, LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            if (error instanceof FieldError fieldError) {
-                String errorMessage = generateFieldErrorMessage(fieldError);
-                errors.put(fieldError.getField(), errorMessage);
-            }
-        });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -65,15 +55,44 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map<String, String>> handleConstraintViolation(ConstraintViolationException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getConstraintViolations().forEach(violation -> {
-            String fieldName = violation.getPropertyPath().toString();
-            String errorMessage = violation.getMessage();
-            errors.put(fieldName, errorMessage);
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        AtomicReference<ExceptionDTO> exceptionDTO = new AtomicReference<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String errorMessage = error.getDefaultMessage();
+            String messageKey = error.getDefaultMessage();
+            if (error instanceof FieldError fieldError) {
+                String fieldName = fieldError.getField();
+                Object invalidValue = fieldError.getRejectedValue();
+                try{
+                    errorMessage = messageSource.getMessage(messageKey, new Object[]{fieldName, invalidValue}, LocaleContextHolder.getLocale());
+                }catch(NoSuchMessageException exception){
+                    errorMessage = generateFieldErrorMessage(fieldError);
+                }finally {
+                    exceptionDTO.set(new ExceptionDTO(errorMessage, messageKey));
+                }
+            }
         });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exceptionDTO.get(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ExceptionDTO> handleConstraintViolation(ConstraintViolationException ex) {
+        AtomicReference<ExceptionDTO> exceptionDTO = new AtomicReference<>();
+        ex.getConstraintViolations().forEach(violation -> {
+            String messageKey = violation.getMessageTemplate();
+            String fieldName = violation.getPropertyPath().toString();
+            Object invalidValue = violation.getInvalidValue();
+            String errorMessage = null;
+            try{
+                errorMessage = messageSource.getMessage(messageKey, new Object[]{fieldName, invalidValue}, LocaleContextHolder.getLocale());
+            }catch (NoSuchMessageException exception){
+                errorMessage = violation.getMessage();
+            }finally {
+                exceptionDTO.set(new ExceptionDTO(errorMessage, messageKey));
+            }
+        });
+        return new ResponseEntity<>(exceptionDTO.get(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({PassengerNotFoundByIdException.class, PassengerNotFoundByEmailException.class, PassengersNotFoundException.class})
