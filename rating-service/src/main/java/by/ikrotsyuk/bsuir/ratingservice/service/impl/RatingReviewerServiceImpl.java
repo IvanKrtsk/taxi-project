@@ -10,7 +10,7 @@ import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundExc
 import by.ikrotsyuk.bsuir.ratingservice.mapper.RatingMapper;
 import by.ikrotsyuk.bsuir.ratingservice.repository.RatingRepository;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingReviewerService;
-import by.ikrotsyuk.bsuir.ratingservice.service.tools.PaginationTool;
+import by.ikrotsyuk.bsuir.ratingservice.service.utils.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
@@ -24,7 +24,7 @@ import java.util.Date;
 public class RatingReviewerServiceImpl implements RatingReviewerService {
     private final RatingMapper ratingMapper;
     private final RatingRepository ratingRepository;
-    private final PaginationTool paginationTool;
+    private final PaginationUtil paginationUtil;
 
     @Override
     public RatingResponseDTO leaveReview(RatingRequestDTO ratingRequestDTO) {
@@ -40,7 +40,7 @@ public class RatingReviewerServiceImpl implements RatingReviewerService {
     public Page<RatingResponseDTO> viewLeavedReviews(Long reviewerId, ReviewerTypesRating reviewerType, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<RatingEntity> ratingEntities = ratingRepository
                 .findAllByReviewerIdAndReviewerType(reviewerId, reviewerType,
-                        paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
+                        paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
         if(!ratingEntities.hasContent())
             throw new ReviewsNotFoundException();
         return ratingEntities.map(ratingMapper::toDTO);

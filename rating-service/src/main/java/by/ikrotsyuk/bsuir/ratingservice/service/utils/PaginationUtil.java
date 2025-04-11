@@ -1,4 +1,4 @@
-package by.ikrotsyuk.bsuir.ratingservice.service.tools;
+package by.ikrotsyuk.bsuir.ratingservice.service.utils;
 
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
 import jakarta.annotation.PostConstruct;
@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Component
-public class PaginationTool {
+public class PaginationUtil {
     private final Set<String> entityFields = new HashSet<>();
     private final String DEFAULT_RATING_SORT_FIELD = RatingEntity.Fields.id.name();
 
@@ -23,7 +23,7 @@ public class PaginationTool {
     }
 
     public Sort getSort(String field, Boolean isSortDirectionAsc){
-        if(field.isBlank() || !entityFields.contains(field))
+        if(Objects.isNull(field) || field.isBlank() || !entityFields.contains(field))
             field = DEFAULT_RATING_SORT_FIELD;
         if(Objects.isNull(isSortDirectionAsc))
             isSortDirectionAsc = true;

@@ -9,7 +9,7 @@ import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundExc
 import by.ikrotsyuk.bsuir.ratingservice.mapper.RatingMapper;
 import by.ikrotsyuk.bsuir.ratingservice.repository.RatingRepository;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingAdminService;
-import by.ikrotsyuk.bsuir.ratingservice.service.tools.PaginationTool;
+import by.ikrotsyuk.bsuir.ratingservice.service.utils.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,7 @@ import java.util.Date;
 public class RatingAdminServiceImpl implements RatingAdminService {
     private final RatingMapper ratingMapper;
     private final RatingRepository ratingRepository;
-    private final PaginationTool paginationTool;
+    private final PaginationUtil paginationUtil;
 
     @Override
     public RatingAdminResponseDTO getReviewById(String reviewId) {
@@ -39,7 +39,7 @@ public class RatingAdminServiceImpl implements RatingAdminService {
     @Override
     public Page<RatingAdminResponseDTO> getAllReviews(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<RatingEntity> ratingEntities = ratingRepository
-                .findAll(paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
+                .findAll(paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
         if(!ratingEntities.hasContent())
             throw new ReviewsNotFoundException();
         return ratingEntities.map(ratingMapper::toAdminDTO);
