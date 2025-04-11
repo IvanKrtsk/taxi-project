@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.ratingservice.dto;
 
-import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypesRating;
+import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,7 +18,7 @@ public record RatingResponseDTO(
         Long reviewerId,
 
         @Schema(description = "who left the review")
-        ReviewerTypesRating reviewerType,
+        ReviewerTypeTypes reviewerType,
 
         @Schema(description = "rating")
         Double rating,

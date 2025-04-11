@@ -1,8 +1,12 @@
 package by.ikrotsyuk.bsuir.ratingservice.dto;
 
-import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypesRating;
+import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public record RatingRequestDTO(
         @Schema(description = "id of the rated trip")
@@ -17,7 +21,7 @@ public record RatingRequestDTO(
 
         @Schema(description = "who left the review")
         @NotNull
-        ReviewerTypesRating reviewerType,
+        ReviewerTypeTypes reviewerType,
 
         @Schema(description = "rating")
         @NotNull

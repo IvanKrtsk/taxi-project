@@ -3,7 +3,7 @@ package by.ikrotsyuk.bsuir.ratingservice.service.impl;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
-import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypesRating;
+import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
@@ -37,7 +37,7 @@ public class RatingReviewerServiceImpl implements RatingReviewerService {
     }
 
     @Override
-    public Page<RatingResponseDTO> viewLeavedReviews(Long reviewerId, ReviewerTypesRating reviewerType, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+    public Page<RatingResponseDTO> viewLeavedReviews(Long reviewerId, ReviewerTypeTypes reviewerType, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<RatingEntity> ratingEntities = ratingRepository
                 .findAllByReviewerIdAndReviewerType(reviewerId, reviewerType,
                         paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc));

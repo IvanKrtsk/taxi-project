@@ -1,17 +1,19 @@
 package by.ikrotsyuk.bsuir.ratingservice.entity;
 
-import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypesRating;
+import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.bson.types.ObjectId;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Document(collection = "reviews")
@@ -27,7 +29,7 @@ public class RatingEntity {
     private ObjectId id;
     private Long rideId;
     private Long reviewerId;
-    private ReviewerTypesRating reviewerType;
+    private ReviewerTypeTypes reviewerType;
     private Double rating;
     private String comment;
     @CreationTimestamp

@@ -1,7 +1,7 @@
 package by.ikrotsyuk.bsuir.ratingservice.repository;
 
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
-import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypesRating;
+import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RatingRepository extends MongoRepository<RatingEntity, ObjectId> {
-    Page<RatingEntity> findAllByReviewerIdAndReviewerType(Long reviewerId, ReviewerTypesRating reviewerType, Pageable pageable);
+    Page<RatingEntity> findAllByReviewerIdAndReviewerType(Long reviewerId, ReviewerTypeTypes reviewerType, Pageable pageable);
 }

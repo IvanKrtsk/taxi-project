@@ -1,8 +1,10 @@
 package by.ikrotsyuk.bsuir.ratingservice.exceptions.keys;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum GeneralExceptionMessageKeys {
     REVIEW_NOT_FOUND_BY_ID_MESSAGE_KEY("review.not.found.by.id.message"),
     REVIEWS_NOT_FOUND_MESSAGE_KEY("reviews.not.found.message"),
@@ -12,8 +14,4 @@ public enum GeneralExceptionMessageKeys {
     FIELD_DESERIALIZATION_MESSAGE_KEY("field.deserialization.message");
 
     private final String messageKey;
-
-    GeneralExceptionMessageKeys(String messageKey) {
-        this.messageKey = messageKey;
-    }
 }
