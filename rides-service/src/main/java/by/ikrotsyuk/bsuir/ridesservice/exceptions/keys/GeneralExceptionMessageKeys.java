@@ -1,8 +1,10 @@
 package by.ikrotsyuk.bsuir.ridesservice.exceptions.keys;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum GeneralExceptionMessageKeys {
     RIDE_NOT_FOUND_BY_ID_MESSAGE_KEY("ride.not.found.by.id.message"),
     RIDES_NOT_FOUND_MESSAGE_KEY("rides.not.found.message"),
@@ -11,8 +13,4 @@ public enum GeneralExceptionMessageKeys {
     FIELD_DESERIALIZATION_MESSAGE_KEY("field.deserialization.message");
 
     private final String messageKey;
-
-    GeneralExceptionMessageKeys(String messageKey) {
-        this.messageKey = messageKey;
-    }
 }
