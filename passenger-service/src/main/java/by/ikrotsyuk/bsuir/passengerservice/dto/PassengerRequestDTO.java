@@ -1,7 +1,6 @@
 package by.ikrotsyuk.bsuir.passengerservice.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -13,7 +12,6 @@ public record PassengerRequestDTO(
     String name,
 
     @Schema(description = "passenger email")
-    @Column(unique = true)
     @NotBlank(message = "field.must.not.be.empty.message")
     @Email
     @Size(max = 100, message = "field.must.have.size.message")
