@@ -23,7 +23,7 @@ public class RideAdminController implements RideAdminOperations {
 
     @Override
     public ResponseEntity<RideFullResponseDTO> deleteRide(Long rideId) {
-        return new ResponseEntity<>(rideAdminService.deleteRide(rideId), HttpStatus.OK);
+        return new ResponseEntity<>(rideAdminService.deleteRide(rideId), HttpStatus.NO_CONTENT);
     }
 
     @Override
