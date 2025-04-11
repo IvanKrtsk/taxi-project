@@ -1,6 +1,8 @@
 package by.ikrotsyuk.bsuir.driverservice.service.impl;
 
-import by.ikrotsyuk.bsuir.driverservice.dto.*;
+import by.ikrotsyuk.bsuir.driverservice.dto.DriverRequestDTO;
+import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
+import by.ikrotsyuk.bsuir.driverservice.dto.DriverVehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypes;
