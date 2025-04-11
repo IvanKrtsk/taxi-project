@@ -1,4 +1,4 @@
-package by.ikrotsyuk.bsuir.ridesservice.service.tools;
+package by.ikrotsyuk.bsuir.ridesservice.service.utils;
 
 import by.ikrotsyuk.bsuir.ridesservice.entity.RideEntity;
 import jakarta.annotation.PostConstruct;
@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Component
-public class PaginationTool {
+public class PaginationUtil {
     private final Set<String> entityFields = new HashSet<>();
     private final String DEFAULT_RIDES_SORT_FIELD = RideEntity.Fields.id.name();
 
@@ -23,7 +23,7 @@ public class PaginationTool {
     }
 
     public Sort getSort(String field, Boolean isSortDirectionAsc){
-        if(field.isBlank() || !entityFields.contains(field))
+        if(Objects.isNull(field) || field.isBlank() || !entityFields.contains(field))
             field = DEFAULT_RIDES_SORT_FIELD;
         if(Objects.isNull(isSortDirectionAsc))
             isSortDirectionAsc = true;

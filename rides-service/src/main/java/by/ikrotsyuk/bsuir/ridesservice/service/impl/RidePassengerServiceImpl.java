@@ -12,7 +12,7 @@ import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RidesNotFoundExcept
 import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
 import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
 import by.ikrotsyuk.bsuir.ridesservice.service.RidePassengerService;
-import by.ikrotsyuk.bsuir.ridesservice.service.tools.PaginationTool;
+import by.ikrotsyuk.bsuir.ridesservice.service.utils.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ import java.util.Random;
 public class RidePassengerServiceImpl implements RidePassengerService {
     private final RideMapper rideMapper;
     private final RideRepository rideRepository;
-    private final PaginationTool paginationTool;
+    private final PaginationUtil paginationUtil;
 
     private final BigDecimal ECONOMY_MULTIPLIER = BigDecimal.valueOf(1.0);
     private final BigDecimal COMFORT_MULTIPLIER = BigDecimal.valueOf(1.2);
@@ -48,7 +48,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
     public Page<RideFullResponseDTO> getRidesStory(Long passengerId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         // check if passenger exists
         Page<RideEntity> rideEntities = rideRepository.
-                findAllByPassengerId(passengerId, paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
+                findAllByPassengerId(passengerId, paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
         if(!rideEntities.hasContent())
             throw new RidesNotFoundException();
         return rideEntities.map(rideMapper::toFullDTO);

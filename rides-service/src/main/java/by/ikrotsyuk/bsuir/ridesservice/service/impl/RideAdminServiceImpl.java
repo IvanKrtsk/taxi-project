@@ -8,7 +8,7 @@ import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RidesNotFoundExcept
 import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
 import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
 import by.ikrotsyuk.bsuir.ridesservice.service.RideAdminService;
-import by.ikrotsyuk.bsuir.ridesservice.service.tools.PaginationTool;
+import by.ikrotsyuk.bsuir.ridesservice.service.utils.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RideAdminServiceImpl implements RideAdminService {
     private final RideMapper rideMapper;
     private final RideRepository rideRepository;
-    private final PaginationTool paginationTool;
+    private final PaginationUtil paginationUtil;
 
     @Override
     @Transactional
@@ -49,7 +49,7 @@ public class RideAdminServiceImpl implements RideAdminService {
     @Override
     @Transactional(readOnly = true)
     public Page<RideFullResponseDTO> getAllRides(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
-        Page<RideEntity> rideEntities = rideRepository.findAll(paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
+        Page<RideEntity> rideEntities = rideRepository.findAll(paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
         if(!rideEntities.hasContent())
             throw new RidesNotFoundException();
         return rideEntities.map(rideMapper::toFullDTO);
