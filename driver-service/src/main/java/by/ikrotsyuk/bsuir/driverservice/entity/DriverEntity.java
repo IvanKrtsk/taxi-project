@@ -29,9 +29,12 @@ public class DriverEntity {
     private String email;
     @Column(unique = true)
     private String phone;
-    private Double rating;
-    private Long total_rides;
-    private Boolean isDeleted;
+    @Builder.Default
+    private Double rating = 0.0;
+    @Builder.Default
+    private Long total_rides = 0L;
+    @Builder.Default
+    private Boolean isDeleted = false;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
     private StatusTypesDriver status;
