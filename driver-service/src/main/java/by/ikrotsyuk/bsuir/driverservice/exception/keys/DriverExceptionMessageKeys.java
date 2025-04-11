@@ -1,8 +1,10 @@
 package by.ikrotsyuk.bsuir.driverservice.exception.keys;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum DriverExceptionMessageKeys {
     DRIVER_NOT_FOUND_BY_ID_MESSAGE_KEY("driver.not.found.by.id.message"),
     DRIVER_ALREADY_DELETED_MESSAGE_KEY("driver.already.deleted.message"),
@@ -14,8 +16,4 @@ public enum DriverExceptionMessageKeys {
     DRIVER_CURRENT_VEHICLE_NOT_FOUND("driver.current.vehicle.not.found");
 
     private final String messageKey;
-
-    DriverExceptionMessageKeys(String messageKey) {
-        this.messageKey = messageKey;
-    }
 }

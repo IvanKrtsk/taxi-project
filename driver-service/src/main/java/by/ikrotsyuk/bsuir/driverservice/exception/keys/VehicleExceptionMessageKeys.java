@@ -1,8 +1,10 @@
 package by.ikrotsyuk.bsuir.driverservice.exception.keys;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum VehicleExceptionMessageKeys {
     VEHICLE_NOT_FOUND_BY_ID_MESSAGE_KEY("vehicle.not.found.by.id.message"),
     VEHICLE_NOT_BELONG_TO_DRIVER_MESSAGE_KEY("vehicle.not.belong.to.driver.message"),
@@ -14,8 +16,4 @@ public enum VehicleExceptionMessageKeys {
     VEHICLE_WITH_SAME_LICENSE_PLATE_ALREADY_EXISTS_MESSAGE_KEY("vehicle.with.same.license.plate.already.exists.message");
 
     private final String messageKey;
-
-    VehicleExceptionMessageKeys(String messageKey) {
-        this.messageKey = messageKey;
-    }
 }
