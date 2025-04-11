@@ -31,7 +31,7 @@ public class PaginationUtil {
     }
 
     public Sort getSort(String field, Boolean isSortDirectionAsc, Class<?> clazz){
-        if(StringUtils.isBlank(field)) {
+        if(Objects.isNull(field) || StringUtils.isBlank(field)) {
             field = (clazz == DriverEntity.class) ? DEFAULT_DRIVERS_SORT_FIELD : DEFAULT_VEHICLES_SORT_FIELD;
         } else
             if (clazz == DriverEntity.class && !driverEntityFields.contains(field)) {
