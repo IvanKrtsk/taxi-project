@@ -2,6 +2,13 @@ server:
   port: 8084
 
 spring:
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+  web:
+    locale-resolver: accept_header
+    locale: en
   application:
     name: driver-service
   # database configuration
@@ -21,7 +28,7 @@ spring:
 springdoc:
   api-docs:
     enabled: true
-    path: /driver/v3/api-docs
+    path: /api/v1/drivers/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /driver/swagger-ui.html
+    path: /api/v1/drivers/swagger-ui.html
