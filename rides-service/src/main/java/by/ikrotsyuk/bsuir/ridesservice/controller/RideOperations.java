@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-public interface RideAdminOperations {
+public interface RideOperations {
     @PatchMapping("/{rideId}")
     ResponseEntity<RideFullResponseDTO> editRide(@PathVariable Long rideId, @Valid @RequestBody RideFullRequestDTO rideFullRequestDTO);
 
