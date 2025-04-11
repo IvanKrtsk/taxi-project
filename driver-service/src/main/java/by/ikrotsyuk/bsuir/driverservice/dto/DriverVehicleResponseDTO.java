@@ -1,7 +1,7 @@
 package by.ikrotsyuk.bsuir.driverservice.dto;
 
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
-import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypesDriver;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public record DriverVehicleResponseDTO (
     Boolean isDeleted,
 
     @Schema(description = "driver status")
-    StatusTypesDriver status,
+    StatusTypes status,
 
     @Schema(description = "vehicles assigned to a driver")
     List<VehicleEntity> driverVehicles

@@ -4,7 +4,7 @@ import by.ikrotsyuk.bsuir.driverservice.controller.VehicleOperations;
 import by.ikrotsyuk.bsuir.driverservice.controller.VehiclesByCriterionOperation;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
-import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypesDriver;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
 import by.ikrotsyuk.bsuir.driverservice.service.VehicleService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
@@ -68,7 +68,7 @@ public class VehicleControllerImpl implements VehicleOperations, VehiclesByCrite
 
     @Override
     @GetMapping("/class")
-    public ResponseEntity<Page<VehicleResponseDTO>> getAllVehiclesByType(@RequestParam CarClassTypesDriver type, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc) {
+    public ResponseEntity<Page<VehicleResponseDTO>> getAllVehiclesByType(@RequestParam CarClassTypes type, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(vehicleService.getAllVehiclesByType(type, offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 

@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.driverservice.dto;
 
-import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypesDriver;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record VehicleResponseDTO(
@@ -14,7 +14,7 @@ public record VehicleResponseDTO(
     String model,
 
     @Schema(description = "driver's car class")
-    CarClassTypesDriver carClass,
+    CarClassTypes carClass,
 
     @Schema(description = "number of driver trips on this car")
     Long ridesCount,

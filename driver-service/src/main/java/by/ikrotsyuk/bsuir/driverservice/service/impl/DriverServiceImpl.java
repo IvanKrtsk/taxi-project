@@ -3,7 +3,7 @@ package by.ikrotsyuk.bsuir.driverservice.service.impl;
 import by.ikrotsyuk.bsuir.driverservice.dto.*;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
-import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypesDriver;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypes;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.*;
 import by.ikrotsyuk.bsuir.driverservice.mapper.DriverMapper;
 import by.ikrotsyuk.bsuir.driverservice.repository.DriverRepository;
@@ -103,7 +103,7 @@ public class DriverServiceImpl implements DriverService {
                     .email(email)
                     .phone(phone)
                     .total_rides(0L)              //  @Builder.Default null issue
-                    .status(StatusTypesDriver.AVAILABLE)
+                    .status(StatusTypes.AVAILABLE)
                     .build()));
         }
     }

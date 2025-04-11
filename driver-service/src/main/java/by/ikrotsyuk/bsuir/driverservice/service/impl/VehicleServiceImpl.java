@@ -4,7 +4,7 @@ import by.ikrotsyuk.bsuir.driverservice.dto.VehicleRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
-import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypesDriver;
+import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.DriverCurrentVehicleNotFoundException;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.DriverNotFoundByIdException;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.DriverVehiclesNotFoundException;
@@ -104,7 +104,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<VehicleResponseDTO> getAllVehiclesByType(CarClassTypesDriver type, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+    public Page<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByCarClass(type,
                 paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
 

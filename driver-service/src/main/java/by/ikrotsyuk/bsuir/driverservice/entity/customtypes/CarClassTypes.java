@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.driverservice.entity.customtypes;
 
-public enum CarClassTypesDriver {
+public enum CarClassTypes {
     ECONOMY,
     COMFORT,
     COMFORT_PLUS,
