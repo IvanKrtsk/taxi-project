@@ -7,7 +7,7 @@ import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotFoundByIdExc
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RidesNotFoundException;
 import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
 import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
-import by.ikrotsyuk.bsuir.ridesservice.service.RideAdminService;
+import by.ikrotsyuk.bsuir.ridesservice.service.RideService;
 import by.ikrotsyuk.bsuir.ridesservice.service.utils.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class RideAdminServiceImpl implements RideAdminService {
+public class RideServiceImpl implements RideService {
     private final RideMapper rideMapper;
     private final RideRepository rideRepository;
     private final PaginationUtil paginationUtil;
