@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-public interface VehiclesByCriterionOperation {
+public interface VehiclesByCriterionOperations {
     @GetMapping("/type")
     ResponseEntity<Page<VehicleResponseDTO>> getAllVehiclesByType(@RequestParam CarClassTypes type, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
 
@@ -20,5 +20,5 @@ public interface VehiclesByCriterionOperation {
     ResponseEntity<Page<VehicleResponseDTO>> getAllVehiclesByBrand(@RequestParam String brand, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
 
     @GetMapping("/license")
-    ResponseEntity<VehicleResponseDTO> getVehicleByLicensePlate(@Size(max = 20) @NotBlank @RequestParam String licensePlate);
+    ResponseEntity<VehicleResponseDTO> getVehicleByLicensePlate(@Size(max = 20, message = "field.must.have.size.message") @NotBlank @RequestParam String licensePlate);
 }

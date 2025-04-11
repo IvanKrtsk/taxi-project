@@ -1,7 +1,7 @@
 package by.ikrotsyuk.bsuir.driverservice.controller.impl;
 
 import by.ikrotsyuk.bsuir.driverservice.controller.VehicleOperations;
-import by.ikrotsyuk.bsuir.driverservice.controller.VehiclesByCriterionOperation;
+import by.ikrotsyuk.bsuir.driverservice.controller.VehiclesByCriterionOperations;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
@@ -20,7 +20,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/api/v1/drivers/vehicles")
-public class VehicleControllerImpl implements VehicleOperations, VehiclesByCriterionOperation {
+public class VehicleControllerImpl implements VehicleOperations, VehiclesByCriterionOperations {
     private final VehicleService vehicleService;
 
     @Override
