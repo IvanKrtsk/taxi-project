@@ -13,7 +13,7 @@ import by.ikrotsyuk.bsuir.driverservice.mapper.VehicleMapper;
 import by.ikrotsyuk.bsuir.driverservice.repository.DriverRepository;
 import by.ikrotsyuk.bsuir.driverservice.repository.VehicleRepository;
 import by.ikrotsyuk.bsuir.driverservice.service.VehicleService;
-import by.ikrotsyuk.bsuir.driverservice.service.tools.PaginationTool;
+import by.ikrotsyuk.bsuir.driverservice.service.utils.PaginationUtil;
 import by.ikrotsyuk.bsuir.driverservice.service.validation.VehicleServiceValidationManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +30,7 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleMapper vehicleMapper;
     private final DriverRepository driverRepository;
     private final VehicleServiceValidationManager vehicleServiceValidationManager;
-    private final PaginationTool paginationTool;
+    private final PaginationUtil paginationUtil;
 
     @Override
     @Transactional
@@ -95,7 +95,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Transactional(readOnly = true)
     public Page<VehicleResponseDTO> getAllVehicles(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAll(
-               paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc, VehicleEntity.class));
+               paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc, VehicleEntity.class));
         if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundException();
         else
@@ -106,7 +106,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Transactional(readOnly = true)
     public Page<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByCarClass(type,
-                paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
+                paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
 
         if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundByTypeException(type);
@@ -117,7 +117,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Transactional(readOnly = true)
     public Page<VehicleResponseDTO> getAllVehiclesByYear(Integer year, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByYear(year,
-                paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
+                paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
 
         if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundByYearException(year);
@@ -128,7 +128,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Transactional(readOnly = true)
     public Page<VehicleResponseDTO> getAllVehiclesByBrand(String brand, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByBrand(brand,
-                paginationTool.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
+                paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
 
         if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundByBrandException(brand);

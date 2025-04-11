@@ -6,8 +6,6 @@ import by.ikrotsyuk.bsuir.driverservice.dto.VehicleRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.VehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.CarClassTypes;
 import by.ikrotsyuk.bsuir.driverservice.service.VehicleService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,91 +22,63 @@ import java.util.List;
 public class VehicleControllerImpl implements VehicleOperations, VehiclesByCriterionOperation {
     private final VehicleService vehicleService;
 
-    /**
-     *
-     * @param driverId - в дальнейшем будет браться из jwt
-     */
     @Override
-    @PostMapping("/{driverId}")
-    public ResponseEntity<VehicleResponseDTO> addVehicle(@PathVariable Long driverId, @Valid @RequestBody VehicleRequestDTO vehicleRequestDTO) {
+    public ResponseEntity<VehicleResponseDTO> addVehicle(Long driverId, VehicleRequestDTO vehicleRequestDTO) {
         return new ResponseEntity<>(vehicleService.addVehicle(driverId, vehicleRequestDTO), HttpStatus.CREATED);
     }
 
-    /**
-     *
-     * @param driverId - в дальнейшем будет браться из jwt
-     */
     @Override
-    @PatchMapping("/edit/{driverId}/{vehicleId}")
-    public ResponseEntity<VehicleResponseDTO> editVehicle(@PathVariable Long driverId, @PathVariable Long vehicleId, @Valid @RequestBody VehicleRequestDTO vehicleRequestDTO) {
+    public ResponseEntity<VehicleResponseDTO> editVehicle(Long driverId, Long vehicleId, VehicleRequestDTO vehicleRequestDTO) {
         return new ResponseEntity<>(vehicleService.editVehicle(driverId, vehicleId, vehicleRequestDTO), HttpStatus.OK);
     }
 
-    /**
-     *
-     * @param driverId - в дальнейшем будет браться из jwt
-     */
     @Override
-    @PatchMapping("/choose/{driverId}/{vehicleId}")
-    public ResponseEntity<VehicleResponseDTO> chooseCurrentVehicle(@PathVariable Long driverId, @PathVariable Long vehicleId) {
+    public ResponseEntity<VehicleResponseDTO> chooseCurrentVehicle(Long driverId, Long vehicleId) {
         return new ResponseEntity<>(vehicleService.chooseCurrentVehicle(driverId, vehicleId), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("")
-    public ResponseEntity<Page<VehicleResponseDTO>> getAllVehicles(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc) {
+    public ResponseEntity<Page<VehicleResponseDTO>> getAllVehicles(int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(vehicleService.getAllVehicles(offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/vehicle/{vehicleId}")
-    public ResponseEntity<VehicleResponseDTO> getVehicleById(@PathVariable Long vehicleId) {
+    public ResponseEntity<VehicleResponseDTO> getVehicleById(Long vehicleId) {
         return new ResponseEntity<>(vehicleService.getVehicleById(vehicleId), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/class")
-    public ResponseEntity<Page<VehicleResponseDTO>> getAllVehiclesByType(@RequestParam CarClassTypes type, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc) {
+    public ResponseEntity<Page<VehicleResponseDTO>> getAllVehiclesByType(CarClassTypes type, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(vehicleService.getAllVehiclesByType(type, offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/year")
-    public ResponseEntity<Page<VehicleResponseDTO>> getAllVehiclesByYear(@RequestParam Integer year, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc) {
+    public ResponseEntity<Page<VehicleResponseDTO>> getAllVehiclesByYear(Integer year, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(vehicleService.getAllVehiclesByYear(year, offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/brand")
-    public ResponseEntity<Page<VehicleResponseDTO>> getAllVehiclesByBrand(@RequestParam String brand, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc) {
+    public ResponseEntity<Page<VehicleResponseDTO>> getAllVehiclesByBrand(String brand, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(vehicleService.getAllVehiclesByBrand(brand, offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/vehicle/license")
-    public ResponseEntity<VehicleResponseDTO> getVehicleByLicensePlate(@Size(max = 20) @RequestParam String licensePlate) {
+    public ResponseEntity<VehicleResponseDTO> getVehicleByLicensePlate(String licensePlate) {
         return new ResponseEntity<>(vehicleService.getVehicleByLicense(licensePlate), HttpStatus.OK);
     }
 
-    /**
-     *
-     * @param driverId - в дальнейшем будет браться из jwt
-     */
     @Override
-    @DeleteMapping("/vehicle/{driverId}/{vehicleId}")
-    public ResponseEntity<VehicleResponseDTO> deleteVehicle(@PathVariable Long driverId, @PathVariable Long vehicleId) {
-        return new ResponseEntity<>(vehicleService.deleteVehicleById(driverId, vehicleId), HttpStatus.OK);
+    public ResponseEntity<VehicleResponseDTO> deleteVehicle(Long driverId, Long vehicleId) {
+        return new ResponseEntity<>(vehicleService.deleteVehicleById(driverId, vehicleId), HttpStatus.NO_CONTENT);
     }
 
     @Override
-    @GetMapping("/{driverId}")
-    public ResponseEntity<List<VehicleResponseDTO>> getAllDriverVehicles(@PathVariable Long driverId) {
+    public ResponseEntity<List<VehicleResponseDTO>> getAllDriverVehicles(Long driverId) {
         return new ResponseEntity<>(vehicleService.getAllDriverVehicles(driverId), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/current/{driverId}")
-    public ResponseEntity<VehicleResponseDTO> getDriverCurrentVehicle(@PathVariable Long driverId) {
+    public ResponseEntity<VehicleResponseDTO> getDriverCurrentVehicle(Long driverId) {
         return new ResponseEntity<>(vehicleService.getDriverCurrentVehicle(driverId), HttpStatus.OK);
     }
 }
