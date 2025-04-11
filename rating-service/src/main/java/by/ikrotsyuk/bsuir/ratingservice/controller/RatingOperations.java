@@ -5,12 +5,18 @@ import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-public interface RatingAdminOperations {
-    ResponseEntity<RatingAdminResponseDTO> getRatingById(@RequestParam String id);
+public interface RatingOperations {
+    @GetMapping("/rating/{ratingId}")
+    ResponseEntity<RatingAdminResponseDTO> getRatingById(@PathVariable String ratingId);
+
+    @GetMapping
     ResponseEntity<Page<RatingAdminResponseDTO>> getAllRatings(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
-    ResponseEntity<RatingAdminResponseDTO> editRating(@RequestParam String id, @Valid @RequestBody RatingRequestDTO requestDTO);
-    ResponseEntity<RatingAdminResponseDTO> deleteRating(@RequestParam String id);
+
+    @PutMapping("/{ratingId}")
+    ResponseEntity<RatingAdminResponseDTO> editRating(@PathVariable String ratingId, @Valid @RequestBody RatingRequestDTO requestDTO);
+
+    @DeleteMapping("/{ratingId}")
+    ResponseEntity<RatingAdminResponseDTO> deleteRating(@PathVariable String ratingId);
 }
