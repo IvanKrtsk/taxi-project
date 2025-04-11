@@ -5,10 +5,11 @@ import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.DriverVehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface DriverMapper {
     DriverResponseDTO toDTO(DriverEntity driverEntity);
 
