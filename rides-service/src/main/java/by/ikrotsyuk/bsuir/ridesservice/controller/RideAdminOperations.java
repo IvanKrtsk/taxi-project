@@ -5,12 +5,18 @@ import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 public interface RideAdminOperations {
-    ResponseEntity<RideFullResponseDTO> editRide(@RequestParam Long rideId, @Valid @RequestBody RideFullRequestDTO rideFullRequestDTO);
-    ResponseEntity<RideFullResponseDTO> deleteRide(@RequestParam Long rideId);
+    @PatchMapping("/{rideId}")
+    ResponseEntity<RideFullResponseDTO> editRide(@PathVariable Long rideId, @Valid @RequestBody RideFullRequestDTO rideFullRequestDTO);
+
+    @DeleteMapping("/{rideId}")
+    ResponseEntity<RideFullResponseDTO> deleteRide(@PathVariable Long rideId);
+
+    @GetMapping
     ResponseEntity<Page<RideFullResponseDTO>> getAllRides(@RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
-    ResponseEntity<RideFullResponseDTO> getRideById(@RequestParam Long rideId);
+
+    @GetMapping("/{rideId}")
+    ResponseEntity<RideFullResponseDTO> getRideById(@PathVariable Long rideId);
 }

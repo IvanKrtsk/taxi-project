@@ -19,43 +19,36 @@ public class RideDriverController implements RideDriverOperations {
     private final RideDriverService rideDriverService;
 
     @Override
-    @GetMapping("/available/{driverId}")
-    public ResponseEntity<Page<RideResponseDTO>> getAvailableRides(@PathVariable Long driverId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+    public ResponseEntity<Page<RideResponseDTO>> getAvailableRides(Long driverId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(rideDriverService.getAvailableRides(driverId, offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 
     @Override
-    @PatchMapping("/accept/{driverId}")
-    public ResponseEntity<RideFullResponseDTO> acceptRide(@PathVariable Long driverId, Long rideId) {
+    public ResponseEntity<RideFullResponseDTO> acceptRide(Long driverId, Long rideId) {
         return new ResponseEntity<>(rideDriverService.acceptRide(driverId, rideId), HttpStatus.OK);
     }
 
     @Override
-    @PatchMapping("/refuse/{driverId}")
-    public ResponseEntity<RideFullResponseDTO> refuseRide(@PathVariable Long driverId, Long rideId) {
+    public ResponseEntity<RideFullResponseDTO> refuseRide(Long driverId, Long rideId) {
         return new ResponseEntity<>(rideDriverService.refuseRide(driverId, rideId), HttpStatus.OK);
     }
 
     @Override
-    @PatchMapping("/begin/{driverId}")
-    public ResponseEntity<RideFullResponseDTO> beginRide(@PathVariable Long driverId, Long rideId) {
+    public ResponseEntity<RideFullResponseDTO> beginRide(Long driverId, Long rideId) {
         return new ResponseEntity<>(rideDriverService.beginRide(driverId, rideId), HttpStatus.OK);
     }
 
     @Override
-    @PatchMapping("/end/{driverId}")
-    public ResponseEntity<RideFullResponseDTO> endRide(@PathVariable Long driverId, Long rideId) {
+    public ResponseEntity<RideFullResponseDTO> endRide(Long driverId, Long rideId) {
         return new ResponseEntity<>(rideDriverService.endRide(driverId, rideId), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/all/{driverId}")
-    public ResponseEntity<Page<RideFullResponseDTO>> getRidesHistory(@PathVariable Long driverId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+    public ResponseEntity<Page<RideFullResponseDTO>> getRidesHistory(Long driverId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(rideDriverService.getRidesHistory(driverId, offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/{driverId}")
     public ResponseEntity<RideFullResponseDTO> getCurrentRide(@PathVariable Long driverId) {
         return new ResponseEntity<>(rideDriverService.getCurrentRide(driverId), HttpStatus.OK);
     }
