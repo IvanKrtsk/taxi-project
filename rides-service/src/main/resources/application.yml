@@ -2,6 +2,13 @@ server:
   port: 8086
 
 spring:
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+  web:
+    locale-resolver: accept_header
+    locale: en
   application:
     name: rides-service
   # postgresql database configuration
@@ -16,16 +23,12 @@ spring:
   # liquibase configuration
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
-  # mongodb database configuration
-  data:
-    mongodb:
-      uri: mongodb://mongo:mongo@localhost:27017/taxi_db
 
 # swagger routes configuration
 springdoc:
   api-docs:
     enabled: true
-    path: /rides/v3/api-docs
+    path: /api/v1/rides/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /rides/swagger-ui.html
+    path: /api/v1/rides/swagger-ui.html
