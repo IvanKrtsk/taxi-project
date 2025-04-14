@@ -37,7 +37,7 @@ spring:
         - id: rating-service
           uri: lb://rating-service
           predicates:
-            - Path=/api/v1/ratings/**
+            - Path=/api/v1/ratings/**, /api/v1/reviewer/ratings/**
 
 # swagger routes configuration
 springdoc:

@@ -4,6 +4,13 @@ server:
 spring:
   application:
     name: rating-service
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+  web:
+    locale-resolver: accept_header
+    locale: en
   # postgresql database configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/taxi_db
@@ -25,7 +32,7 @@ spring:
 springdoc:
   api-docs:
     enabled: true
-    path: /rating/v3/api-docs
+    path: /api/v1/ratings/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /rating/swagger-ui.html
+    path: /api/v1/ratings/swagger-ui.html
