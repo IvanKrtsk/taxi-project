@@ -1,4 +1,4 @@
-package by.ikrotsyuk.bsuir.ridesservice.service.utils;
+package by.ikrotsyuk.bsuir.ridesservice.utils;
 
 import by.ikrotsyuk.bsuir.ridesservice.entity.RideEntity;
 import jakarta.annotation.PostConstruct;

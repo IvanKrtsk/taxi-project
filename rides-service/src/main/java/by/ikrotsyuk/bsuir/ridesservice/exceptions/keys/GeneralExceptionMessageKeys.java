@@ -12,5 +12,6 @@ public enum GeneralExceptionMessageKeys {
     ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY("enum.argument.deserialization.message"),
     FIELD_DESERIALIZATION_MESSAGE_KEY("field.deserialization.message");
 
+
     private final String messageKey;
 }
