@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
 
 public interface RidePassengerOperations {
-    @GetMapping("/{passengerId}/cost")
+    @GetMapping("/{passengerId}/rides/cost")
     ResponseEntity<BigDecimal> getCostOfRide(@PathVariable Long passengerId, @Valid RideRequestDTO rideRequestDTO);
 
-    @GetMapping("/{passengerId}")
+    @GetMapping("/{passengerId}/rides")
     ResponseEntity<Page<RideFullResponseDTO>> getRidesStory(@PathVariable Long passengerId, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
 
-    @PostMapping("/{passengerId}")
+    @PostMapping("/{passengerId}/rides")
     ResponseEntity<RideResponseDTO> bookRide(@PathVariable Long passengerId, @Valid @RequestBody RideRequestDTO rideRequestDTO);
 
-    @GetMapping("/{passengerId}/{rideId}")
+    @GetMapping("/{passengerId}/rides/{rideId}")
     ResponseEntity<RideFullResponseDTO> getRideInfo(@PathVariable Long passengerId, @PathVariable Long rideId);
 
-    @PatchMapping("/{passengerId}/{rideId}/refuse")
+    @PatchMapping("/{passengerId}/rides/{rideId}/refuse")
     ResponseEntity<RideFullResponseDTO> refuseRide(@PathVariable Long passengerId, @PathVariable Long rideId);
 }

@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping("/api/v1/passenger/rides")
+@RequestMapping("/api/v1/passenger")
 public class RidePassengerController implements RidePassengerOperations {
     private final RidePassengerService ridePassengerService;
 

@@ -10,24 +10,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface RideDriverOperations {
-    @GetMapping("/{driverId}/available")
+    @GetMapping("/{driverId}/rides/available")
     ResponseEntity<Page<RideResponseDTO>> getAvailableRides(@PathVariable Long driverId, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
 
-    @PatchMapping("/{driverId}/{rideId}/accept")  // driverId буду брать из jwt и будет ресурсоориентировано
+    @PatchMapping("/{driverId}/rides/{rideId}/accept")  // driverId буду брать из jwt и будет ресурсоориентировано
     ResponseEntity<RideFullResponseDTO> acceptRide(@PathVariable Long driverId, @PathVariable Long rideId);
 
-    @PatchMapping("/{driverId}/{rideId}/refuse")
+    @PatchMapping("/{driverId}/rides/{rideId}/refuse")
     ResponseEntity<RideFullResponseDTO> refuseRide(@PathVariable Long driverId, @PathVariable Long rideId);
 
-    @PatchMapping("/{driverId}/{rideId}/begin")
+    @PatchMapping("/{driverId}/rides/{rideId}/begin")
     ResponseEntity<RideFullResponseDTO> beginRide(@PathVariable Long driverId, @PathVariable Long rideId);
 
-    @PatchMapping("/{driverId}/{rideId}/end")
+    @PatchMapping("/{driverId}/rides/{rideId}/end")
     ResponseEntity<RideFullResponseDTO> endRide(@PathVariable Long driverId, @PathVariable Long rideId);
 
-    @GetMapping("/{driverId}")
+    @GetMapping("/{driverId}/rides")
     ResponseEntity<Page<RideFullResponseDTO>> getRidesHistory(@PathVariable Long driverId, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
 
-    @GetMapping("/{driverId}/current")
+    @GetMapping("/{driverId}/rides/current")
     ResponseEntity<RideFullResponseDTO> getCurrentRide(@PathVariable Long driverId);
 }

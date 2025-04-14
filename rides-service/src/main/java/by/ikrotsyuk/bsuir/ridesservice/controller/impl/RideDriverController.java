@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping("/api/v1/driver/rides")
+@RequestMapping("/api/v1/driver")
 public class RideDriverController implements RideDriverOperations {
     private final RideDriverService rideDriverService;
 
