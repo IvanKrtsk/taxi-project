@@ -4,6 +4,13 @@ server:
 spring:
   application:
     name: passenger-service
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+  web:
+    locale-resolver: accept_header
+    locale: en
   # database configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/taxi_db
@@ -21,7 +28,7 @@ spring:
 springdoc:
   api-docs:
     enabled: true
-    path: /api/v1/passenger/v3/api-docs
+    path: /api/v1/passengers/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /api/v1/passenger/swagger-ui.html
+    path: /api/v1/passengers/swagger-ui.html
