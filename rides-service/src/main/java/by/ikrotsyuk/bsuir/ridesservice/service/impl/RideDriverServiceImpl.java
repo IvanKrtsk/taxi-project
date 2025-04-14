@@ -4,13 +4,7 @@ import by.ikrotsyuk.bsuir.ridesservice.dto.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.dto.RideResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.entity.RideEntity;
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.AvailableRidesNotFoundException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.CurrentRideNotFoundException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideAlreadyAcceptedByAnotherDriverException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideAlreadyAcceptedByYouException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotBelongToDriverException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotFoundByIdException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RidesNotFoundException;
+import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.*;
 import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
 import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
 import by.ikrotsyuk.bsuir.ridesservice.service.RideDriverService;
@@ -48,6 +42,8 @@ public class RideDriverServiceImpl implements RideDriverService {
         RideEntity rideEntity = rideRepository.findById(rideId)
                 .orElseThrow(() -> new RideNotFoundByIdException(rideId));
         Long id = rideEntity.getDriverId();
+        if(rideEntity.getRideStatus() != RideStatusTypes.PENDING)
+            throw new RideIsNotInRightConditionForThisOperationException(rideId, rideEntity.getRideStatus());
         if(rideEntity.getDriverId() != null) {
             if(id.equals(driverId))
                 throw new RideAlreadyAcceptedByYouException(rideId);
@@ -80,6 +76,8 @@ public class RideDriverServiceImpl implements RideDriverService {
     public RideFullResponseDTO beginRide(Long driverId, Long rideId) {
         RideEntity rideEntity = rideRepository.findById(rideId)
                 .orElseThrow(() -> new RideNotFoundByIdException(rideId));
+        if(rideEntity.getRideStatus() != RideStatusTypes.IN_PROGRESS)
+            throw new RideIsNotInRightConditionForThisOperationException(rideId, rideEntity.getRideStatus());
         if(!rideEntity.getDriverId().equals(driverId))
             throw new RideNotBelongToDriverException(rideId, driverId);
         OffsetDateTime now = OffsetDateTime.now();
@@ -94,6 +92,8 @@ public class RideDriverServiceImpl implements RideDriverService {
     public RideFullResponseDTO endRide(Long driverId, Long rideId) {
         RideEntity rideEntity = rideRepository.findById(rideId)
                 .orElseThrow(() -> new RideNotFoundByIdException(rideId));
+        if(rideEntity.getRideStatus() != RideStatusTypes.IN_PROGRESS)
+            throw new RideIsNotInRightConditionForThisOperationException(rideId, rideEntity.getRideStatus());
         if(!rideEntity.getDriverId().equals(driverId))
             throw new RideNotBelongToDriverException(rideId, driverId);
         rideEntity.setRideStatus(RideStatusTypes.COMPLETED);

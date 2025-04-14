@@ -1,14 +1,7 @@
 package by.ikrotsyuk.bsuir.ridesservice.exceptions;
 
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.dto.ExceptionDTO;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.AvailableRidesNotFoundException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.CurrentRideNotFoundException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideAlreadyAcceptedByAnotherDriverException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideAlreadyAcceptedByYouException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotBelongToDriverException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotBelongToPassengerException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotFoundByIdException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RidesNotFoundException;
+import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.*;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.keys.GeneralExceptionMessageKeys;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.template.ExceptionTemplate;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -124,6 +117,14 @@ public class GlobalExceptionHandler {
         String message = messageSource
                 .getMessage(messageKey, ex.getArgs(), LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(RideIsNotInRightConditionForThisOperationException.class)
+    public ResponseEntity<ExceptionDTO> handleRideIsNotInRightConditionForThisOperationException(ExceptionTemplate ex){
+        String messageKey = ex.getMessageKey();
+        String message = messageSource
+                .getMessage(messageKey, ex.getArgs(), LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
