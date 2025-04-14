@@ -6,6 +6,7 @@ import by.ikrotsyuk.bsuir.ridesservice.dto.RideResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.entity.RideEntity;
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypes;
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
+import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideIsNotInRightConditionForThisOperationException;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotBelongToPassengerException;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotFoundByIdException;
 import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RidesNotFoundException;
@@ -84,6 +85,8 @@ public class RidePassengerServiceImpl implements RidePassengerService {
                 .orElseThrow(() -> new RideNotFoundByIdException(rideId));
         if(!rideEntity.getPassengerId().equals(passengerId))
             throw new RideNotBelongToPassengerException(rideId, passengerId);
+        if(rideEntity.getRideStatus() == RideStatusTypes.CANCELED)
+            throw new RideIsNotInRightConditionForThisOperationException(rideId, rideEntity.getRideStatus());
         rideEntity.setRideStatus(RideStatusTypes.CANCELED);
         return rideMapper.toFullDTO(rideEntity);
     }
