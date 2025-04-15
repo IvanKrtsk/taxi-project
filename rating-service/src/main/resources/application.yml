@@ -43,6 +43,14 @@ spring:
         request:
           timeout:
             ms: 30000
+        enable:
+          idempotence: true
+        max:
+          in:
+            flight:
+              requests:
+                per:
+                  connection: 5
 
 # swagger routes configuration
 springdoc:
