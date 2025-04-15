@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RatingRepository extends MongoRepository<RatingEntity, ObjectId> {
     Page<RatingEntity> findAllByReviewerIdAndReviewerType(Long reviewerId, ReviewerTypeTypes reviewerType, Pageable pageable);
+    boolean existsByRideIdAndReviewerType(Long rideId, ReviewerTypeTypes reviewerType);
 }

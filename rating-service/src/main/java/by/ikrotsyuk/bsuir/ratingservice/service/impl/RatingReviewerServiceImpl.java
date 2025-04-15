@@ -4,30 +4,37 @@ import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
+import by.ikrotsyuk.bsuir.ratingservice.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewAlreadyExistsException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
 import by.ikrotsyuk.bsuir.ratingservice.mapper.RatingMapper;
 import by.ikrotsyuk.bsuir.ratingservice.repository.RatingRepository;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingReviewerService;
 import by.ikrotsyuk.bsuir.ratingservice.service.utils.PaginationUtil;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Service
 public class RatingReviewerServiceImpl implements RatingReviewerService {
     private final RatingMapper ratingMapper;
     private final RatingRepository ratingRepository;
     private final PaginationUtil paginationUtil;
+    private KafkaTemplate<String, RatingUpdatedEvent> kafkaTemplate;
 
     @Override
     public RatingResponseDTO leaveReview(RatingRequestDTO ratingRequestDTO) {
+        if(ratingRepository.existsByRideIdAndReviewerType(ratingRequestDTO.rideId(), ratingRequestDTO.reviewerType()))
+            throw new ReviewAlreadyExistsException(ratingRequestDTO.rideId(), ratingRequestDTO.reviewerType());
         RatingEntity ratingEntity = ratingMapper.toEntity(ratingRequestDTO);
         Date now = Date.from(Instant.now());
         ratingEntity.setCreatedAt(now);
