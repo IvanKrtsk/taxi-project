@@ -24,7 +24,6 @@ import java.util.Date;
 @Setter
 @Builder
 public class RatingEntity {
-    @Schema(description = "review id")
     @Id
     private ObjectId id;
     private Long rideId;
