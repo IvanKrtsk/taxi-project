@@ -42,7 +42,7 @@ spring:
             ms: 0
         request:
           timeout:
-            ms: 20000
+            ms: 30000
         enable:
           idempotence: true
         max:
