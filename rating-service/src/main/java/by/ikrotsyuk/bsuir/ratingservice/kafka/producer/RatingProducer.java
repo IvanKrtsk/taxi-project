@@ -1,4 +1,4 @@
-package by.ikrotsyuk.bsuir.ratingservice.kafka.producer.impl;
+package by.ikrotsyuk.bsuir.ratingservice.kafka.producer;
 
 import by.ikrotsyuk.bsuir.ratingservice.event.RatingUpdatedEvent;
 import org.bson.types.ObjectId;

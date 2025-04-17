@@ -9,7 +9,7 @@ import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidExcept
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewAlreadyExistsException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
-import by.ikrotsyuk.bsuir.ratingservice.kafka.producer.impl.RatingProducer;
+import by.ikrotsyuk.bsuir.ratingservice.kafka.producer.RatingProducer;
 import by.ikrotsyuk.bsuir.ratingservice.mapper.RatingMapper;
 import by.ikrotsyuk.bsuir.ratingservice.repository.RatingRepository;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingReviewerService;

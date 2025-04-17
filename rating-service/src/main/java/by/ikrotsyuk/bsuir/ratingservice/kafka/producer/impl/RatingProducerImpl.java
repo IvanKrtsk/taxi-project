@@ -1,11 +1,11 @@
-package by.ikrotsyuk.bsuir.ratingservice.kafka.producer;
+package by.ikrotsyuk.bsuir.ratingservice.kafka.producer.impl;
 
 import by.ikrotsyuk.bsuir.ratingservice.entity.UnsentRatingEntity;
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
 import by.ikrotsyuk.bsuir.ratingservice.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.ratingservice.kafka.KafkaAvailabilityChecker;
 import by.ikrotsyuk.bsuir.ratingservice.kafka.KafkaConstants;
-import by.ikrotsyuk.bsuir.ratingservice.kafka.producer.impl.RatingProducer;
+import by.ikrotsyuk.bsuir.ratingservice.kafka.producer.RatingProducer;
 import by.ikrotsyuk.bsuir.ratingservice.mapper.UnsentRatingMapper;
 import by.ikrotsyuk.bsuir.ratingservice.repository.UnsentRatingRepository;
 import jakarta.annotation.PostConstruct;

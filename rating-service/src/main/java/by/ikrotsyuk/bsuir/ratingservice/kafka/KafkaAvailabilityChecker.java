@@ -1,8 +1,6 @@
 package by.ikrotsyuk.bsuir.ratingservice.kafka;
 
-import by.ikrotsyuk.bsuir.ratingservice.kafka.producer.impl.RatingProducer;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
+import by.ikrotsyuk.bsuir.ratingservice.kafka.producer.RatingProducer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -36,10 +34,6 @@ public class KafkaAvailabilityChecker {
     public void checkKafkaAvailability() {
         if(brokersAvailable)
             return;
-        System.out.println();
-        System.err.println("SCHEDULER THREAD NAME:");
-        System.err.println(Thread.currentThread().getName());
-        System.out.println();
 
         int minBrokersCount = Integer.parseInt(KafkaConstants.NUMBER_OF_INSYNC_REPLICAS_VALUE);
 
@@ -58,9 +52,6 @@ public class KafkaAvailabilityChecker {
                     System.err.println("Broker " + node.id() + " unavailable" + LocalDateTime.now());
                 }
             }
-            System.out.println();
-            System.err.println("BROKERS COUNT FAIL");
-            System.out.println();
             if(activeBrokersCount >= minBrokersCount) {
                 setBrokersAvailable(true);
                 ratingProducer.sendUnsentMessages();
