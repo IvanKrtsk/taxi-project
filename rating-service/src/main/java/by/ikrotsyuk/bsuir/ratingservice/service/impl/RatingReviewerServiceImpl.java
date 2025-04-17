@@ -9,27 +9,26 @@ import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidExcept
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewAlreadyExistsException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
+import by.ikrotsyuk.bsuir.ratingservice.kafka.producer.impl.RatingProducer;
 import by.ikrotsyuk.bsuir.ratingservice.mapper.RatingMapper;
 import by.ikrotsyuk.bsuir.ratingservice.repository.RatingRepository;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingReviewerService;
 import by.ikrotsyuk.bsuir.ratingservice.service.utils.PaginationUtil;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class RatingReviewerServiceImpl implements RatingReviewerService {
     private final RatingMapper ratingMapper;
     private final RatingRepository ratingRepository;
     private final PaginationUtil paginationUtil;
-    private KafkaTemplate<String, RatingUpdatedEvent> kafkaTemplate;
+    private final RatingProducer ratingProducer;
 
     @Override
     public RatingResponseDTO leaveReview(RatingRequestDTO ratingRequestDTO) {
@@ -39,6 +38,12 @@ public class RatingReviewerServiceImpl implements RatingReviewerService {
         Date now = Date.from(Instant.now());
         ratingEntity.setCreatedAt(now);
         ratingEntity.setUpdatedAt(now);
+        ratingEntity = ratingRepository.save(ratingEntity);
+        ratingProducer.sendRatingUpdatedEvent(
+                ratingEntity.getId(), new RatingUpdatedEvent(
+                        ratingEntity.getRideId(), ratingEntity.getReviewerId(), ratingEntity.getRating(), ratingEntity.getReviewerType()
+                )
+        );
         return ratingMapper.toDTO(
                 ratingRepository.save(ratingEntity));
     }
