@@ -65,9 +65,6 @@ public class RatingProducerImpl implements RatingProducer {
     }
 
     public void sendUnsentMessages(){
-        System.out.println();
-        System.err.println("sendUnsentMessages start");
-        System.out.println();
         if(!unsentRatingEntityList.isEmpty()){
             unsentRatingEntityList.forEach(item ->
                 sendRatingUpdatedEvent(item.getId(), unsentRatingMapper.toEvent(item))
