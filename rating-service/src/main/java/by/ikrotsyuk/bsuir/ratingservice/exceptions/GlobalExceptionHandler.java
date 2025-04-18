@@ -2,6 +2,7 @@ package by.ikrotsyuk.bsuir.ratingservice.exceptions;
 
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.dto.ExceptionDTO;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewAlreadyExistsException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.keys.GeneralExceptionMessageKeys;
@@ -113,7 +114,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({IdIsNotValidException.class})
+    @ExceptionHandler({IdIsNotValidException.class, ReviewAlreadyExistsException.class})
     public ResponseEntity<ExceptionDTO> handlePassengerWithSameEmailAlreadyExistsException(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
