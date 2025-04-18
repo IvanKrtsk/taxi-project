@@ -27,30 +27,6 @@ spring:
   data:
     mongodb:
       uri: mongodb://mongo:mongo@localhost:27017/taxi_db
-  #kafka configuration
-  kafka:
-    producer:
-      bootstrap-servers: localhost:9092, localhost:9094
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      acks: all
-      properties:
-        delivery:
-          timeout:
-            ms: 100000
-        linger:
-            ms: 0
-        request:
-          timeout:
-            ms: 30000
-        enable:
-          idempotence: true
-        max:
-          in:
-            flight:
-              requests:
-                per:
-                  connection: 5
 
 # swagger routes configuration
 springdoc:

@@ -10,7 +10,6 @@ import org.apache.kafka.common.Node;
 import org.apache.kafka.common.config.ConfigResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -24,8 +23,6 @@ import java.util.Properties;
 @Component
 @EnableScheduling
 public class KafkaAvailabilityChecker {
-    @Value("${spring.kafka.producer.bootstrap-servers}")
-    private String bootstrapServers;
     @Setter
     @Getter
     private boolean brokersAvailable = true;
@@ -41,6 +38,7 @@ public class KafkaAvailabilityChecker {
         int minBrokersCount = Integer.parseInt(KafkaConstants.NUMBER_OF_INSYNC_REPLICAS_VALUE);
 
         Properties props = new Properties();
+        String bootstrapServers = KafkaConstants.BOOTSTRAP_SERVERS;
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 
         try (AdminClient adminClient = AdminClient.create(props)){
