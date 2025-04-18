@@ -8,6 +8,8 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.common.Node;
 import org.apache.kafka.common.config.ConfigResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,6 +31,7 @@ public class KafkaAvailabilityChecker {
     private boolean brokersAvailable = true;
     @Setter
     private RatingProducer ratingProducer;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Scheduled(fixedRate = 60000)
     public void checkKafkaAvailability() {
@@ -49,7 +52,7 @@ public class KafkaAvailabilityChecker {
                     adminClient.describeConfigs(Collections.singleton(new ConfigResource(ConfigResource.Type.BROKER, String.valueOf(node.id())))).all().get();
                     activeBrokersCount++;
                 } catch (Exception e) {
-                    System.err.println("Broker " + node.id() + " unavailable" + LocalDateTime.now());
+                    logger.error("Broker {} unavailable {}", node.id(), LocalDateTime.now());
                 }
             }
             if(activeBrokersCount >= minBrokersCount) {
@@ -57,7 +60,7 @@ public class KafkaAvailabilityChecker {
                 ratingProducer.sendUnsentMessages();
             }
         } catch (Exception e) {
-            System.err.println(e.getCause() + e.getMessage());
+            logger.error("{} {}", e.getCause(), e.getMessage());
             setBrokersAvailable(false);
         }
     }
