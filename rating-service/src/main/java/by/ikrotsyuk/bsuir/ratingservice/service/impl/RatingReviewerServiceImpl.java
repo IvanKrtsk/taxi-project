@@ -3,7 +3,7 @@ package by.ikrotsyuk.bsuir.ratingservice.service.impl;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
-import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
+import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
 import by.ikrotsyuk.bsuir.ratingservice.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewAlreadyExistsException;
@@ -41,15 +41,16 @@ public class RatingReviewerServiceImpl implements RatingReviewerService {
         ratingEntity = ratingRepository.save(ratingEntity);
         ratingProducer.sendRatingUpdatedEvent(
                 ratingEntity.getId(), new RatingUpdatedEvent(
-                        ratingEntity.getRideId(), ratingEntity.getReviewerId(), ratingEntity.getRating(), ratingEntity.getReviewerType()
+                        ratingEntity.getRideId(), ratingEntity.getReviewerId(), ratingEntity.getRating()
                 )
+                , ratingEntity.getReviewerType()
         );
         return ratingMapper.toDTO(
                 ratingRepository.save(ratingEntity));
     }
 
     @Override
-    public Page<RatingResponseDTO> viewLeavedReviews(Long reviewerId, ReviewerTypeTypes reviewerType, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+    public Page<RatingResponseDTO> viewLeavedReviews(Long reviewerId, ReviewerTypes reviewerType, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<RatingEntity> ratingEntities = ratingRepository
                 .findAllByReviewerIdAndReviewerType(reviewerId, reviewerType,
                         paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc));

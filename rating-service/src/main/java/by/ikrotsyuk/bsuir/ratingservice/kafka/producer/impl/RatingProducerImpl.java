@@ -1,7 +1,7 @@
 package by.ikrotsyuk.bsuir.ratingservice.kafka.producer.impl;
 
 import by.ikrotsyuk.bsuir.ratingservice.entity.UnsentRatingEntity;
-import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
+import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
 import by.ikrotsyuk.bsuir.ratingservice.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.ratingservice.kafka.KafkaAvailabilityChecker;
 import by.ikrotsyuk.bsuir.ratingservice.kafka.KafkaConstants;
@@ -35,26 +35,27 @@ public class RatingProducerImpl implements RatingProducer {
         availabilityChecker.setRatingProducer(this);
     }
 
-    public void sendRatingUpdatedEvent(ObjectId reviewId, RatingUpdatedEvent event){
+    public void sendRatingUpdatedEvent(ObjectId reviewId, RatingUpdatedEvent event, ReviewerTypes reviewerType){
         if(availabilityChecker.isBrokersAvailable()) {
             if(isStartingUp) {
                 sendUnsentMessages();
                 isStartingUp = !isStartingUp;
             }
-            String topicName = (event.reviewerType() == ReviewerTypeTypes.DRIVER) ? KafkaConstants.DRIVER_RATING_TOPIC_NAME : KafkaConstants.PASSENGER_RATING_TOPIC_NAME;
+            String topicName = (reviewerType == ReviewerTypes.DRIVER) ? KafkaConstants.DRIVER_RATING_TOPIC_NAME : KafkaConstants.PASSENGER_RATING_TOPIC_NAME;
             CompletableFuture<SendResult<String, RatingUpdatedEvent>> future = kafkaTemplate.send(topicName, reviewId.toString(), event);
             future.whenComplete((result, exception) -> {
                 if (exception != null) {
-                    saveMessageForScheduledSending(reviewId, event, exception.getMessage());
+                    saveMessageForScheduledSending(reviewId, event, reviewerType, exception.getMessage());
                     availabilityChecker.setBrokersAvailable(false);
                 }
             });
         }else
-            saveMessageForScheduledSending(reviewId, event, null);
+            saveMessageForScheduledSending(reviewId, event, reviewerType, null);
     }
 
-    public void saveMessageForScheduledSending(ObjectId reviewId, RatingUpdatedEvent event, String exceptionMessage){
+    public void saveMessageForScheduledSending(ObjectId reviewId, RatingUpdatedEvent event, ReviewerTypes reviewerType, String exceptionMessage){
         UnsentRatingEntity unsentRatingEntity = unsentRatingMapper.toEntity(event, reviewId);
+        unsentRatingEntity.setReviewerType(reviewerType);
         if(!Objects.isNull(exceptionMessage))
             unsentRatingEntity.setExceptionMessage(exceptionMessage);
         if (unsentRatingEntityList.stream()
@@ -67,7 +68,7 @@ public class RatingProducerImpl implements RatingProducer {
     public void sendUnsentMessages(){
         if(!unsentRatingEntityList.isEmpty()){
             unsentRatingEntityList.forEach(item ->
-                sendRatingUpdatedEvent(item.getId(), unsentRatingMapper.toEvent(item))
+                sendRatingUpdatedEvent(item.getId(), unsentRatingMapper.toEvent(item), item.getReviewerType())
             );
             unsentRatingRepository.deleteAll(unsentRatingEntityList);
             unsentRatingEntityList.clear();
@@ -78,7 +79,7 @@ public class RatingProducerImpl implements RatingProducer {
         unsentRatingEntities.forEach(item -> {
             RatingUpdatedEvent event = unsentRatingMapper.toEvent(item);
             unsentRatingRepository.deleteById(item.getId());
-            sendRatingUpdatedEvent(item.getId(), event);
+            sendRatingUpdatedEvent(item.getId(), event, item.getReviewerType());
         });
     }
 }

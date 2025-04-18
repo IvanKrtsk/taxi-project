@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.ratingservice.entity;
 
-import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
+import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +24,7 @@ public class UnsentRatingEntity {
     private ObjectId id;
     private Long rideId;
     private Long reviewerId;
-    private ReviewerTypeTypes reviewerType;
+    private ReviewerTypes reviewerType;
     private Double rating;
     private String exceptionMessage;
     @CreationTimestamp
