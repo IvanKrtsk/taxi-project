@@ -5,6 +5,8 @@ public record RatingUpdatedEvent(
 
         Long reviewerId,
 
+        Long reviewedId,
+
         Double rating
 ) {
 }
