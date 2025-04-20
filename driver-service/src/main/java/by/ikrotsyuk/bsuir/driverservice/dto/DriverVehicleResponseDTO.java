@@ -23,7 +23,7 @@ public record DriverVehicleResponseDTO (
     Double rating,
 
     @Schema(description = "number of driver trips")
-    Long total_rides,
+    Long totalRides,
 
     @Schema(description = "is driver deleted")
     Boolean isDeleted,

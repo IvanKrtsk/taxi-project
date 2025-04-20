@@ -21,9 +21,9 @@ public class KafkaServiceImpl implements KafkaService {
         if(optionalDriverEntity.isEmpty())
             return false;
         DriverEntity driverEntity = optionalDriverEntity.get();
-        Long ridesCount = driverEntity.getTotal_rides();
+        Long ridesCount = driverEntity.getTotalRides();
         driverEntity.setRating((driverEntity.getRating() * ridesCount + event.rating()) / (ridesCount + 1));
-        driverEntity.setTotal_rides(ridesCount + 1);
+        driverEntity.setTotalRides(ridesCount + 1);
         driverRepository.save(driverEntity);
         return true;
     }

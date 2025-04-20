@@ -104,7 +104,7 @@ public class DriverServiceImpl implements DriverService {
                     .name(driverRequestDTO.name())
                     .email(email)
                     .phone(phone)
-                    .total_rides(0L)              //  @Builder.Default null issue
+                    .totalRides(0L)              //  @Builder.Default null issue
                     .status(StatusTypes.AVAILABLE)
                     .build()));
         }

@@ -45,7 +45,7 @@ public class DriverEntity {
     @Builder.Default
     private Double rating = 0.0;
     @Builder.Default
-    private Long total_rides = 0L;
+    private Long totalRides = 0L;
     @Builder.Default
     private Boolean isDeleted = false;
     @Enumerated(EnumType.STRING)
