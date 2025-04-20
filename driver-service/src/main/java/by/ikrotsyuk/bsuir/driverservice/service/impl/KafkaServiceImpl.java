@@ -15,6 +15,7 @@ import java.util.Optional;
 public class KafkaServiceImpl implements KafkaService {
     private final DriverRepository driverRepository;
 
+    @Override
     @Transactional
     public boolean updateRating(RatingUpdatedEvent event){
         Optional<DriverEntity> optionalDriverEntity = driverRepository.findById(event.reviewedId());

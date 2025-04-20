@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class RatingConsumerImpl implements RatingConsumer {
     private final KafkaService kafkaService;
 
+    @Override
     @KafkaListener(topics = KafkaConstants.TOPIC_NAME)
     public void handleRatingChange(RatingUpdatedEvent event){
         if(!kafkaService.updateRating(event))
