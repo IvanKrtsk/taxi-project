@@ -24,6 +24,7 @@ public class UnsentRatingEntity {
     private ObjectId id;
     private Long rideId;
     private Long reviewerId;
+    private Long reviewedId;
     private ReviewerTypes reviewerType;
     private Double rating;
     private String exceptionMessage;

@@ -41,7 +41,7 @@ public class RatingReviewerServiceImpl implements RatingReviewerService {
         ratingEntity = ratingRepository.save(ratingEntity);
         ratingProducer.sendRatingUpdatedEvent(
                 ratingEntity.getId(), new RatingUpdatedEvent(
-                        ratingEntity.getRideId(), ratingEntity.getReviewerId(), ratingEntity.getRating()
+                        ratingEntity.getRideId(), ratingEntity.getReviewerId(), ratingEntity.getReviewedId(), ratingEntity.getRating()
                 )
                 , ratingEntity.getReviewerType()
         );

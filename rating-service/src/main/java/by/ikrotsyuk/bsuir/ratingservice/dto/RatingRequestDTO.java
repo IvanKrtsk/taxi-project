@@ -19,6 +19,11 @@ public record RatingRequestDTO(
         @NotNull(message = "field.must.not.be.empty.message")
         Long reviewerId,
 
+        @Schema(description = "reviewed id")
+        @Min(value = 1, message = "field.must.have.size.message")
+        @NotNull(message = "field.must.not.be.empty.message")
+        Long reviewedId,
+
         @Schema(description = "who left the review")
         @NotNull(message = "field.must.not.be.empty.message")
         ReviewerTypes reviewerType,

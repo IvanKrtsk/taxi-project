@@ -55,6 +55,7 @@ public class RatingAdminServiceImpl implements RatingAdminService {
 
         ratingEntity.setRideId(requestDTO.rideId());
         ratingEntity.setReviewerId(requestDTO.reviewerId());
+        ratingEntity.setReviewedId(requestDTO.reviewedId());
         ratingEntity.setReviewerType(requestDTO.reviewerType());
         ratingEntity.setRating(requestDTO.rating());
         ratingEntity.setComment(requestDTO.comment());
