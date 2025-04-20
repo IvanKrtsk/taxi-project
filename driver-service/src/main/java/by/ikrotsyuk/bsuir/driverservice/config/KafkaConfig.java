@@ -1,5 +1,6 @@
 package by.ikrotsyuk.bsuir.driverservice.config;
 
+import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.kafka.NonRetrybleException;
 import by.ikrotsyuk.bsuir.driverservice.kafka.KafkaConstants;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -39,7 +40,7 @@ public class KafkaConfig {
     ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
             ConsumerFactory<String, Object> consumerFactory, KafkaTemplate kafkaTemplate) {
         DefaultErrorHandler errorHandler = new DefaultErrorHandler(new DeadLetterPublishingRecoverer(kafkaTemplate));
-
+        errorHandler.addNotRetryableExceptions(NonRetrybleException.class);
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         factory.setCommonErrorHandler(errorHandler);
