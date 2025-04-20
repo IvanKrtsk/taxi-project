@@ -41,7 +41,7 @@ public class RatingProducerImpl implements RatingProducer {
                 sendUnsentMessages();
                 isStartingUp = !isStartingUp;
             }
-            String topicName = (reviewerType == ReviewerTypes.DRIVER) ? KafkaConstants.DRIVER_RATING_TOPIC_NAME : KafkaConstants.PASSENGER_RATING_TOPIC_NAME;
+            String topicName = (reviewerType == ReviewerTypes.DRIVER) ? KafkaConstants.PASSENGER_RATING_TOPIC_NAME : KafkaConstants.DRIVER_RATING_TOPIC_NAME;
             CompletableFuture<SendResult<String, RatingUpdatedEvent>> future = kafkaTemplate.send(topicName, reviewId.toString(), event);
             future.whenComplete((result, exception) -> {
                 if (exception != null) {
