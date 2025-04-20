@@ -3,7 +3,7 @@ package by.ikrotsyuk.bsuir.driverservice.kafka.consumer.impl;
 import by.ikrotsyuk.bsuir.communicationparts.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.kafka.NonRetryableException;
 import by.ikrotsyuk.bsuir.driverservice.kafka.KafkaConstants;
-import by.ikrotsyuk.bsuir.driverservice.kafka.RatingConsumer;
+import by.ikrotsyuk.bsuir.driverservice.kafka.consumer.RatingConsumer;
 import by.ikrotsyuk.bsuir.driverservice.service.KafkaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;

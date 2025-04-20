@@ -1,4 +1,4 @@
-package by.ikrotsyuk.bsuir.driverservice.kafka;
+package by.ikrotsyuk.bsuir.driverservice.kafka.consumer;
 
 import by.ikrotsyuk.bsuir.communicationparts.event.RatingUpdatedEvent;
 
