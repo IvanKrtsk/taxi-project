@@ -1,10 +1,10 @@
 package by.ikrotsyuk.bsuir.ratingservice.service.impl;
 
+import by.ikrotsyuk.bsuir.communicationparts.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
-import by.ikrotsyuk.bsuir.ratingservice.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewAlreadyExistsException;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;

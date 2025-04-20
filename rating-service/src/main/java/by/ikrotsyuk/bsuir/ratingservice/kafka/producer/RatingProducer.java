@@ -1,7 +1,7 @@
 package by.ikrotsyuk.bsuir.ratingservice.kafka.producer;
 
+import by.ikrotsyuk.bsuir.communicationparts.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
-import by.ikrotsyuk.bsuir.ratingservice.event.RatingUpdatedEvent;
 import org.bson.types.ObjectId;
 
 public interface RatingProducer {

@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.ratingservice.config;
 
-import by.ikrotsyuk.bsuir.ratingservice.event.RatingUpdatedEvent;
+import by.ikrotsyuk.bsuir.communicationparts.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.ratingservice.kafka.KafkaConstants;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;

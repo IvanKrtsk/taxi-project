@@ -1,8 +1,8 @@
 package by.ikrotsyuk.bsuir.ratingservice.kafka.producer.impl;
 
+import by.ikrotsyuk.bsuir.communicationparts.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.ratingservice.entity.UnsentRatingEntity;
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
-import by.ikrotsyuk.bsuir.ratingservice.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.ratingservice.kafka.KafkaAvailabilityChecker;
 import by.ikrotsyuk.bsuir.ratingservice.kafka.KafkaConstants;
 import by.ikrotsyuk.bsuir.ratingservice.kafka.producer.RatingProducer;

@@ -1,7 +1,7 @@
 package by.ikrotsyuk.bsuir.ratingservice.mapper;
 
+import by.ikrotsyuk.bsuir.communicationparts.event.RatingUpdatedEvent;
 import by.ikrotsyuk.bsuir.ratingservice.entity.UnsentRatingEntity;
-import by.ikrotsyuk.bsuir.ratingservice.event.RatingUpdatedEvent;
 import org.bson.types.ObjectId;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
