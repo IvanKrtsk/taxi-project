@@ -18,6 +18,10 @@ spring:
           lower-case-service-id: true
       # gateway routes configuration
       routes:
+        - id: rides-service
+          uri: lb://rides-service
+          predicates:
+            - Path=/api/v1/rides/**, /api/v1/passengers/{passengerId}/rides/**, /api/v1/drivers/{driverId}/rides/**
         - id: driver-service
           uri: lb://driver-service
           predicates:
@@ -26,10 +30,6 @@ spring:
           uri: lb://passenger-service
           predicates:
             - Path=/api/v1/passengers/**
-        - id: rides-service
-          uri: lb://rides-service
-          predicates:
-            - Path=/api/v1/rides/**, /api/v1/passengers/{passengerId}/rides/**, /api/v1/drivers/{driverId}/rides/**
         - id: payment-service
           uri: lb://payment-service
           predicates:
