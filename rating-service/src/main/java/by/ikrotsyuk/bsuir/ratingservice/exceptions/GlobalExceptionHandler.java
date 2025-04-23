@@ -1,10 +1,7 @@
 package by.ikrotsyuk.bsuir.ratingservice.exceptions;
 
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.dto.ExceptionDTO;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewAlreadyExistsException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.*;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.keys.GeneralExceptionMessageKeys;
 import by.ikrotsyuk.bsuir.ratingservice.exceptions.template.ExceptionTemplate;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -128,6 +125,19 @@ public class GlobalExceptionHandler {
         String message = messageSource
                 .getMessage(messageKey, new Object[]{ex.getName(), ex.getRequiredType(), ex.getValue()}, LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({FeignDeserializationException.class})
+    public ResponseEntity<ExceptionDTO> handleFeignDeserializationException(FeignDeserializationException ex){
+        String messageKey = ex.getMessageKey();
+        String message = messageSource
+                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ExceptionDTO> handleFeignException(FeignException ex){
+        return new ResponseEntity<>(ex.getExceptionDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String generateFieldErrorMessage(FieldError fieldError) {

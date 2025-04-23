@@ -18,6 +18,12 @@ spring:
   # liquibase configuration
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+        alphanumeric-ids:
+          enabled: true
 
 # swagger routes configuration
 springdoc:
