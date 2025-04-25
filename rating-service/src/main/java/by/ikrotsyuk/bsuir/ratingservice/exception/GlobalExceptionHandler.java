@@ -127,12 +127,20 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({FeignDeserializationException.class, RideNotAcceptedException.class, RideNotBelongToPassengerException.class, RideNotBelongToDriverException.class})
+    @ExceptionHandler({FeignDeserializationException.class, FeignConnectException.class})
     public ResponseEntity<ExceptionDTO> handleFeignResponseExceptions(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
                 .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({RideNotAcceptedException.class, RideNotBelongToPassengerException.class, RideNotBelongToDriverException.class})
+    public ResponseEntity<ExceptionDTO> handleFeignRequestExceptions(ExceptionTemplate ex){
+        String messageKey = ex.getMessageKey();
+        String message = messageSource
+                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(FeignException.class)

@@ -6,16 +6,12 @@ import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.feign.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
-import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.IdIsNotValidException;
-import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.ReviewAlreadyExistsException;
-import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.ReviewNotFoundByIdException;
-import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.ReviewsNotFoundException;
-import by.ikrotsyuk.bsuir.ratingservice.feign.RideClient;
+import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.*;
 import by.ikrotsyuk.bsuir.ratingservice.kafka.producer.RatingProducer;
 import by.ikrotsyuk.bsuir.ratingservice.mapper.RatingMapper;
 import by.ikrotsyuk.bsuir.ratingservice.repository.RatingRepository;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingReviewerService;
-import by.ikrotsyuk.bsuir.ratingservice.service.RatingValidationService;
+import by.ikrotsyuk.bsuir.ratingservice.service.impl.validation.RatingValidationService;
 import by.ikrotsyuk.bsuir.ratingservice.service.utils.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
@@ -32,7 +28,6 @@ public class RatingReviewerServiceImpl implements RatingReviewerService {
     private final RatingRepository ratingRepository;
     private final PaginationUtil paginationUtil;
     private final RatingProducer ratingProducer;
-    private final RideClient rideClient;
     private final RatingValidationService ratingValidationService;
 
     @Override
@@ -40,7 +35,7 @@ public class RatingReviewerServiceImpl implements RatingReviewerService {
         if(ratingRepository.existsByRideIdAndReviewerType(ratingRequestDTO.rideId(), ratingRequestDTO.reviewerType()))
             throw new ReviewAlreadyExistsException(ratingRequestDTO.rideId(), ratingRequestDTO.reviewerType());
 
-        RideFullResponseDTO rideFullResponseDTO = rideClient.getRideById(ratingRequestDTO.rideId()).getBody();
+        RideFullResponseDTO rideFullResponseDTO = ratingValidationService.getRideDTO(ratingRequestDTO.rideId());
         ReviewerTypes reviewerType = ratingRequestDTO.reviewerType();
 
         ratingValidationService.checkIdMatch(rideFullResponseDTO, ratingRequestDTO, reviewerType);

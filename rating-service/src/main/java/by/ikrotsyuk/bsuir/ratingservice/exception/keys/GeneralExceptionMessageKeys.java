@@ -16,7 +16,8 @@ public enum GeneralExceptionMessageKeys {
     FEIGN_DESERIALIZATION_MESSAGE_KEY("feign.deserialization.message"),
     RIDE_NOT_ACCEPTED_MESSAGE_KEY("ride.not.accepted.message"),
     RIDE_NOT_BELONG_TO_DRIVER_MESSAGE_KEY("ride.not.belong.to.driver.message"),
-    RIDE_NOT_BELONG_TO_PASSENGER_MESSAGE_KEY("ride.not.belong.to.passenger.message");
+    RIDE_NOT_BELONG_TO_PASSENGER_MESSAGE_KEY("ride.not.belong.to.passenger.message"),
+    FEIGN_CONNECT_MESSAGE_KEY("feign.connection.message.key");
 
     private final String messageKey;
 }
