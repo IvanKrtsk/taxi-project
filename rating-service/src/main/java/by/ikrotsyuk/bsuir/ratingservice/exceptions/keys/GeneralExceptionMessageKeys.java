@@ -13,7 +13,10 @@ public enum GeneralExceptionMessageKeys {
     ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY("enum.argument.deserialization.message"),
     FIELD_DESERIALIZATION_MESSAGE_KEY("field.deserialization.message"),
     REVIEW_FOR_RIDE_BY_REVIEWER_ALREADY_EXISTS_MESSAGE_KEY("review.for.ride.by.reviewer.already.exists.message"),
-    FEIGN_DESERIALIZATION_MESSAGE_KEY("feign.deserialization.message");
+    FEIGN_DESERIALIZATION_MESSAGE_KEY("feign.deserialization.message"),
+    RIDE_NOT_ACCEPTED_MESSAGE_KEY("ride.not.accepted.message"),
+    RIDE_NOT_BELONG_TO_DRIVER_MESSAGE_KEY("ride.not.belong.to.driver.message"),
+    RIDE_NOT_BELONG_TO_PASSENGER_MESSAGE_KEY("ride.not.belong.to.passenger.message");
 
     private final String messageKey;
 }

@@ -127,8 +127,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({FeignDeserializationException.class})
-    public ResponseEntity<ExceptionDTO> handleFeignDeserializationException(FeignDeserializationException ex){
+    @ExceptionHandler({FeignDeserializationException.class, RideNotAcceptedException.class, RideNotBelongToPassengerException.class, RideNotBelongToDriverException.class})
+    public ResponseEntity<ExceptionDTO> handleFeignResponseExceptions(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
                 .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());

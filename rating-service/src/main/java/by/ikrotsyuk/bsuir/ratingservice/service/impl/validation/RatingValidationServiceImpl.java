@@ -3,6 +3,9 @@ package by.ikrotsyuk.bsuir.ratingservice.service.impl.validation;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.feign.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.RideNotAcceptedException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.RideNotBelongToDriverException;
+import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.RideNotBelongToPassengerException;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingValidationService;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +19,10 @@ public class RatingValidationServiceImpl implements RatingValidationService {
         Long driverId = (reviewerType == ReviewerTypes.DRIVER) ? ratingRequestDTO.reviewerId() : ratingRequestDTO.reviewedId();
 
         if(Objects.isNull(rideFullResponseDTO.driverId()))
-            throw new RuntimeException("driver is null");
+            throw new RideNotAcceptedException(rideFullResponseDTO.id());
         if(!rideFullResponseDTO.passengerId().equals(passengerId))
-            throw new RuntimeException("passenger not belongs to ride");
+            throw new RideNotBelongToPassengerException(rideFullResponseDTO.id(), passengerId);
         if(!rideFullResponseDTO.driverId().equals(driverId))
-            throw new RuntimeException("driver not belongs to ride");
+            throw new RideNotBelongToDriverException(rideFullResponseDTO.id(), driverId);
     }
 }
