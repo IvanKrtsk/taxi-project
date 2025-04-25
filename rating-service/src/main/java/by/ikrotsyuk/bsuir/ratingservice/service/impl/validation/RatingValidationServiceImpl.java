@@ -3,9 +3,9 @@ package by.ikrotsyuk.bsuir.ratingservice.service.impl.validation;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.feign.RideFullResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.RideNotAcceptedException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.RideNotBelongToDriverException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.RideNotBelongToPassengerException;
+import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.RideNotAcceptedException;
+import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.RideNotBelongToDriverException;
+import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.RideNotBelongToPassengerException;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingValidationService;
 import org.springframework.stereotype.Service;
 

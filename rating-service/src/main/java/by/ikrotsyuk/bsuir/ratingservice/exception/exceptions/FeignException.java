@@ -1,6 +1,6 @@
-package by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions;
+package by.ikrotsyuk.bsuir.ratingservice.exception.exceptions;
 
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.dto.ExceptionDTO;
+import by.ikrotsyuk.bsuir.ratingservice.exception.dto.ExceptionDTO;
 import lombok.Getter;
 
 @Getter

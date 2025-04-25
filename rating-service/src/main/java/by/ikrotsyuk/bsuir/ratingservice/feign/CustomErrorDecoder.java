@@ -1,8 +1,8 @@
 package by.ikrotsyuk.bsuir.ratingservice.feign;
 
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.dto.ExceptionDTO;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.FeignDeserializationException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.FeignException;
+import by.ikrotsyuk.bsuir.ratingservice.exception.dto.ExceptionDTO;
+import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.FeignDeserializationException;
+import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.FeignException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

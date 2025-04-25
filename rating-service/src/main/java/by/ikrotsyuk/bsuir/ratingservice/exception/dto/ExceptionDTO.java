@@ -1,4 +1,4 @@
-package by.ikrotsyuk.bsuir.ratingservice.exceptions.dto;
+package by.ikrotsyuk.bsuir.ratingservice.exception.dto;
 
 import lombok.Getter;
 

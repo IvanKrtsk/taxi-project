@@ -1,4 +1,4 @@
-package by.ikrotsyuk.bsuir.ratingservice.exceptions.keys;
+package by.ikrotsyuk.bsuir.ratingservice.exception.keys;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
-package by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions;
+package by.ikrotsyuk.bsuir.ratingservice.exception.exceptions;
 
 import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.keys.GeneralExceptionMessageKeys;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.template.ExceptionTemplate;
+import by.ikrotsyuk.bsuir.ratingservice.exception.keys.GeneralExceptionMessageKeys;
+import by.ikrotsyuk.bsuir.ratingservice.exception.template.ExceptionTemplate;
 
 public class ReviewAlreadyExistsException extends ExceptionTemplate {
     public ReviewAlreadyExistsException(Long rideId, ReviewerTypes reviewerTypes) {
