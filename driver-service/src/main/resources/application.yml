@@ -23,7 +23,6 @@ spring:
   # liquibase configuration
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
-
 # swagger routes configuration
 springdoc:
   api-docs:
