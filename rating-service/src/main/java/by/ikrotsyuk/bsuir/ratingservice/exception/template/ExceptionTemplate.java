@@ -1,4 +1,4 @@
-package by.ikrotsyuk.bsuir.ratingservice.exceptions.template;
+package by.ikrotsyuk.bsuir.ratingservice.exception.template;
 
 import lombok.Getter;
 

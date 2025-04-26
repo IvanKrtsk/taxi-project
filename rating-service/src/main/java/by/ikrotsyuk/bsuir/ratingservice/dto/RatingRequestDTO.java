@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.ratingservice.dto;
 
-import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
+import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -19,9 +19,14 @@ public record RatingRequestDTO(
         @NotNull(message = "field.must.not.be.empty.message")
         Long reviewerId,
 
+        @Schema(description = "reviewed id")
+        @Min(value = 1, message = "field.must.have.size.message")
+        @NotNull(message = "field.must.not.be.empty.message")
+        Long reviewedId,
+
         @Schema(description = "who left the review")
         @NotNull(message = "field.must.not.be.empty.message")
-        ReviewerTypeTypes reviewerType,
+        ReviewerTypes reviewerType,
 
         @Schema(description = "rating")
         @NotNull(message = "field.must.not.be.empty.message")

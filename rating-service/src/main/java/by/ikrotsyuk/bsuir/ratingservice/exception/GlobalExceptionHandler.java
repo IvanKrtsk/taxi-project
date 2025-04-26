@@ -1,11 +1,9 @@
-package by.ikrotsyuk.bsuir.ratingservice.exceptions;
+package by.ikrotsyuk.bsuir.ratingservice.exception;
 
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.dto.ExceptionDTO;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.keys.GeneralExceptionMessageKeys;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.template.ExceptionTemplate;
+import by.ikrotsyuk.bsuir.ratingservice.exception.dto.ExceptionDTO;
+import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.*;
+import by.ikrotsyuk.bsuir.ratingservice.exception.keys.GeneralExceptionMessageKeys;
+import by.ikrotsyuk.bsuir.ratingservice.exception.template.ExceptionTemplate;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -113,7 +111,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({IdIsNotValidException.class})
+    @ExceptionHandler({IdIsNotValidException.class, ReviewAlreadyExistsException.class})
     public ResponseEntity<ExceptionDTO> handlePassengerWithSameEmailAlreadyExistsException(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
@@ -127,6 +125,27 @@ public class GlobalExceptionHandler {
         String message = messageSource
                 .getMessage(messageKey, new Object[]{ex.getName(), ex.getRequiredType(), ex.getValue()}, LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({FeignDeserializationException.class, FeignConnectException.class})
+    public ResponseEntity<ExceptionDTO> handleFeignResponseExceptions(ExceptionTemplate ex){
+        String messageKey = ex.getMessageKey();
+        String message = messageSource
+                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({RideNotAcceptedException.class, RideNotBelongToPassengerException.class, RideNotBelongToDriverException.class})
+    public ResponseEntity<ExceptionDTO> handleFeignRequestExceptions(ExceptionTemplate ex){
+        String messageKey = ex.getMessageKey();
+        String message = messageSource
+                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ExceptionDTO> handleFeignException(FeignException ex){
+        return new ResponseEntity<>(ex.getExceptionDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String generateFieldErrorMessage(FieldError fieldError) {
