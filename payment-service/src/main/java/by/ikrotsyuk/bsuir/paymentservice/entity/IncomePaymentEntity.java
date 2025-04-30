@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.types.ObjectId;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -26,7 +26,7 @@ public class IncomePaymentEntity {
     private Long rideId;
     private BigDecimal amount;
     private PaymentTypes paymentType;
-    @CreationTimestamp
+    @CreatedDate
     private OffsetDateTime createdAt;
     @LastModifiedDate
     private OffsetDateTime modifiedAt;
