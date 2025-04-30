@@ -1,5 +1,6 @@
 package by.ikrotsyuk.bsuir.paymentservice.entity;
 
+import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.PaymentStatus;
 import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.PaymentTypes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class IncomePaymentEntity {
     private Long rideId;
     private BigDecimal amount;
     private PaymentTypes paymentType;
+    private PaymentStatus paymentStatus;
     @CreatedDate
     private OffsetDateTime createdAt;
     @LastModifiedDate
