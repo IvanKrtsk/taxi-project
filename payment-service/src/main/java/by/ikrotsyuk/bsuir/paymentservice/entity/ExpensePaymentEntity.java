@@ -1,7 +1,6 @@
 package by.ikrotsyuk.bsuir.paymentservice.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,28 +8,21 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.Instant;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@Document(collection = "promo_codes")
-public class PromoCodeEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = "expense_payment_history")
+public class ExpensePaymentEntity {
     @Id
     private ObjectId id;
-    @Indexed(unique = true)
-    private String code;
-    private Double discountPercentage;
-    private Long activationsCount;
-    private Instant startDate;
-    private Instant endDate;
-    private Boolean isActive;
+    private Long accountId;
+    private BigDecimal amount;
     @CreatedDate
     private OffsetDateTime createdAt;
     @LastModifiedDate
