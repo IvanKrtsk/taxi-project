@@ -3,7 +3,7 @@ package by.ikrotsyuk.bsuir.paymentservice.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 
 public record PromoCodeRequestDTO(
         @Schema(description = "promo code name")
@@ -24,11 +24,11 @@ public record PromoCodeRequestDTO(
 
         @Schema(description = "promo code start date")
         @NotNull
-        Instant startDate,
+        OffsetDateTime startDate,
 
         @Schema(description = "promo code end date")
         @NotNull
-        Instant endDate,
+        OffsetDateTime endDate,
 
         @Schema(description = "is promo code active")
         @NotNull
