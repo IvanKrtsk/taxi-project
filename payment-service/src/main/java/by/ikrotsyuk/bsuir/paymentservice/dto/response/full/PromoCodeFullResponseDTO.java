@@ -1,14 +1,12 @@
 package by.ikrotsyuk.bsuir.paymentservice.dto.response.full;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.bson.types.ObjectId;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 
 public record PromoCodeFullResponseDTO(
         @Schema(description = "promo code id")
-        ObjectId id,
+        Long id,
 
         @Schema(description = "promo code name")
         String code,
@@ -20,10 +18,10 @@ public record PromoCodeFullResponseDTO(
         Long activationsCount,
 
         @Schema(description = "promo code start date")
-        Instant startDate,
+        OffsetDateTime startDate,
 
         @Schema(description = "promo code end date")
-        Instant endDate,
+        OffsetDateTime endDate,
 
         @Schema(description = "is promo code active")
         Boolean isActive,
