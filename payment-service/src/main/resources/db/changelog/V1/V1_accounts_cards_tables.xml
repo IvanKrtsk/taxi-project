@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="payment-1" author="ikrtsk">
+        <comment>Create account types</comment>
+        <sql>
+            CREATE TYPE account_types AS ENUM ('DRIVER', 'PASSENGER');
+        </sql>
+    </changeSet>
+
+    <changeSet id="payment-2" author="ikrtsk">
+        <comment>Create account types</comment>
+        <sql>
+            CREATE TYPE payment_type_payments AS ENUM ('CASH', 'CARD');
+        </sql>
+    </changeSet>
+
+    <changeSet id="payment-4" author="ikrtsk">
+        <comment>Create accounts table</comment>
+        <createTable tableName="accounts">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_type" type="account_types">
+                <constraints nullable="false"/>
+            </column>
+            <column name="balance" type="numeric" defaultValue="0.0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="used_promocodes_count" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="selected_payment_type" type="payment_type_payments">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="payment-5" author="ikrtsk">
+        <comment>Create bank cards table</comment>
+        <createTable tableName="bank_cards">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="account_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_number" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiration_date" type="varchar(5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_chosen" type="boolean" defaultValue="false"/>
+            <column name="created_at" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="bank_cards"
+                baseColumnNames="account_id"
+                constraintName="fk_accounts_cards_id"
+                referencedTableName="accounts"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="payment-6" author="ikrtsk">
+        <comment>Create promo_codes table</comment>
+        <createTable tableName="promo_codes">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="discount_percentage" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activations_count" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
