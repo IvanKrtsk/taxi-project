@@ -2,7 +2,7 @@ package by.ikrotsyuk.bsuir.ratingservice.controller;
 
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
-import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
+import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public interface RatingReviewerOperations {
     ResponseEntity<RatingResponseDTO> leaveReview(@Valid @RequestBody RatingRequestDTO ratingRequestDTO);
 
     @GetMapping("/{reviewerId}") // буду брать id из jwt и будет ресурсоориентировано
-    ResponseEntity<Page<RatingResponseDTO>> viewLeavedReviews(@PathVariable Long reviewerId, @RequestParam ReviewerTypeTypes reviewerType, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
+    ResponseEntity<Page<RatingResponseDTO>> viewLeavedReviews(@PathVariable Long reviewerId, @RequestParam ReviewerTypes reviewerType, @RequestParam int offset, @RequestParam int itemCount, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean isSortDirectionAsc);
 
     @GetMapping("/rating/{ratingId}")
     ResponseEntity<RatingResponseDTO> getReviewById(@PathVariable String ratingId);

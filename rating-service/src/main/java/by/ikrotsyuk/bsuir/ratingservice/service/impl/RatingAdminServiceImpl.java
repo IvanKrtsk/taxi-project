@@ -3,9 +3,9 @@ package by.ikrotsyuk.bsuir.ratingservice.service.impl;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingAdminResponseDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.entity.RatingEntity;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
+import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.IdIsNotValidException;
+import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.ReviewNotFoundByIdException;
+import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.ReviewsNotFoundException;
 import by.ikrotsyuk.bsuir.ratingservice.mapper.RatingMapper;
 import by.ikrotsyuk.bsuir.ratingservice.repository.RatingRepository;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingAdminService;
@@ -55,6 +55,7 @@ public class RatingAdminServiceImpl implements RatingAdminService {
 
         ratingEntity.setRideId(requestDTO.rideId());
         ratingEntity.setReviewerId(requestDTO.reviewerId());
+        ratingEntity.setReviewedId(requestDTO.reviewedId());
         ratingEntity.setReviewerType(requestDTO.reviewerType());
         ratingEntity.setRating(requestDTO.rating());
         ratingEntity.setComment(requestDTO.comment());
