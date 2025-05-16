@@ -19,6 +19,11 @@ public record IncomePaymentRequestDTO(
         @NotNull
         Long rideId,
 
+        @Schema(description = "ride id")
+        @Min(1)
+        @NotNull
+        Long driverId,
+
         @Schema(description = "ride cost")
         @DecimalMin("0.0")
         @NotNull

@@ -13,6 +13,11 @@ public record ExpensePaymentRequestDTO(
         @NotNull
         Long accountId,
 
+        @Schema(description = "bank card id")
+        @Min(1)
+        @NotNull
+        Long cardId,
+
         @Schema(description = "amount")
         @DecimalMin("0.0")
         @NotNull

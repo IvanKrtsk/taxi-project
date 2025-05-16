@@ -13,6 +13,9 @@ public record ExpensePaymentFullResponseDTO(
         @Schema(description = "account id")
         Long accountId,
 
+        @Schema(description = "bank card id")
+        Long cardId,
+
         @Schema(description = "amount")
         BigDecimal amount,
 

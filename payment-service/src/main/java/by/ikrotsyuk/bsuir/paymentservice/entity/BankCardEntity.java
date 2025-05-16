@@ -13,6 +13,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -31,12 +33,12 @@ public class BankCardEntity {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    private AccountEntity accountId;
+    private AccountEntity account;
     private String cardNumber;
     private String expirationDate;
     private Boolean isChosen;
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime createdAt;
-    @LastModifiedDate
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 }

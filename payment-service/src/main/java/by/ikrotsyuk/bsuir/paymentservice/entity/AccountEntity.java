@@ -54,6 +54,6 @@ public class AccountEntity {
     private OffsetDateTime createdAt;
     @UpdateTimestamp
     private OffsetDateTime updatedAt;
-    @OneToMany(mappedBy = "accountId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<BankCardEntity> accountCards;
 }

@@ -1,17 +1,11 @@
 package by.ikrotsyuk.bsuir.paymentservice.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record BankCardRequestDTO(
-        @Schema(description = "account id")
-        @Min(1)
-        @NotNull
-        Long accountId,
-
         @Schema(description = "card number")
         @Pattern(regexp = "\\d{16}")
         @NotBlank

@@ -25,6 +25,7 @@ public class IncomePaymentEntity {
     private ObjectId id;
     private Long accountId;
     private Long rideId;
+    private Long driverId;
     private BigDecimal amount;
     private PaymentTypes paymentType;
     private PaymentStatus paymentStatus;
