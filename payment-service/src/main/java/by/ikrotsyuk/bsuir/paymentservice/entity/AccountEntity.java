@@ -1,7 +1,7 @@
-package by.ikrotsyuk.bsuir.driverservice.entity;
+package by.ikrotsyuk.bsuir.paymentservice.entity;
 
-import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypes;
-import jakarta.persistence.Column;
+import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.AccountTypes;
+import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.PaymentTypes;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,45 +16,44 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-@Entity
-@Table(name = "drivers")
-@FieldNameConstants(asEnum = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class DriverEntity {
+@Entity
+@Table(name = "accounts")
+public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    @Column(unique = true)
-    private String email;
-    @Column(unique = true)
-    private String phone;
-    @Builder.Default
-    private Double rating = 0.0;
-    @Builder.Default
-    private Long totalRides = 0L;
-    @Builder.Default
-    private Boolean isDeleted = false;
+    private Long userId;
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    private StatusTypes status;
+    private AccountTypes accountType;
+    @Builder.Default
+    private BigDecimal balance = BigDecimal.valueOf(0.0);
+    @Builder.Default
+    private Long usedPromocodesCount = 0L;
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    private PaymentTypes selectedPaymentType = PaymentTypes.CASH;
+    @Builder.Default
+    private Boolean isDeleted = false;
     @CreationTimestamp
     private OffsetDateTime createdAt;
     @UpdateTimestamp
     private OffsetDateTime updatedAt;
-    @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
-    private List<VehicleEntity> driverVehicles;
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    private List<BankCardEntity> accountCards;
 }

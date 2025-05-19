@@ -1,4 +1,4 @@
-package by.ikrotsyuk.bsuir.driverservice.exception.dto;
+package by.ikrotsyuk.bsuir.ratingservice.exception.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
