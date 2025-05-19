@@ -1,15 +1,11 @@
 package by.ikrotsyuk.bsuir.paymentservice.controller.income;
 
-import by.ikrotsyuk.bsuir.paymentservice.dto.request.IncomePaymentPassengerRequestDTO;
-import by.ikrotsyuk.bsuir.paymentservice.dto.response.full.IncomePaymentFullResponseDTO;
-import org.bson.types.ObjectId;
+import by.ikrotsyuk.bsuir.communicationparts.event.FinishRideIncomePaymentDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 public interface PassengerIncomePaymentsOperations {
-    @PostMapping("/{userId}/payments/incomes")
-    ResponseEntity<IncomePaymentFullResponseDTO> createIncomePayment(@PathVariable Long userId, @RequestBody IncomePaymentPassengerRequestDTO incomePaymentPassengerRequestDTO);
-
-    @PatchMapping("/{userId}/payments/incomes")
-    ResponseEntity<IncomePaymentFullResponseDTO> finishIncomePayment(@PathVariable Long userId, @RequestParam ObjectId incomeId);
+    @PutMapping("/{userId}/payments/incomes")
+    ResponseEntity<FinishRideIncomePaymentDTO> finishIncomePayment(@PathVariable Long userId);
 }

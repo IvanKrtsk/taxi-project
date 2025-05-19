@@ -3,6 +3,9 @@ package by.ikrotsyuk.bsuir.paymentservice.service.promocodes.impl;
 import by.ikrotsyuk.bsuir.paymentservice.dto.request.PromoCodeRequestDTO;
 import by.ikrotsyuk.bsuir.paymentservice.dto.response.full.PromoCodeFullResponseDTO;
 import by.ikrotsyuk.bsuir.paymentservice.entity.PromoCodeEntity;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.promocodes.PromoCodeAlreadyExistsException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.promocodes.PromoCodeNotFoundByIdMessage;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.promocodes.PromoCodesNotFoundException;
 import by.ikrotsyuk.bsuir.paymentservice.mapper.PromoCodesMapper;
 import by.ikrotsyuk.bsuir.paymentservice.repository.PromoCodesRepository;
 import by.ikrotsyuk.bsuir.paymentservice.service.promocodes.PromoCodesService;
@@ -24,7 +27,7 @@ public class PromoCodesServiceImpl implements PromoCodesService {
     @Transactional
     public PromoCodeFullResponseDTO createPromoCode(PromoCodeRequestDTO promoCodeRequestDTO) {
         if(promoCodesRepository.existsByCode(promoCodeRequestDTO.code()))
-            throw new RuntimeException("already exists");
+            throw new PromoCodeAlreadyExistsException();
         else {
             PromoCodeEntity promoCodeEntity = promoCodesMapper.toEntity(promoCodeRequestDTO);
             return promoCodesMapper.toFullDTO(promoCodesRepository.save(promoCodeEntity));
@@ -37,7 +40,7 @@ public class PromoCodesServiceImpl implements PromoCodesService {
         return promoCodesMapper.toFullDTO(
                 promoCodesRepository
                         .findById(id)
-                        .orElseThrow(() -> new RuntimeException("not found"))
+                        .orElseThrow(() -> new PromoCodeNotFoundByIdMessage(id))
         );
     }
 
@@ -46,7 +49,7 @@ public class PromoCodesServiceImpl implements PromoCodesService {
     public List<PromoCodeFullResponseDTO> getPromoCodes() {
         List<PromoCodeEntity> promoCodeEntityList = promoCodesRepository.findAll();
         if(promoCodeEntityList.isEmpty())
-            throw new RuntimeException("not found");
+            throw new PromoCodesNotFoundException();
         return promoCodesMapper.toFullDTOList(promoCodeEntityList);
     }
 
@@ -54,7 +57,7 @@ public class PromoCodesServiceImpl implements PromoCodesService {
     @Transactional
     public PromoCodeFullResponseDTO updatePromoCode(Long id, PromoCodeRequestDTO promoCodeRequestDTO) {
         PromoCodeEntity promoCodeEntity = promoCodesRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new PromoCodeNotFoundByIdMessage(id));
         promoCodeEntity.setCode(promoCodeRequestDTO.code());
         promoCodeEntity.setDiscountPercentage(promoCodeRequestDTO.discountPercentage());
         promoCodeEntity.setActivationsCount(promoCodeRequestDTO.activationsCount());
@@ -69,7 +72,7 @@ public class PromoCodesServiceImpl implements PromoCodesService {
     @Transactional
     public PromoCodeFullResponseDTO changePromoCodeAvailability(Long id, OffsetDateTime endDate) {
         PromoCodeEntity promoCodeEntity = promoCodesRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new PromoCodeNotFoundByIdMessage(id));
         boolean isActive = promoCodeEntity.getIsActive();
         if(!isActive)
             if(Objects.isNull(endDate) || OffsetDateTime.now().isAfter(endDate))
@@ -85,7 +88,7 @@ public class PromoCodesServiceImpl implements PromoCodesService {
     @Transactional
     public PromoCodeFullResponseDTO deletePromoCode(Long id) {
         PromoCodeEntity promoCodeEntity = promoCodesRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new PromoCodeNotFoundByIdMessage(id));
         promoCodesRepository.deleteById(id);
         return promoCodesMapper.toFullDTO(promoCodeEntity);
     }

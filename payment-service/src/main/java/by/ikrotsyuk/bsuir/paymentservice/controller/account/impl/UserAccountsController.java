@@ -5,6 +5,7 @@ import by.ikrotsyuk.bsuir.paymentservice.dto.request.AccountRequestDTO;
 import by.ikrotsyuk.bsuir.paymentservice.dto.response.full.AccountFullResponseDTO;
 import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.AccountTypes;
 import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.PaymentTypes;
+import by.ikrotsyuk.bsuir.paymentservice.service.accounts.AccountsService;
 import by.ikrotsyuk.bsuir.paymentservice.service.accounts.UserAccountsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class UserAccountsController implements UserAccountsOperations {
     private final UserAccountsService userAccountsService;
+    private final AccountsService accountsService;
+
+    @Override
+    public ResponseEntity<Long> createAccount(Long userId, AccountTypes accountType) {
+        return new ResponseEntity<>(accountsService.createAccount(new AccountRequestDTO(userId, accountType)).id(), HttpStatus.CREATED);
+    }
 
     @Override
     public ResponseEntity<AccountFullResponseDTO> getAccount(Long userId, AccountTypes accountType) {

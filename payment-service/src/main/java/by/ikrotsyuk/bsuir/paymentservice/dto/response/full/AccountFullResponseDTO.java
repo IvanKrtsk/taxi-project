@@ -1,13 +1,11 @@
 package by.ikrotsyuk.bsuir.paymentservice.dto.response.full;
 
-import by.ikrotsyuk.bsuir.paymentservice.entity.BankCardEntity;
 import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.AccountTypes;
 import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.PaymentTypes;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 public record AccountFullResponseDTO(
         @Schema(description = "account id")
@@ -35,9 +33,6 @@ public record AccountFullResponseDTO(
         OffsetDateTime createdAt,
 
         @Schema(description = "account last modified date")
-        OffsetDateTime updatedAt,
-
-        @Schema(description = "list of user assigned bank cards")
-        List<BankCardEntity> accountCards
+        OffsetDateTime updatedAt
 ) {
 }

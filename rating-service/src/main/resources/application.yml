@@ -19,27 +19,6 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
 
-resilience4j:
-  retry:
-    instances:
-      RIDES-SERVICE:
-        max-attempts: 4
-        wait-duration: 2s
-        ignore-exceptions:
-          - by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.FeignDeserializationException
-          - by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.FeignException
-
-  circuitbreaker:
-    instances:
-      RIDES-SERVICE:
-        register-health-indicator: true
-        sliding-window-size: 15
-        minimum-number-of-calls: 5
-        permitted-number-of-calls-in-half-open-state: 5
-        automatic-transition-from-open-to-half-open-enabled: true
-        wait-duration-in-open-state: 15s
-        failure-rate-threshold: 50
-
 # swagger routes configuration
 springdoc:
   api-docs:

@@ -5,10 +5,14 @@ import by.ikrotsyuk.bsuir.paymentservice.entity.AccountEntity;
 import by.ikrotsyuk.bsuir.paymentservice.entity.BankCardEntity;
 import by.ikrotsyuk.bsuir.paymentservice.entity.ExpensePaymentEntity;
 import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.AccountTypes;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.accounts.AccountBalanceIsLessThanAmountException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.accounts.AccountNotFoundByUserIdAndAccountTypeException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.cards.CardsNotFoundException;
 import by.ikrotsyuk.bsuir.paymentservice.mapper.ExpensePaymentsMapper;
 import by.ikrotsyuk.bsuir.paymentservice.repository.AccountsRepository;
 import by.ikrotsyuk.bsuir.paymentservice.repository.BankCardsRepository;
 import by.ikrotsyuk.bsuir.paymentservice.repository.ExpensePaymentsRepository;
+import by.ikrotsyuk.bsuir.paymentservice.service.accounts.AccountsService;
 import by.ikrotsyuk.bsuir.paymentservice.service.expensepayments.DriverExpensePaymentsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,15 +27,16 @@ public class DriverExpensePaymentsServiceImpl implements DriverExpensePaymentsSe
     private final BankCardsRepository bankCardsRepository;
     private final ExpensePaymentsRepository expensePaymentsRepository;
     private final ExpensePaymentsMapper expensePaymentsMapper;
+    private final AccountsService accountsService;
 
     @Override
     public ExpensePaymentResponseDTO transferMoney(Long userId, BigDecimal amount) {
         AccountEntity accountEntity = accountsRepository.findByUserIdAndAccountType(userId, AccountTypes.DRIVER)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new AccountNotFoundByUserIdAndAccountTypeException(userId, AccountTypes.DRIVER));
 
         List<BankCardEntity> bankCardEntityList = bankCardsRepository.findAllByAccount(accountEntity);
         if(bankCardEntityList.isEmpty())
-            throw new RuntimeException("not found");
+            throw new CardsNotFoundException();
         else{
             BankCardEntity bankCardEntity = bankCardEntityList.stream()
                     .filter(BankCardEntity::getIsChosen)
@@ -47,8 +52,10 @@ public class DriverExpensePaymentsServiceImpl implements DriverExpensePaymentsSe
                             .cardId(bankCardEntity.getId())
                             .accountId(accountEntity.getId())
                             .build();
-                    accountEntity.setBalance(accountEntity.getBalance().subtract(amount));
-                    break;
+                    if(accountsService.subtractAmount(accountEntity.getUserId(), AccountTypes.DRIVER, amount))
+                        break;
+                    else
+                        throw new AccountBalanceIsLessThanAmountException(amount);
                 case 1:
                     // call money transfer to driver's bank card
                     expensePaymentEntity = ExpensePaymentEntity.builder()
@@ -56,7 +63,10 @@ public class DriverExpensePaymentsServiceImpl implements DriverExpensePaymentsSe
                             .cardId(bankCardEntity.getId())
                             .accountId(accountEntity.getId())
                             .build();
-                    accountEntity.setBalance(BigDecimal.ZERO);
+                    if(accountsService.subtractAmount(accountEntity.getUserId(), AccountTypes.DRIVER, accountEntity.getBalance()))
+                        break;
+                    else
+                        throw new AccountBalanceIsLessThanAmountException(amount);
             }
             expensePaymentsRepository.save(expensePaymentEntity);
             return expensePaymentsMapper.toDTO(expensePaymentEntity);

@@ -1,6 +1,8 @@
 package by.ikrotsyuk.bsuir.driverservice.exception;
 
 import by.ikrotsyuk.bsuir.driverservice.exception.dto.ExceptionDTO;
+import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.FeignConnectException;
+import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.FeignDeserializationException;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.*;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.vehicle.*;
 import by.ikrotsyuk.bsuir.driverservice.exception.keys.GeneralExceptionMessageKeys;
@@ -129,6 +131,14 @@ public class GlobalExceptionHandler {
         String message = messageSource
                 .getMessage(messageKey, new Object[]{ex.getName(), ex.getRequiredType(), ex.getValue()}, LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({FeignDeserializationException.class, FeignConnectException.class})
+    public ResponseEntity<ExceptionDTO> handleFeignResponseExceptions(ExceptionTemplate ex){
+        String messageKey = ex.getMessageKey();
+        String message = messageSource
+                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String generateFieldErrorMessage(FieldError fieldError) {

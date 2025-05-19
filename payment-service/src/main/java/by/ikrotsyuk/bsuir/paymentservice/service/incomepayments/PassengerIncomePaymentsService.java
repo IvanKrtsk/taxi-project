@@ -1,14 +1,13 @@
 package by.ikrotsyuk.bsuir.paymentservice.service.incomepayments;
 
-import by.ikrotsyuk.bsuir.paymentservice.dto.request.IncomePaymentPassengerRequestDTO;
-import by.ikrotsyuk.bsuir.paymentservice.dto.response.full.IncomePaymentFullResponseDTO;
+import by.ikrotsyuk.bsuir.communicationparts.event.FinishRideIncomePaymentDTO;
+import by.ikrotsyuk.bsuir.communicationparts.event.IncomePaymentArtemisDTO;
 import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.PaymentTypes;
-import org.bson.types.ObjectId;
 
 public interface PassengerIncomePaymentsService {
-    IncomePaymentFullResponseDTO createIncomePayment(Long userId, IncomePaymentPassengerRequestDTO incomePaymentPassengerRequestDTO);
+    void createIncomePayment(IncomePaymentArtemisDTO incomePaymentArtemisDTO);
 
-    IncomePaymentFullResponseDTO finishIncomePayment(Long userId, ObjectId incomeId);
+    FinishRideIncomePaymentDTO finishIncomePayment(Long userId);
 
     void changePaymentType(Long accountId, PaymentTypes paymentType);
 }

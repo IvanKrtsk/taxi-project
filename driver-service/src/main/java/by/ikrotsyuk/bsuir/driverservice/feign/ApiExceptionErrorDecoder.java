@@ -1,8 +1,8 @@
-package by.ikrotsyuk.bsuir.ratingservice.feign;
+package by.ikrotsyuk.bsuir.driverservice.feign;
 
-import by.ikrotsyuk.bsuir.ratingservice.exception.dto.ExceptionDTO;
-import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.FeignDeserializationException;
-import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.FeignException;
+import by.ikrotsyuk.bsuir.driverservice.exception.dto.ExceptionDTO;
+import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.FeignDeserializationException;
+import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.FeignException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 @Component
-public class CustomErrorDecoder implements ErrorDecoder {
+public class ApiExceptionErrorDecoder implements ErrorDecoder{
     private final ErrorDecoder.Default defaultError = new ErrorDecoder.Default();
 
     @Override
@@ -55,4 +55,3 @@ public class CustomErrorDecoder implements ErrorDecoder {
         return "";
     }
 }
-

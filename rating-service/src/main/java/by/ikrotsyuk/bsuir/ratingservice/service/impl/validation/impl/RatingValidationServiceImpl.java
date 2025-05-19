@@ -6,8 +6,6 @@ import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
 import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.*;
 import by.ikrotsyuk.bsuir.ratingservice.feign.RideClient;
 import by.ikrotsyuk.bsuir.ratingservice.service.impl.validation.RatingValidationService;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +29,6 @@ public class RatingValidationServiceImpl implements RatingValidationService {
             throw new RideNotBelongToDriverException(rideFullResponseDTO.id(), driverId);
     }
 
-    @Retry(name = "RIDES-SERVICE")
-    @CircuitBreaker(name = "RIDES-SERVICE")
     @Override
     public RideFullResponseDTO getRideDTO(Long rideId) {
         RideFullResponseDTO rideFullResponseDTO;

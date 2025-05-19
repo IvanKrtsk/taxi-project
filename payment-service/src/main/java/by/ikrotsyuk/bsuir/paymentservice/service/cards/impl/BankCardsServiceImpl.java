@@ -4,6 +4,10 @@ import by.ikrotsyuk.bsuir.paymentservice.dto.request.BankCardRequestDTO;
 import by.ikrotsyuk.bsuir.paymentservice.dto.response.full.BankCardFullResponseDTO;
 import by.ikrotsyuk.bsuir.paymentservice.entity.AccountEntity;
 import by.ikrotsyuk.bsuir.paymentservice.entity.BankCardEntity;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.accounts.AccountNotFoundByIdException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.cards.CardAlreadyExistsException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.cards.CardNotFoundByIdException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.cards.CardsNotFoundException;
 import by.ikrotsyuk.bsuir.paymentservice.mapper.BankCardsMapper;
 import by.ikrotsyuk.bsuir.paymentservice.repository.AccountsRepository;
 import by.ikrotsyuk.bsuir.paymentservice.repository.BankCardsRepository;
@@ -25,7 +29,9 @@ public class BankCardsServiceImpl implements BankCardsService {
     @Transactional
     public BankCardFullResponseDTO addBankCard(Long accountId, BankCardRequestDTO bankCardRequestDTO) {
         AccountEntity accountEntity = accountsRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new AccountNotFoundByIdException(accountId));
+        if(bankCardsRepository.existsByCardNumberAndExpirationDateAndAccount(bankCardRequestDTO.cardNumber(), bankCardRequestDTO.expirationDate(), accountEntity))
+            throw new CardAlreadyExistsException(bankCardRequestDTO.cardNumber());
         BankCardEntity bankCardEntity = bankCardsMapper.toEntity(bankCardRequestDTO);
         bankCardEntity.setAccount(accountEntity);
         bankCardsRepository.save(bankCardEntity);
@@ -36,7 +42,7 @@ public class BankCardsServiceImpl implements BankCardsService {
     @Transactional(readOnly = true)
     public BankCardFullResponseDTO getBankCard(Long cardId) {
         BankCardEntity bankCardEntity = bankCardsRepository.findById(cardId)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new CardNotFoundByIdException(cardId));
         return bankCardsMapper.toFullDTO(bankCardEntity);
     }
 
@@ -45,7 +51,7 @@ public class BankCardsServiceImpl implements BankCardsService {
     public List<BankCardFullResponseDTO> getBankCards() {
         List<BankCardEntity> bankCardEntityList = bankCardsRepository.findAll();
         if(bankCardEntityList.isEmpty())
-            throw new RuntimeException("not found");
+            throw new CardsNotFoundException();
         return bankCardsMapper.toFullDTOList(bankCardEntityList);
     }
 
@@ -53,7 +59,7 @@ public class BankCardsServiceImpl implements BankCardsService {
     @Transactional
     public BankCardFullResponseDTO updateBankCard(Long cardId, BankCardRequestDTO bankCardRequestDTO) {
         BankCardEntity bankCardEntity = bankCardsRepository.findById(cardId)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new CardNotFoundByIdException(cardId));
         bankCardEntity.setCardNumber(bankCardRequestDTO.cardNumber());
         bankCardEntity.setExpirationDate(bankCardRequestDTO.expirationDate());
         bankCardEntity.setIsChosen(bankCardRequestDTO.isChosen());
@@ -64,7 +70,7 @@ public class BankCardsServiceImpl implements BankCardsService {
     @Transactional
     public BankCardFullResponseDTO deleteBankCard(Long cardId) {
         BankCardEntity bankCardEntity = bankCardsRepository.findById(cardId)
-                .orElseThrow(() -> new RuntimeException("ex"));
+                .orElseThrow(() -> new CardNotFoundByIdException(cardId));
         bankCardsRepository.deleteById(cardId);
         return bankCardsMapper.toFullDTO(bankCardEntity);
     }

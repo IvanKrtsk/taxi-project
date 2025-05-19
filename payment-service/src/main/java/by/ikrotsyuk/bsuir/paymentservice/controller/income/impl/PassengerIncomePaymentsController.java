@@ -1,11 +1,9 @@
 package by.ikrotsyuk.bsuir.paymentservice.controller.income.impl;
 
+import by.ikrotsyuk.bsuir.communicationparts.event.FinishRideIncomePaymentDTO;
 import by.ikrotsyuk.bsuir.paymentservice.controller.income.PassengerIncomePaymentsOperations;
-import by.ikrotsyuk.bsuir.paymentservice.dto.request.IncomePaymentPassengerRequestDTO;
-import by.ikrotsyuk.bsuir.paymentservice.dto.response.full.IncomePaymentFullResponseDTO;
 import by.ikrotsyuk.bsuir.paymentservice.service.incomepayments.PassengerIncomePaymentsService;
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,12 +18,7 @@ public class PassengerIncomePaymentsController implements PassengerIncomePayment
     private final PassengerIncomePaymentsService passengerIncomePaymentsService;
 
     @Override
-    public ResponseEntity<IncomePaymentFullResponseDTO> createIncomePayment(Long userId, IncomePaymentPassengerRequestDTO incomePaymentPassengerRequestDTO) {
-        return new ResponseEntity<>(passengerIncomePaymentsService.createIncomePayment(userId, incomePaymentPassengerRequestDTO), HttpStatus.CREATED);
-    }
-
-    @Override
-    public ResponseEntity<IncomePaymentFullResponseDTO> finishIncomePayment(Long userId, ObjectId incomeId) {
-        return new ResponseEntity<>(passengerIncomePaymentsService.finishIncomePayment(userId, incomeId), HttpStatus.OK);
+    public ResponseEntity<FinishRideIncomePaymentDTO> finishIncomePayment(Long userId) {
+        return new ResponseEntity<>(passengerIncomePaymentsService.finishIncomePayment(userId), HttpStatus.OK);
     }
 }

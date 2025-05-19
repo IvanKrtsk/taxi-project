@@ -13,5 +13,5 @@ public interface UserBankCardsService {
     List<BankCardFullResponseDTO> getCards(Long userId, AccountTypes accountType);
     BankCardResponseDTO chooseCard(Long userId, AccountTypes accountType, Long cardId);
     BankCardResponseDTO deleteCard(Long userId, AccountTypes accountType, Long cardId);
-    boolean processPaymentWithCard(Long accountId, BigDecimal amount);
+    boolean processPaymentWithCard(Long passengerId, Long driverId, BigDecimal amount);
 }

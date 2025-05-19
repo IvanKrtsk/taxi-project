@@ -6,10 +6,9 @@ import by.ikrotsyuk.bsuir.ridesservice.dto.RideResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.entity.RideEntity;
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.CarClassTypes;
 import by.ikrotsyuk.bsuir.ridesservice.entity.customtypes.RideStatusTypes;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideIsNotInRightConditionForThisOperationException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotBelongToPassengerException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RideNotFoundByIdException;
-import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.RidesNotFoundException;
+import by.ikrotsyuk.bsuir.ridesservice.exceptions.exceptions.*;
+import by.ikrotsyuk.bsuir.ridesservice.feign.RidesPassengerClient;
+import by.ikrotsyuk.bsuir.ridesservice.feign.dto.PassengerResponseDTO;
 import by.ikrotsyuk.bsuir.ridesservice.mapper.RideMapper;
 import by.ikrotsyuk.bsuir.ridesservice.repository.RideRepository;
 import by.ikrotsyuk.bsuir.ridesservice.service.RidePassengerService;
@@ -29,6 +28,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
     private final RideMapper rideMapper;
     private final RideRepository rideRepository;
     private final PaginationUtil paginationUtil;
+    private final RidesPassengerClient ridesPassengerClient;
 
     private final BigDecimal ECONOMY_MULTIPLIER = BigDecimal.valueOf(1.0);
     private final BigDecimal COMFORT_MULTIPLIER = BigDecimal.valueOf(1.2);
@@ -41,13 +41,14 @@ public class RidePassengerServiceImpl implements RidePassengerService {
 
     @Override
     public BigDecimal getCostOfRide(Long passengerId, RideRequestDTO rideRequestDTO) {
+        isPassengerExists(passengerId);
         return calculatePrice(rideRequestDTO);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<RideFullResponseDTO> getRidesStory(Long passengerId, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
-        // check if passenger exists
+        isPassengerExists(passengerId);
         Page<RideEntity> rideEntities = rideRepository.
                 findAllByPassengerId(passengerId, paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc));
         if(!rideEntities.hasContent())
@@ -58,7 +59,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
     @Override
     @Transactional
     public RideResponseDTO bookRide(Long passengerId, RideRequestDTO rideRequestDTO) {
-        // check if passenger exists and not in ride right now
+        isPassengerExists(passengerId);
         RideEntity rideEntity = rideMapper.toEntity(rideRequestDTO);
         Random rand = new Random();
         rideEntity.setCost(calculatePrice(rideRequestDTO));
@@ -71,6 +72,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
     @Override
     @Transactional(readOnly = true)
     public RideFullResponseDTO getRideInfo(Long passengerId, Long rideId) {
+        isPassengerExists(passengerId);
         RideEntity rideEntity = rideRepository.findById(rideId)
                 .orElseThrow(() -> new RideNotFoundByIdException(rideId));
         if(!rideEntity.getPassengerId().equals(passengerId))
@@ -81,6 +83,7 @@ public class RidePassengerServiceImpl implements RidePassengerService {
     @Override
     @Transactional
     public RideFullResponseDTO cancelRide(Long passengerId, Long rideId) {
+        isPassengerExists(passengerId);
         RideEntity rideEntity = rideRepository.findById(rideId)
                 .orElseThrow(() -> new RideNotFoundByIdException(rideId));
         if(!rideEntity.getPassengerId().equals(passengerId))
@@ -109,5 +112,14 @@ public class RidePassengerServiceImpl implements RidePassengerService {
             case ULTIMA -> ULTIMA_MULTIPLIER;
             case DELIVERY -> DELIVERY_MULTIPLIER;
         };
+    }
+
+    private void isPassengerExists(Long passengerId){
+        PassengerResponseDTO passengerResponseDTO;
+        try{
+            passengerResponseDTO = ridesPassengerClient.getPassengerProfile(passengerId).getBody();
+        }catch (feign.RetryableException e){
+            throw new FeignConnectException();
+        }
     }
 }

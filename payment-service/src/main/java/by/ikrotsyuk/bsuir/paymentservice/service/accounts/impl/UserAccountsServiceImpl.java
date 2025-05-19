@@ -5,6 +5,7 @@ import by.ikrotsyuk.bsuir.paymentservice.dto.response.full.AccountFullResponseDT
 import by.ikrotsyuk.bsuir.paymentservice.entity.AccountEntity;
 import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.AccountTypes;
 import by.ikrotsyuk.bsuir.paymentservice.entity.customtypes.PaymentTypes;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.accounts.AccountNotFoundByUserIdAndAccountTypeException;
 import by.ikrotsyuk.bsuir.paymentservice.mapper.AccountsMapper;
 import by.ikrotsyuk.bsuir.paymentservice.repository.AccountsRepository;
 import by.ikrotsyuk.bsuir.paymentservice.service.accounts.UserAccountsService;
@@ -24,7 +25,7 @@ public class UserAccountsServiceImpl implements UserAccountsService {
     @Transactional(readOnly = true)
     public AccountFullResponseDTO getAccount(Long userId, AccountTypes accountType) {
         AccountEntity accountEntity = accountsRepository.findByUserIdAndAccountType(userId, accountType)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new AccountNotFoundByUserIdAndAccountTypeException(userId, accountType));
         return accountsMapper.toFullDTO(accountEntity);
     }
 
@@ -32,7 +33,7 @@ public class UserAccountsServiceImpl implements UserAccountsService {
     @Transactional
     public AccountFullResponseDTO updateAccount(Long userId, AccountTypes accountType, AccountRequestDTO accountRequestDTO) {
         AccountEntity accountEntity = accountsRepository.findByUserIdAndAccountType(userId, accountType)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new AccountNotFoundByUserIdAndAccountTypeException(userId, accountType));
 
         accountEntity.setUserId(accountRequestDTO.userId());
         accountEntity.setAccountType(accountRequestDTO.accountType());
@@ -44,7 +45,7 @@ public class UserAccountsServiceImpl implements UserAccountsService {
     @Transactional
     public AccountFullResponseDTO updatePaymentMethod(Long userId, AccountTypes accountType, PaymentTypes paymentType) {
         AccountEntity accountEntity = accountsRepository.findByUserIdAndAccountType(userId, accountType)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new AccountNotFoundByUserIdAndAccountTypeException(userId, accountType));
 
         accountEntity.setSelectedPaymentType(paymentType);
 
@@ -55,9 +56,9 @@ public class UserAccountsServiceImpl implements UserAccountsService {
 
     @Override
     @Transactional
-    public AccountFullResponseDTO deleteAccount(Long userId, AccountTypes accountTypes) {
-        AccountEntity accountEntity = accountsRepository.findByUserIdAndAccountType(userId, accountTypes)
-                .orElseThrow(() -> new RuntimeException("not found"));
+    public AccountFullResponseDTO deleteAccount(Long userId, AccountTypes accountType) {
+        AccountEntity accountEntity = accountsRepository.findByUserIdAndAccountType(userId, accountType)
+                .orElseThrow(() -> new AccountNotFoundByUserIdAndAccountTypeException(userId, accountType));
 
         accountsRepository.deleteById(accountEntity.getId());
 

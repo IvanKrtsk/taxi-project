@@ -1,12 +1,15 @@
 package by.ikrotsyuk.bsuir.driverservice.service.impl;
 
+import by.ikrotsyuk.bsuir.communicationparts.event.customtypes.AccountTypes;
 import by.ikrotsyuk.bsuir.driverservice.dto.DriverRequestDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.DriverResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.dto.DriverVehicleResponseDTO;
 import by.ikrotsyuk.bsuir.driverservice.entity.DriverEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.VehicleEntity;
 import by.ikrotsyuk.bsuir.driverservice.entity.customtypes.StatusTypes;
+import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.FeignConnectException;
 import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.*;
+import by.ikrotsyuk.bsuir.driverservice.feign.DriverAccountClient;
 import by.ikrotsyuk.bsuir.driverservice.mapper.DriverMapper;
 import by.ikrotsyuk.bsuir.driverservice.repository.DriverRepository;
 import by.ikrotsyuk.bsuir.driverservice.service.DriverService;
@@ -26,6 +29,7 @@ public class DriverServiceImpl implements DriverService {
     private final DriverMapper driverMapper;
     private final DriverServiceValidationManager driverServiceValidationManager;
     private final PaginationUtil paginationUtil;
+    private final DriverAccountClient driverAccountClient;
 
     @Override
     @Transactional(readOnly = true)
@@ -100,13 +104,22 @@ public class DriverServiceImpl implements DriverService {
         } else {
             driverServiceValidationManager.checkEmailIsUnique(email);
             driverServiceValidationManager.checkPhoneIsUnique(phone);
-            return driverMapper.toDTO(driverRepository.save(DriverEntity.builder()
+
+            DriverEntity driverEntity = driverRepository.save(DriverEntity.builder()
                     .name(driverRequestDTO.name())
                     .email(email)
                     .phone(phone)
                     .totalRides(0L)              //  @Builder.Default null issue
                     .status(StatusTypes.AVAILABLE)
-                    .build()));
+            .build());
+
+            try{
+                Long accountId = driverAccountClient.createAccount(driverEntity.getId(), AccountTypes.DRIVER).getBody();
+            }catch (feign.RetryableException e){
+                throw new FeignConnectException();
+            }
+
+            return driverMapper.toDTO(driverEntity);
         }
     }
 

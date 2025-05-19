@@ -27,6 +27,11 @@ spring:
   data:
     mongodb:
       uri: mongodb://mongo:mongo@localhost:27017/taxi_db
+  artemis:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+    mode: native
 
 # swagger routes configuration
 springdoc:
