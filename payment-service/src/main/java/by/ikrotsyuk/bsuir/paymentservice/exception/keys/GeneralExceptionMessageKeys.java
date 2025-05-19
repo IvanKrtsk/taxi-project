@@ -1,4 +1,4 @@
-package by.ikrotsyuk.bsuir.passengerservice.exception.keys;
+package by.ikrotsyuk.bsuir.paymentservice.exception.keys;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

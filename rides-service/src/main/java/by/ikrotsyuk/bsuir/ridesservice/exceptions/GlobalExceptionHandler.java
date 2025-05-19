@@ -135,6 +135,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({FeignDeserializationException.class, FeignConnectException.class})
+    public ResponseEntity<ExceptionDTO> handleFeignResponseExceptions(ExceptionTemplate ex){
+        String messageKey = ex.getMessageKey();
+        String message = messageSource
+                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({FeignException.class})
+    public ResponseEntity<ExceptionDTO> handleFeignException(FeignException e){
+        return new ResponseEntity<>(e.getExceptionDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private String generateFieldErrorMessage(FieldError fieldError) {
         String fieldName = fieldError.getField();
         Object rejectedValue = fieldError.getRejectedValue();

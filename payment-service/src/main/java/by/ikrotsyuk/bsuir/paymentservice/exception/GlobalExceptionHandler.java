@@ -1,11 +1,17 @@
-package by.ikrotsyuk.bsuir.ratingservice.exceptions;
+package by.ikrotsyuk.bsuir.paymentservice.exception;
 
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.dto.ExceptionDTO;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.IdIsNotValidException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewNotFoundByIdException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.exceptions.ReviewsNotFoundException;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.keys.GeneralExceptionMessageKeys;
-import by.ikrotsyuk.bsuir.ratingservice.exceptions.template.ExceptionTemplate;
+import by.ikrotsyuk.bsuir.paymentservice.exception.dto.ExceptionDTO;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.FeignConnectException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.FeignDeserializationException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.accounts.AccountAlreadyExistsException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.accounts.AccountNotFoundByIdException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.accounts.AccountNotFoundByUserIdAndAccountTypeException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.accounts.AccountsNotFoundException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.cards.CardAlreadyExistsException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.cards.CardNotFoundByIdException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.exceptions.cards.CardsNotFoundException;
+import by.ikrotsyuk.bsuir.paymentservice.exception.keys.GeneralExceptionMessageKeys;
+import by.ikrotsyuk.bsuir.paymentservice.exception.template.ExceptionTemplate;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +47,30 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", ex.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    private String handleInvalidFormatException(InvalidFormatException ex) {
+        String fieldName = ex.getPath().getFirst().getFieldName();
+        Object rejectedValue = ex.getValue();
+        Class<?> targetType = ex.getTargetType();
+
+        if (targetType.isEnum()) {
+            return generateEnumErrorMessage(targetType, fieldName, rejectedValue);
+        } else {
+            return messageSource.getMessage(
+                    GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
+                    new Object[]{rejectedValue},
+                    LocaleContextHolder.getLocale()
+            );
+        }
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
         AtomicReference<ExceptionDTO> exceptionDTO = new AtomicReference<>();
@@ -62,13 +92,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(exceptionDTO.get(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
-        Map<String, String> errors = new HashMap<>();
-        errors.put("error", ex.getMessage());
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ExceptionDTO> handleConstraintViolation(ConstraintViolationException ex) {
         AtomicReference<ExceptionDTO> exceptionDTO = new AtomicReference<>();
@@ -88,33 +111,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(exceptionDTO.get(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(InvalidFormatException.class)
-    private String handleInvalidFormatException(InvalidFormatException ex) {
-        String fieldName = ex.getPath().getFirst().getFieldName();
-        Object rejectedValue = ex.getValue();
-        Class<?> targetType = ex.getTargetType();
-
-        if (targetType.isEnum()) {
-            return generateEnumErrorMessage(targetType, fieldName, rejectedValue);
-        } else {
-            return messageSource.getMessage(
-                    GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
-                    new Object[]{rejectedValue},
-                    LocaleContextHolder.getLocale()
-            );
-        }
-    }
-
-    @ExceptionHandler({ReviewNotFoundByIdException.class, ReviewsNotFoundException.class})
-    public ResponseEntity<ExceptionDTO> handleRideNotFoundException(ExceptionTemplate ex){
+    @ExceptionHandler({AccountNotFoundByIdException.class, AccountsNotFoundException.class, AccountNotFoundByUserIdAndAccountTypeException.class, CardNotFoundByIdException.class, CardsNotFoundException.class})
+    public ResponseEntity<ExceptionDTO> handleNotFoundExceptions(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
                 .getMessage(messageKey, ex.getArgs(), LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({IdIsNotValidException.class})
-    public ResponseEntity<ExceptionDTO> handlePassengerWithSameEmailAlreadyExistsException(ExceptionTemplate ex){
+    @ExceptionHandler({AccountAlreadyExistsException.class, CardAlreadyExistsException.class})
+    public ResponseEntity<ExceptionDTO> handleAlreadyExistsException(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
                 .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
@@ -129,11 +135,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({FeignDeserializationException.class, FeignConnectException.class})
+    public ResponseEntity<ExceptionDTO> handleFeignResponseExceptions(ExceptionTemplate ex){
+        String messageKey = ex.getMessageKey();
+        String message = messageSource
+                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private String generateFieldErrorMessage(FieldError fieldError) {
         String fieldName = fieldError.getField();
         Object rejectedValue = fieldError.getRejectedValue();
         try {
-            String DTO_PACKAGE_PATH = "by.ikrotsyuk.bsuir.ratingservice.dto.";
+            String DTO_PACKAGE_PATH = "by.ikrotsyuk.bsuir.paymentservice.dto.";
             String fullQualifiedName = DTO_PACKAGE_PATH + capitalize(fieldError.getObjectName());
             Class<?> dtoClass = Class.forName(fullQualifiedName);
             Field field = dtoClass.getDeclaredField(fieldName);

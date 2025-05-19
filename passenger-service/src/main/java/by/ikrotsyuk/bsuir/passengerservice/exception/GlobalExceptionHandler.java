@@ -1,7 +1,14 @@
 package by.ikrotsyuk.bsuir.passengerservice.exception;
 
 import by.ikrotsyuk.bsuir.passengerservice.exception.dto.ExceptionDTO;
-import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.*;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.FeignConnectException;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.FeignDeserializationException;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerAlreadyDeletedException;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByEmailException;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByIdException;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerWithSameEmailAlreadyExistsException;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerWithSamePhoneAlreadyExistsException;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengersNotFoundException;
 import by.ikrotsyuk.bsuir.passengerservice.exception.keys.GeneralExceptionMessageKeys;
 import by.ikrotsyuk.bsuir.passengerservice.exception.template.ExceptionTemplate;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -125,6 +132,14 @@ public class GlobalExceptionHandler {
         String message = messageSource
                 .getMessage(messageKey, new Object[]{ex.getName(), ex.getRequiredType(), ex.getValue()}, LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({FeignDeserializationException.class, FeignConnectException.class})
+    public ResponseEntity<ExceptionDTO> handleFeignResponseExceptions(ExceptionTemplate ex){
+        String messageKey = ex.getMessageKey();
+        String message = messageSource
+                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String generateFieldErrorMessage(FieldError fieldError) {

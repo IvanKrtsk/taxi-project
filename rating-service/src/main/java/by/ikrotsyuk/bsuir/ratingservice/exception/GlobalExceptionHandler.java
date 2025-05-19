@@ -1,12 +1,9 @@
-package by.ikrotsyuk.bsuir.driverservice.exception;
+package by.ikrotsyuk.bsuir.ratingservice.exception;
 
-import by.ikrotsyuk.bsuir.driverservice.exception.dto.ExceptionDTO;
-import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.FeignConnectException;
-import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.FeignDeserializationException;
-import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.driver.*;
-import by.ikrotsyuk.bsuir.driverservice.exception.exceptions.vehicle.*;
-import by.ikrotsyuk.bsuir.driverservice.exception.keys.GeneralExceptionMessageKeys;
-import by.ikrotsyuk.bsuir.driverservice.exception.template.ExceptionTemplate;
+import by.ikrotsyuk.bsuir.ratingservice.exception.dto.ExceptionDTO;
+import by.ikrotsyuk.bsuir.ratingservice.exception.exceptions.*;
+import by.ikrotsyuk.bsuir.ratingservice.exception.keys.GeneralExceptionMessageKeys;
+import by.ikrotsyuk.bsuir.ratingservice.exception.template.ExceptionTemplate;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +16,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.lang.reflect.Field;
@@ -30,8 +27,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 @RequiredArgsConstructor
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
+
     private final MessageSource messageSource;
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
@@ -105,23 +103,19 @@ public class GlobalExceptionHandler {
         }
     }
 
-    @ExceptionHandler({DriverNotFoundByEmailException.class, DriverNotFoundByIdException.class,
-            DriversNotFoundException.class, DriverVehiclesNotFoundException.class,
-            DriverCurrentVehicleNotFoundException.class, VehiclesNotFoundByBrandException.class,
-            VehicleNotFoundByIdException.class, VehicleNotFoundByLicensePlateException.class,
-            VehiclesNotFoundByYearException.class, VehiclesNotFoundByTypeException.class})
-    public ResponseEntity<ExceptionDTO> handleNotFoundExceptions(ExceptionTemplate ex){
+    @ExceptionHandler({ReviewNotFoundByIdException.class, ReviewsNotFoundException.class})
+    public ResponseEntity<ExceptionDTO> handleRideNotFoundException(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
                 .getMessage(messageKey, ex.getArgs(), LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({DriverWithSameEmailAlreadyExistsException.class, DriverWithSamePhoneAlreadyExistsException.class, DriverAlreadyDeletedException.class, VehicleNotBelongToDriverException.class, VehicleWithSameLicensePlateAlreadyExistsException.class})
-    public ResponseEntity<ExceptionDTO> handleConflictExceptions(ExceptionTemplate ex){
+    @ExceptionHandler({IdIsNotValidException.class, ReviewAlreadyExistsException.class})
+    public ResponseEntity<ExceptionDTO> handlePassengerWithSameEmailAlreadyExistsException(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource
-                .getMessage(messageKey, ex.getArgs(), LocaleContextHolder.getLocale());
+                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.CONFLICT);
     }
 
@@ -141,11 +135,24 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler({RideNotAcceptedException.class, RideNotBelongToPassengerException.class, RideNotBelongToDriverException.class})
+    public ResponseEntity<ExceptionDTO> handleFeignRequestExceptions(ExceptionTemplate ex){
+        String messageKey = ex.getMessageKey();
+        String message = messageSource
+                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ExceptionDTO> handleFeignException(FeignException ex){
+        return new ResponseEntity<>(ex.getExceptionDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private String generateFieldErrorMessage(FieldError fieldError) {
         String fieldName = fieldError.getField();
         Object rejectedValue = fieldError.getRejectedValue();
         try {
-            String DTO_PACKAGE_PATH = "by.ikrotsyuk.bsuir.driverservice.dto.";
+            String DTO_PACKAGE_PATH = "by.ikrotsyuk.bsuir.ratingservice.dto.";
             String fullQualifiedName = DTO_PACKAGE_PATH + capitalize(fieldError.getObjectName());
             Class<?> dtoClass = Class.forName(fullQualifiedName);
             Field field = dtoClass.getDeclaredField(fieldName);
