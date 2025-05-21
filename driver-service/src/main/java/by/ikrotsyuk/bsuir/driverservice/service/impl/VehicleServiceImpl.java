@@ -112,7 +112,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Transactional(readOnly = true)
     public Page<VehicleResponseDTO> getAllVehiclesByType(CarClassTypes type, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByCarClass(type,
-                paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
+                paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc, VehicleEntity.class));
 
         if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundByTypeException(type);
@@ -123,7 +123,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Transactional(readOnly = true)
     public Page<VehicleResponseDTO> getAllVehiclesByYear(Integer year, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByYear(year,
-                paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
+                paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc, VehicleEntity.class));
 
         if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundByYearException(year);
@@ -134,7 +134,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Transactional(readOnly = true)
     public Page<VehicleResponseDTO> getAllVehiclesByBrand(String brand, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         Page<VehicleEntity> vehicleEntities = vehicleRepository.findAllByBrand(brand,
-                paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc, DriverEntity.class));
+                paginationUtil.getPageRequest(offset, itemCount, field, isSortDirectionAsc, VehicleEntity.class));
 
         if(!vehicleEntities.hasContent())
             throw new VehiclesNotFoundByBrandException(brand);
@@ -159,7 +159,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Transactional(readOnly = true)
-    protected void checkDriverAndVehicleId(Long driverId, Long vehicleId){
+    public void checkDriverAndVehicleId(Long driverId, Long vehicleId){
         if(!driverRepository.existsById(driverId))
             throw new DriverNotFoundByIdException(driverId);
 

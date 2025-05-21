@@ -40,7 +40,7 @@ public class ApiExceptionErrorDecoder implements ErrorDecoder{
     }
 
     @SneakyThrows
-    private String readResponseBody(Response response) {
+    public String readResponseBody(Response response) {
         if (Objects.nonNull(response.body())) {
             @Cleanup InputStreamReader inputStreamReader =
                     new InputStreamReader(response.body().asInputStream(), StandardCharsets.UTF_8);

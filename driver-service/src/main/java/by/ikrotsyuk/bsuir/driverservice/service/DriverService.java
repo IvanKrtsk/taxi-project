@@ -8,7 +8,6 @@ public interface DriverService {
     Double getDriverRatingById(Long driverId);
     DriverResponseDTO editDriverProfile(Long driverId, DriverRequestDTO driverRequestDTO);
     DriverResponseDTO deleteDriverProfile(Long driverId);
-    Long checkIsEmailCorrect(Long driverId, String email);
     DriverResponseDTO addDriver(DriverRequestDTO driverRequestDTO);
     Page<DriverResponseDTO> getAllDrivers(int offset, int itemCount, String field, Boolean isSortDirectionAsc);
     DriverVehicleResponseDTO getDriverWithVehicleById(Long driverId);
