@@ -46,15 +46,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionDTO> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
         String messageKey = GeneralExceptionMessageKeys.ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY.getMessageKey();
         String message = messageSource.getMessage(messageKey, new Object[]{ex.getParameterName(), ex.getMethodParameter(), ex.getParameterType()}, LocaleContextHolder.getLocale());
-        log.info(message);
-        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(constructExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", ex.getMessage());
-        log.info(errors.toString());
+        log.error(errors.toString());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
@@ -70,7 +69,7 @@ public class GlobalExceptionHandler {
         } else {
             message = messageSource.getMessage(GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(), new Object[]{rejectedValue}, LocaleContextHolder.getLocale());
         }
-        log.info(message);
+        log.error(message);
         return message;
     }
 
@@ -92,7 +91,7 @@ public class GlobalExceptionHandler {
                 }
             }
         });
-        log.info(exceptionDTO.get().getMessage());
+        log.error(exceptionDTO.get().toString());
         return new ResponseEntity<>(exceptionDTO.get(), HttpStatus.BAD_REQUEST);
     }
 
@@ -112,7 +111,7 @@ public class GlobalExceptionHandler {
                 exceptionDTO.set(new ExceptionDTO(errorMessage, messageKey));
             }
         });
-        log.info(exceptionDTO.get().getMessage());
+        log.error(exceptionDTO.get().toString());
         return new ResponseEntity<>(exceptionDTO.get(), HttpStatus.BAD_REQUEST);
     }
 
@@ -120,32 +119,28 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionDTO> handleNotFoundExceptions(ExceptionTemplate ex) {
         String messageKey = ex.getMessageKey();
         String message = messageSource.getMessage(messageKey, ex.getArgs(), LocaleContextHolder.getLocale());
-        log.info(message);
-        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(constructExceptionDTO(message, messageKey), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({AccountAlreadyExistsException.class, CardAlreadyExistsException.class})
     public ResponseEntity<ExceptionDTO> handleAlreadyExistsException(ExceptionTemplate ex) {
         String messageKey = ex.getMessageKey();
         String message = messageSource.getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
-        log.info(message);
-        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(constructExceptionDTO(message, messageKey), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ExceptionDTO> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         String messageKey = GeneralExceptionMessageKeys.METHOD_ARGUMENT_TYPE_MISMATCH_MESSAGE_KEY.getMessageKey();
         String message = messageSource.getMessage(messageKey, new Object[]{ex.getName(), ex.getRequiredType(), ex.getValue()}, LocaleContextHolder.getLocale());
-        log.info(message);
-        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(constructExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({FeignDeserializationException.class, FeignConnectException.class})
     public ResponseEntity<ExceptionDTO> handleFeignResponseExceptions(ExceptionTemplate ex) {
         String messageKey = ex.getMessageKey();
         String message = messageSource.getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
-        log.error(message);
-        return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(constructExceptionDTO(message, messageKey), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String generateFieldErrorMessage(FieldError fieldError) {
@@ -176,5 +171,11 @@ public class GlobalExceptionHandler {
         Object[] enumValues = fieldType.getEnumConstants();
         String possibleValues = Arrays.toString(enumValues);
         return messageSource.getMessage(GeneralExceptionMessageKeys.ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY.getMessageKey(), new Object[]{fieldName, rejectedValue, possibleValues}, LocaleContextHolder.getLocale());
+    }
+
+    private ExceptionDTO constructExceptionDTO(String message, String messageKey){
+        ExceptionDTO exceptionDTO = new ExceptionDTO(message, messageKey);
+        log.error(exceptionDTO.toString());
+        return exceptionDTO;
     }
 }
