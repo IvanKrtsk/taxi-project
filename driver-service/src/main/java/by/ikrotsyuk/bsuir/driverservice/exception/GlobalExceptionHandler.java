@@ -108,7 +108,7 @@ public class GlobalExceptionHandler {
         }
     }
 
-    @ExceptionHandler({DriverNotFoundByEmailException.class, DriverNotFoundByIdException.class, DriversNotFoundException.class, DriverVehiclesNotFoundException.class, DriverCurrentVehicleNotFoundException.class, VehiclesNotFoundByBrandException.class, VehicleNotFoundByIdException.class, VehicleNotFoundByLicensePlateException.class, VehiclesNotFoundByYearException.class, VehiclesNotFoundByTypeException.class})
+    @ExceptionHandler({DriverNotFoundByEmailException.class, DriverNotFoundByIdException.class, DriversNotFoundException.class, DriverVehiclesNotFoundException.class, DriverCurrentVehicleNotFoundException.class, VehiclesNotFoundByBrandException.class, VehicleNotFoundByIdException.class, VehicleNotFoundByLicensePlateException.class, VehiclesNotFoundByYearException.class, VehiclesNotFoundByTypeException.class, VehiclesNotFoundException.class})
     public ResponseEntity<ExceptionDTO> handleNotFoundExceptions(ExceptionTemplate ex) {
         log.error(ex.toString());
         String messageKey = ex.getMessageKey();
