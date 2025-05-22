@@ -57,6 +57,13 @@ public final class TestDataGenerator {
     public static final String CHOOSE_CURRENT_VEHICLE = "/api/v1/drivers/vehicles/{driverId}/{vehicleId}/current";
     public static final String GET_VEHICLE_BY_ID = "/api/v1/drivers/vehicles/{vehicleId}";
     public static final String GET_ALL_VEHICLES = "/api/v1/drivers/vehicles";
+    public static final String GET_ALL_VEHICLES_BY_TYPE = "/api/v1/drivers/vehicles/type";
+    public static final String GET_ALL_VEHICLES_BY_YEAR = "/api/v1/drivers/vehicles/year";
+    public static final String GET_ALL_VEHICLES_BY_BRAND = "/api/v1/drivers/vehicles/brand";
+    public static final String GET_VEHICLE_BY_LICENSE = "/api/v1/drivers/vehicles/license";
+    public static final String DELETE_VEHICLE_BY_LICENSE = "/api/v1/drivers/vehicles/{driverId}/{vehicleId}";
+    public static final String GET_ALL_DRIVER_VEHICLES = "/api/v1/drivers/vehicles/{driverId}/vehicles";
+    public static final String GET_DRIVER_CURRENT_VEHICLE = "/api/v1/drivers/vehicles/{driverId}/current";
 
     private final Long RATING_UPDATED_EVENT_ID = 1L;
     private final Long RATING_UPDATED_EVENT_REVIEWER_ID = 1L;
@@ -64,13 +71,13 @@ public final class TestDataGenerator {
     private final Double RATING_UPDATED_EVENT_RATING = 8.6;
 
     @Getter
-    private final int DEFAULT_PAGE = 0;
+    private static final int DEFAULT_PAGE = 0;
     @Getter
-    private final int DEFAULT_ITEMS_PER_PAGE_COUNT = 10;
+    private static final int DEFAULT_ITEMS_PER_PAGE_COUNT = 10;
     @Getter
-    private final String DEFAULT_SORT_FIELD = "id";
+    private static final String DEFAULT_SORT_FIELD = "id";
     @Getter
-    private final Sort.Direction DEFAULT_SORT_DIRECTION = Sort.Direction.ASC;
+    private static final Sort.Direction DEFAULT_SORT_DIRECTION = Sort.Direction.ASC;
 
     public static DriverEntity getDriverEntity(){
         return DriverEntity.builder()
