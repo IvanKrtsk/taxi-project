@@ -11,7 +11,6 @@ import java.util.Set;
 
 @Component
 public class LocaleUtils {
-
     private final ResourcePatternResolver resourcePatternResolver;
 
     public LocaleUtils(ResourcePatternResolver resourcePatternResolver) {
@@ -19,21 +18,17 @@ public class LocaleUtils {
     }
 
     public Set<Locale> getSupportedLocales() throws IOException {
-        Set<Locale> supportedLocales = new HashSet<>();
-
-        Resource[] resources = resourcePatternResolver.getResources(
-                "classpath*:/messages/messages_*.properties"
-        );
+        Set<Locale> locales = new HashSet<>();
+        Resource[] resources = resourcePatternResolver.getResources("classpath*:messages_*.properties");
 
         for (Resource resource : resources) {
             String filename = resource.getFilename();
             if (filename != null && filename.startsWith("messages_")) {
-                String localeCode = filename.substring("messages_".length(), filename.lastIndexOf('.'));
-                supportedLocales.add(Locale.forLanguageTag(localeCode));
+                String localeCode = filename.substring(9, filename.indexOf(".properties"));
+                locales.add(Locale.forLanguageTag(localeCode.replace('_', '-')));
             }
         }
-
-        return supportedLocales;
+        return locales;
     }
-
 }
+

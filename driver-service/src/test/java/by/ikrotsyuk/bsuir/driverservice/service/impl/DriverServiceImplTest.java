@@ -93,7 +93,7 @@ public class DriverServiceImplTest {
             driverEntity.setDriverVehicles(List.of(vehicleEntity));
         }
         if(testInfo.getTags().contains(PAGINATION_TAG)) {
-            driverEntityPage = TestDataGenerator.getEntityPage(driverEntity);
+            driverEntityPage = TestDataGenerator.getObjectsPage(driverEntity);
             pageRequest = TestDataGenerator.getPageRequest();
         }
         if(testInfo.getTags().contains(DRIVER_REQUEST_TAG)){

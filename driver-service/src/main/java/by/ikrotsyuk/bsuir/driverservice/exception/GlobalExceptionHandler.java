@@ -109,7 +109,8 @@ public class GlobalExceptionHandler {
             DriversNotFoundException.class, DriverVehiclesNotFoundException.class,
             DriverCurrentVehicleNotFoundException.class, VehiclesNotFoundByBrandException.class,
             VehicleNotFoundByIdException.class, VehicleNotFoundByLicensePlateException.class,
-            VehiclesNotFoundByYearException.class, VehiclesNotFoundByTypeException.class})
+            VehiclesNotFoundByYearException.class, VehiclesNotFoundByTypeException.class,
+            VehiclesNotFoundException.class})
     public ResponseEntity<ExceptionDTO> handleNotFoundExceptions(ExceptionTemplate ex){
         String messageKey = ex.getMessageKey();
         String message = messageSource

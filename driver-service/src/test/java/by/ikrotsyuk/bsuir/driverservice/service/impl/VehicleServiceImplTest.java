@@ -94,7 +94,7 @@ public class VehicleServiceImplTest {
             vehicleEntity.setDriver(driverEntity);
         }
         if(testInfo.getTags().contains(PAGINATION_TAG)) {
-            vehicleEntityPage = TestDataGenerator.getEntityPage(vehicleEntity);
+            vehicleEntityPage = TestDataGenerator.getObjectsPage(vehicleEntity);
             pageRequest = TestDataGenerator.getPageRequest();
         }
     }

@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @UtilityClass
-public class TestDataGenerator {
+public final class TestDataGenerator {
     private final Long DRIVER_ID = 1L;
     private final String DRIVER_NAME = "John Doe";
     private final String DRIVER_EMAIL = "john@gmail.com";
@@ -44,6 +44,20 @@ public class TestDataGenerator {
     private final OffsetDateTime VEHICLE_CREATED_AT = OffsetDateTime.now();
     private final OffsetDateTime VEHICLE_UPDATED_AT = OffsetDateTime.now();
 
+    public static final String GET_DRIVER_PROFILE_BY_ID = "/api/v1/drivers/{driverId}/profile";
+    public static final String GET_DRIVER_RATING_BY_ID = "/api/v1/drivers/{driverId}/rating";
+    public static final String GET_ALL_DRIVERS = "/api/v1/drivers";
+    public static final String UPDATE_DRIVER_BY_ID = "/api/v1/drivers/{driverId}";
+    public static final String DELETE_DRIVER_BY_ID = "/api/v1/drivers/{driverId}";
+    public static final String ADD_DRIVER = "/api/v1/drivers";
+    public static final String GET_DRIVER_WITH_VEHICLES = "/api/v1/drivers/{driverId}/vehicles";
+
+    public static final String ADD_VEHICLE = "/api/v1/drivers/vehicles/{driverId}";
+    public static final String UPDATE_VEHICLE = "/api/v1/drivers/vehicles//{driverId}/{vehicleId}";
+    public static final String CHOOSE_CURRENT_VEHICLE = "/api/v1/drivers/vehicles/{driverId}/{vehicleId}/current";
+    public static final String GET_VEHICLE_BY_ID = "/api/v1/drivers/vehicles/{vehicleId}";
+    public static final String GET_ALL_VEHICLES = "/api/v1/drivers/vehicles";
+
     private final Long RATING_UPDATED_EVENT_ID = 1L;
     private final Long RATING_UPDATED_EVENT_REVIEWER_ID = 1L;
     private final Long RATING_UPDATED_EVENT_REVIEWED_ID = 1L;
@@ -58,7 +72,7 @@ public class TestDataGenerator {
     @Getter
     private final Sort.Direction DEFAULT_SORT_DIRECTION = Sort.Direction.ASC;
 
-    public DriverEntity getDriverEntity(){
+    public static DriverEntity getDriverEntity(){
         return DriverEntity.builder()
                 .id(DRIVER_ID)
                 .name(DRIVER_NAME)
@@ -74,7 +88,7 @@ public class TestDataGenerator {
                 .build();
     }
 
-    public DriverResponseDTO getDriverResponseDTO(){
+    public static DriverResponseDTO getDriverResponseDTO(){
         return new DriverResponseDTO(
                 DRIVER_ID,
                 DRIVER_NAME,
@@ -87,7 +101,7 @@ public class TestDataGenerator {
         );
     }
 
-    public VehicleEntity getVehicleEntity(){
+    public static VehicleEntity getVehicleEntity(){
         return VehicleEntity.builder()
                 .id(VEHICLE_ID)
                 .brand(VEHICLE_BRAND)
@@ -103,7 +117,7 @@ public class TestDataGenerator {
                 .build();
     }
 
-    public VehicleResponseDTO getVehicleResponseDTO(boolean isCurrent){
+    public static VehicleResponseDTO getVehicleResponseDTO(boolean isCurrent){
         return new VehicleResponseDTO(
                 VEHICLE_ID,
                 VEHICLE_BRAND,
@@ -118,7 +132,7 @@ public class TestDataGenerator {
         );
     }
 
-    public VehicleRequestDTO getVehicleRequestDTO(){
+    public static VehicleRequestDTO getVehicleRequestDTO(){
         return new VehicleRequestDTO(
                 VEHICLE_BRAND,
                 VEHICLE_MODEL,
@@ -129,7 +143,7 @@ public class TestDataGenerator {
         );
     }
 
-    public DriverRequestDTO getDriverRequestDTO(){
+    public static DriverRequestDTO getDriverRequestDTO(){
         return new DriverRequestDTO(
                 DRIVER_NAME,
                 DRIVER_EMAIL,
@@ -137,7 +151,7 @@ public class TestDataGenerator {
         );
     }
 
-    public DriverVehicleResponseDTO getDriverVehicleResponseDTO(List<VehicleEntity> vehicleEntityList){
+    public static DriverVehicleResponseDTO getDriverVehicleResponseDTO(List<VehicleEntity> vehicleEntityList){
         return new DriverVehicleResponseDTO(
                 DRIVER_ID,
                 DRIVER_NAME,
@@ -151,7 +165,7 @@ public class TestDataGenerator {
         );
     }
 
-    public RatingUpdatedEvent getRatingUpdatedEvent(){
+    public static RatingUpdatedEvent getRatingUpdatedEvent(){
         return new RatingUpdatedEvent(
                 RATING_UPDATED_EVENT_ID,
                 RATING_UPDATED_EVENT_REVIEWER_ID,
@@ -161,7 +175,7 @@ public class TestDataGenerator {
     }
 
     @SafeVarargs
-    public <T> Page<T> getEntityPage(T... entitiesArr){
+    public static <T> Page<T> getObjectsPage(T... entitiesArr){
         PageRequest pageable = PageRequest.of(DEFAULT_PAGE, entitiesArr.length, Sort.by(DEFAULT_SORT_FIELD));
 
         List<T> entities = Arrays.stream(entitiesArr)
@@ -170,7 +184,21 @@ public class TestDataGenerator {
         return new PageImpl<>(entities, pageable, entities.size());
     }
 
-    public Pageable getPageRequest(){
+    public static Pageable getPageRequest(){
         return PageRequest.of(DEFAULT_PAGE, DEFAULT_ITEMS_PER_PAGE_COUNT, Sort.by(DEFAULT_SORT_DIRECTION, DEFAULT_SORT_FIELD));
+    }
+
+    public static DriverVehicleResponseDTO getDriverVehicleResponseDTO(){
+        return new DriverVehicleResponseDTO(
+                DRIVER_ID,
+                DRIVER_NAME,
+                DRIVER_EMAIL,
+                DRIVER_PHONE,
+                DRIVER_RATING,
+                DRIVER_TOTAL_RIDES,
+                DRIVER_IS_DELETED,
+                DRIVER_STATUS,
+                List.of(getVehicleEntity())
+        );
     }
 }
