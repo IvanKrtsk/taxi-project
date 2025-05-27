@@ -1,6 +1,6 @@
 package by.ikrotsyuk.bsuir.ratingservice.entity.customtypes;
 
-public enum ReviewerTypeTypes {
+public enum ReviewerTypes {
     DRIVER,
     PASSENGER
 }
