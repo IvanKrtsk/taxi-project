@@ -13,6 +13,7 @@ import java.util.Optional;
 @Repository
 public interface PromoCodesRepository extends JpaRepository<PromoCodeEntity, Long> {
     boolean existsByCode(String code);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<PromoCodeEntity> findWithLockingByCode(String code);
 }

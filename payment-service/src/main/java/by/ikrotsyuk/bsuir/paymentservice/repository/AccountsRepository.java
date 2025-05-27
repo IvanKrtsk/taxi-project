@@ -12,9 +12,12 @@ import java.util.Optional;
 @Repository
 public interface AccountsRepository extends JpaRepository<AccountEntity, Long> {
     boolean existsByUserIdAndAccountType(Long userId, AccountTypes accountType);
+
     Optional<AccountEntity> findByUserIdAndAccountType(Long userId, AccountTypes accountType);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<AccountEntity> findFirstWithLockingByUserIdAndAccountType(Long userId, AccountTypes accountType);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<AccountEntity> findFirstWithLockingById(Long id);
 }

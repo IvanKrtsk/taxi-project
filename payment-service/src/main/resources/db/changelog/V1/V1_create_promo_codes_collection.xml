@@ -8,13 +8,12 @@
          http://www.liquibase.org/xml/ns/mongodb
          http://www.liquibase.org/xml/ns/mongodb/liquibase-mongodb-latest.xsd">
 
-    <changeSet id="rating-1" author="ikrtsk">
+    <changeSet id="payment-7" author="ikrtsk">
         <comment>Create promo_codes collection</comment>
-        <mongodb:createCollection collectionName="reviews"/>
+        <mongodb:createCollection collectionName="promo_codes"/>
 
         <rollback>
-            <mongodb:dropCollection collectionName="reviews"/>
+            <mongodb:dropCollection collectionName="promo_codes"/>
         </rollback>
     </changeSet>
-
 </databaseChangeLog>

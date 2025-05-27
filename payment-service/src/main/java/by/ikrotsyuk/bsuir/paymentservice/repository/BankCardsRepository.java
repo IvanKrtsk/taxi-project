@@ -14,7 +14,10 @@ import java.util.Optional;
 public interface BankCardsRepository extends JpaRepository<BankCardEntity, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<BankCardEntity> findAllWithLockingByAccount(AccountEntity account);
+
     List<BankCardEntity> findAllByAccount(AccountEntity account);
+
     boolean existsByCardNumberAndExpirationDateAndAccount(String cardNumber, String expirationDate, AccountEntity account);
+
     Optional<BankCardEntity> findByAccountAndId(AccountEntity account, Long id);
 }

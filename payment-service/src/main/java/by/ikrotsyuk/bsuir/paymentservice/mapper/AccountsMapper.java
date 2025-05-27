@@ -11,6 +11,8 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AccountsMapper {
     AccountEntity toEntity(AccountRequestDTO accountRequestDTO);
+
     AccountFullResponseDTO toFullDTO(AccountEntity accountEntity);
+
     List<AccountFullResponseDTO> toFullDTOList(List<AccountEntity> accountEntityList);
 }

@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface IncomePaymentsRepository extends MongoRepository<IncomePaymentEntity, ObjectId> {
     Optional<IncomePaymentEntity> findByAccountIdAndPaymentStatus(Long accountId, PaymentStatus paymentStatus);
+
     boolean existsByAccountIdAndRideId(Long accountId, Long rideId);
 }
