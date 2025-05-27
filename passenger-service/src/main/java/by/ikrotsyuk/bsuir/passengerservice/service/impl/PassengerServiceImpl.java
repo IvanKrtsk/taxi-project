@@ -1,14 +1,12 @@
 package by.ikrotsyuk.bsuir.passengerservice.service.impl;
 
+import by.ikrotsyuk.bsuir.communicationparts.event.customtypes.AccountTypes;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerRequestDTO;
 import by.ikrotsyuk.bsuir.passengerservice.dto.PassengerResponseDTO;
 import by.ikrotsyuk.bsuir.passengerservice.entity.PassengerEntity;
 import by.ikrotsyuk.bsuir.passengerservice.entity.customtypes.PaymentTypeTypes;
-import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerAlreadyDeletedException;
-import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByEmailException;
-import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerNotFoundByIdException;
-import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengerWithSameEmailAlreadyExistsException;
-import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.PassengersNotFoundException;
+import by.ikrotsyuk.bsuir.passengerservice.exception.exceptions.*;
+import by.ikrotsyuk.bsuir.passengerservice.feign.PassengerAccountClient;
 import by.ikrotsyuk.bsuir.passengerservice.mapper.PassengerMapper;
 import by.ikrotsyuk.bsuir.passengerservice.repository.PassengerRepository;
 import by.ikrotsyuk.bsuir.passengerservice.service.PassengerService;
@@ -26,7 +24,7 @@ public class PassengerServiceImpl implements PassengerService {
     private final PassengerMapper passengerMapper;
     private final PassengerServiceValidationManager passengerServiceValidationManager;
     private final PaginationUtil paginationUtil;
-
+    private final PassengerAccountClient passengerAccountClient;
 
     @Override
     @Transactional(readOnly = true)
@@ -111,12 +109,20 @@ public class PassengerServiceImpl implements PassengerService {
         } else {
             passengerServiceValidationManager.checkEmailIsUnique(email);
             passengerServiceValidationManager.checkPhoneIsUnique(phone);
-            return passengerMapper.toDTO(passengerRepository.save(PassengerEntity.builder()
+
+            PassengerEntity passengerEntity = passengerRepository.save(PassengerEntity.builder()
                     .name(passengerRequestDTO.name())
                     .email(email)
                     .phone(phone)
                     .totalRides(0L)             // builder.default issue(null instead of default value)
-                    .build()));
+            .build());
+
+            try{
+                Long accountId = passengerAccountClient.createAccount(passengerEntity.getId(), AccountTypes.PASSENGER).getBody();
+            }catch (feign.RetryableException e){
+                throw new FeignConnectException();
+            }
+            return passengerMapper.toDTO(passengerEntity);
         }
     }
 
