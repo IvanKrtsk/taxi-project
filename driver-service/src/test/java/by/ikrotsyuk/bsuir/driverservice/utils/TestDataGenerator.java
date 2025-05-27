@@ -31,6 +31,15 @@ public final class TestDataGenerator {
     private final OffsetDateTime DRIVER_CREATED_AT = OffsetDateTime.now();
     private final OffsetDateTime DRIVER_UPDATED_AT = OffsetDateTime.now();
     private final List<VehicleEntity> DRIVER_DRIVER_VEHICLES = List.of();
+    private final Double DRIVER_ZERO_RATING = 0.0;
+    private final Long DRIVER_ZERO_TOTAL_RIDES = 0L;
+
+    @Getter
+    private final String customDriverName = "John";
+    @Getter
+    private final String customDriverEmail = "johndoe@gmail.com";
+    @Getter
+    private final String customDriverPhone = "+123456789";
 
     private final Long VEHICLE_ID = 1L;
     private final String VEHICLE_BRAND = "Audi";
@@ -43,6 +52,8 @@ public final class TestDataGenerator {
     private final boolean VEHICLE_IS_CURRENT = true;
     private final OffsetDateTime VEHICLE_CREATED_AT = OffsetDateTime.now();
     private final OffsetDateTime VEHICLE_UPDATED_AT = OffsetDateTime.now();
+    private final Long VEHICLE_ZERO_RIDES_COUNT = 0L;
+    private final String VEHICLE_CUSTOM_LICENSE_PLATE = "2222XM-8";
 
     public static final String GET_DRIVER_PROFILE_BY_ID = "/api/v1/drivers/{driverId}/profile";
     public static final String GET_DRIVER_RATING_BY_ID = "/api/v1/drivers/{driverId}/rating";
@@ -53,7 +64,7 @@ public final class TestDataGenerator {
     public static final String GET_DRIVER_WITH_VEHICLES = "/api/v1/drivers/{driverId}/vehicles";
 
     public static final String ADD_VEHICLE = "/api/v1/drivers/vehicles/{driverId}";
-    public static final String UPDATE_VEHICLE = "/api/v1/drivers/vehicles//{driverId}/{vehicleId}";
+    public static final String UPDATE_VEHICLE = "/api/v1/drivers/vehicles/{driverId}/{vehicleId}";
     public static final String CHOOSE_CURRENT_VEHICLE = "/api/v1/drivers/vehicles/{driverId}/{vehicleId}/current";
     public static final String GET_VEHICLE_BY_ID = "/api/v1/drivers/vehicles/{vehicleId}";
     public static final String GET_ALL_VEHICLES = "/api/v1/drivers/vehicles";
@@ -61,7 +72,7 @@ public final class TestDataGenerator {
     public static final String GET_ALL_VEHICLES_BY_YEAR = "/api/v1/drivers/vehicles/year";
     public static final String GET_ALL_VEHICLES_BY_BRAND = "/api/v1/drivers/vehicles/brand";
     public static final String GET_VEHICLE_BY_LICENSE = "/api/v1/drivers/vehicles/license";
-    public static final String DELETE_VEHICLE_BY_LICENSE = "/api/v1/drivers/vehicles/{driverId}/{vehicleId}";
+    public static final String DELETE_VEHICLE_BY_ID = "/api/v1/drivers/vehicles/{driverId}/{vehicleId}";
     public static final String GET_ALL_DRIVER_VEHICLES = "/api/v1/drivers/vehicles/{driverId}/vehicles";
     public static final String GET_DRIVER_CURRENT_VEHICLE = "/api/v1/drivers/vehicles/{driverId}/current";
 
@@ -69,6 +80,18 @@ public final class TestDataGenerator {
     private final Long RATING_UPDATED_EVENT_REVIEWER_ID = 1L;
     private final Long RATING_UPDATED_EVENT_REVIEWED_ID = 1L;
     private final Double RATING_UPDATED_EVENT_RATING = 8.6;
+
+    public static final String REQUEST_PARAM_OFFSET = "offset";
+    public static final String REQUEST_PARAM_ITEMS = "itemCount";
+    public static final String REQUEST_PARAM_FIELD = "field";
+    public static final String REQUEST_PARAM_DIRECTION = "isSortDirectionAsc";
+    public static final String REQUEST_PARAM_DIRECTION_VALUE = "true";
+    public static final String REQUEST_PARAM_YEAR = "year";
+    public static final String REQUEST_PARAM_TYPE = "type";
+    public static final String REQUEST_PARAM_BRAND = "brand";
+    public static final String REQUEST_PARAM_LICENSE_PLATE = "licensePlate";
+
+    public static final Long NON_EXISTENT_ID = 10L;
 
     @Getter
     private static final int DEFAULT_PAGE = 0;
@@ -79,12 +102,33 @@ public final class TestDataGenerator {
     @Getter
     private static final Sort.Direction DEFAULT_SORT_DIRECTION = Sort.Direction.ASC;
 
+    public static final String SQL_DELETE_DRIVERS_TABLE = "DELETE FROM drivers;";
+    public static final String SQL_DELETE_VEHICLES_TABLE = "DELETE FROM vehicles;";
+    public static final String SQL_RESTART_DRIVERS_SEQUENCE = "ALTER SEQUENCE drivers_id_seq RESTART WITH 1;";
+    public static final String SQL_RESTART_VEHICLES_SEQUENCE = "ALTER SEQUENCE vehicles_id_seq RESTART WITH 1;";
+
+
     public static DriverEntity getDriverEntity(){
         return DriverEntity.builder()
                 .id(DRIVER_ID)
                 .name(DRIVER_NAME)
                 .email(DRIVER_EMAIL)
                 .phone(DRIVER_PHONE)
+                .rating(DRIVER_RATING)
+                .totalRides(DRIVER_TOTAL_RIDES)
+                .isDeleted(DRIVER_IS_DELETED)
+                .status(DRIVER_STATUS)
+                .createdAt(DRIVER_CREATED_AT)
+                .updatedAt(DRIVER_UPDATED_AT)
+                .driverVehicles(DRIVER_DRIVER_VEHICLES)
+                .build();
+    }
+
+    public static DriverEntity getCustomDriverEntity(String email, String phone){
+        return DriverEntity.builder()
+                .name(DRIVER_NAME)
+                .email(email)
+                .phone(phone)
                 .rating(DRIVER_RATING)
                 .totalRides(DRIVER_TOTAL_RIDES)
                 .isDeleted(DRIVER_IS_DELETED)
@@ -111,6 +155,37 @@ public final class TestDataGenerator {
     public static VehicleEntity getVehicleEntity(){
         return VehicleEntity.builder()
                 .id(VEHICLE_ID)
+                .brand(VEHICLE_BRAND)
+                .model(VEHICLE_MODEL)
+                .carClass(VEHICLE_CLASS)
+                .ridesCount(VEHICLE_RIDES_COUNT)
+                .year(VEHICLE_YEAR)
+                .licensePlate(VEHICLE_LICENSE_PLATE)
+                .color(VEHICLE_COLOR)
+                .isCurrent(VEHICLE_IS_CURRENT)
+                .createdAt(VEHICLE_CREATED_AT)
+                .updatedAt(VEHICLE_UPDATED_AT)
+                .build();
+    }
+
+    public static VehicleEntity getVehicleDriverEntity(DriverEntity driverEntity){
+        return VehicleEntity.builder()
+                .brand(VEHICLE_BRAND)
+                .model(VEHICLE_MODEL)
+                .carClass(VEHICLE_CLASS)
+                .ridesCount(VEHICLE_RIDES_COUNT)
+                .year(VEHICLE_YEAR)
+                .licensePlate(VEHICLE_LICENSE_PLATE)
+                .color(VEHICLE_COLOR)
+                .driver(driverEntity)
+                .isCurrent(VEHICLE_IS_CURRENT)
+                .createdAt(VEHICLE_CREATED_AT)
+                .updatedAt(VEHICLE_UPDATED_AT)
+                .build();
+    }
+
+    public static VehicleEntity getIntegrationVehicleEntity(){
+        return VehicleEntity.builder()
                 .brand(VEHICLE_BRAND)
                 .model(VEHICLE_MODEL)
                 .carClass(VEHICLE_CLASS)
@@ -181,6 +256,57 @@ public final class TestDataGenerator {
         );
     }
 
+    public static DriverRequestDTO getCustomDriverRequestDTO(String email, String phone){
+        return new DriverRequestDTO(
+                getCustomDriverName(),
+                email,
+                phone
+        );
+    }
+
+    public static DriverResponseDTO getCustomDriverResponseDTO(){
+        return new DriverResponseDTO(
+                DRIVER_ID,
+                DRIVER_NAME,
+                DRIVER_EMAIL,
+                DRIVER_PHONE,
+                DRIVER_ZERO_RATING,
+                DRIVER_ZERO_TOTAL_RIDES,
+                DRIVER_IS_DELETED,
+                DRIVER_STATUS
+        );
+    }
+
+    public static VehicleResponseDTO getCustomVehicleResponseDTO(){
+        return new VehicleResponseDTO(
+                VEHICLE_ID,
+                VEHICLE_BRAND,
+                VEHICLE_MODEL,
+                VEHICLE_CLASS,
+                VEHICLE_ZERO_RIDES_COUNT,
+                VEHICLE_YEAR,
+                VEHICLE_LICENSE_PLATE,
+                VEHICLE_COLOR,
+                DRIVER_ID,
+                VEHICLE_IS_CURRENT
+        );
+    }
+
+    public static VehicleResponseDTO getModifiedVehicleResponseDTO(){
+        return new VehicleResponseDTO(
+                VEHICLE_ID,
+                VEHICLE_BRAND,
+                VEHICLE_MODEL,
+                VEHICLE_CLASS,
+                VEHICLE_RIDES_COUNT,
+                VEHICLE_YEAR,
+                VEHICLE_CUSTOM_LICENSE_PLATE,
+                VEHICLE_COLOR,
+                DRIVER_ID,
+                VEHICLE_IS_CURRENT
+        );
+    }
+
     @SafeVarargs
     public static <T> Page<T> getObjectsPage(T... entitiesArr){
         PageRequest pageable = PageRequest.of(DEFAULT_PAGE, entitiesArr.length, Sort.by(DEFAULT_SORT_FIELD));
@@ -207,5 +333,28 @@ public final class TestDataGenerator {
                 DRIVER_STATUS,
                 List.of(getVehicleEntity())
         );
+    }
+
+    public static VehicleRequestDTO getCustomVehicleRequestDTO(){
+        return new VehicleRequestDTO(
+                VEHICLE_BRAND,
+                VEHICLE_MODEL,
+                VEHICLE_CLASS,
+                VEHICLE_YEAR,
+                VEHICLE_CUSTOM_LICENSE_PLATE,
+                VEHICLE_COLOR
+        );
+    }
+
+    public static DriverEntity getIntegrationDriverEntity(){
+        return DriverEntity.builder()
+                .name(DRIVER_NAME)
+                .email(DRIVER_EMAIL)
+                .phone(DRIVER_PHONE)
+                .status(DRIVER_STATUS)
+                .totalRides(DRIVER_TOTAL_RIDES)
+                .isDeleted(DRIVER_IS_DELETED)
+                .rating(DRIVER_RATING)
+                .build();
     }
 }

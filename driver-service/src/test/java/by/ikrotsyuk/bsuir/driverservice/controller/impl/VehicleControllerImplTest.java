@@ -44,7 +44,7 @@ import java.util.stream.Stream;
 
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.ADD_VEHICLE;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.CHOOSE_CURRENT_VEHICLE;
-import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.DELETE_VEHICLE_BY_LICENSE;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.DELETE_VEHICLE_BY_ID;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_ALL_DRIVER_VEHICLES;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_ALL_VEHICLES;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_ALL_VEHICLES_BY_BRAND;
@@ -53,6 +53,15 @@ import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_ALL_V
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_DRIVER_CURRENT_VEHICLE;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_VEHICLE_BY_ID;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_VEHICLE_BY_LICENSE;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_BRAND;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_DIRECTION;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_DIRECTION_VALUE;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_FIELD;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_ITEMS;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_LICENSE_PLATE;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_OFFSET;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_TYPE;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_YEAR;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.UPDATE_VEHICLE;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.getObjectsPage;
 import static org.mockito.ArgumentMatchers.any;
@@ -360,10 +369,10 @@ public class VehicleControllerImplTest {
                 .thenReturn(getObjectsPage(vehicleResponseDTO));
 
         mockMvc.perform(get(GET_ALL_VEHICLES)
-                .param("offset", String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
-                .param("itemCount", String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
-                .param("field", TestDataGenerator.getDEFAULT_SORT_FIELD())
-                .param("isSortDirectionAsc", "true"))
+                .param(REQUEST_PARAM_OFFSET, String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
+                .param(REQUEST_PARAM_ITEMS, String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
+                .param(REQUEST_PARAM_FIELD, TestDataGenerator.getDEFAULT_SORT_FIELD())
+                .param(REQUEST_PARAM_DIRECTION, REQUEST_PARAM_DIRECTION_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content.length()").value(1));
@@ -378,10 +387,10 @@ public class VehicleControllerImplTest {
                 .thenThrow(new VehiclesNotFoundException());
 
         mockMvc.perform(withLocale(get(GET_ALL_VEHICLES), currentLocale)
-                .param("offset", String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
-                .param("itemCount", String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
-                .param("field", TestDataGenerator.getDEFAULT_SORT_FIELD())
-                .param("isSortDirectionAsc", "true"))
+                .param(REQUEST_PARAM_OFFSET, String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
+                .param(REQUEST_PARAM_ITEMS, String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
+                .param(REQUEST_PARAM_FIELD, TestDataGenerator.getDEFAULT_SORT_FIELD())
+                .param(REQUEST_PARAM_DIRECTION,REQUEST_PARAM_DIRECTION_VALUE))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message").value(messageSource.getMessage(VehicleExceptionMessageKeys.VEHICLES_NOT_FOUND_MESSAGE_KEY.getMessageKey(), new Object[]{}, currentLocale)))
@@ -394,11 +403,11 @@ public class VehicleControllerImplTest {
                 .thenReturn(getObjectsPage(vehicleResponseDTO));
 
         mockMvc.perform(get(GET_ALL_VEHICLES_BY_TYPE)
-                .param("type", vehicleResponseDTO.carClass().name())
-                .param("offset", String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
-                .param("itemCount", String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
-                .param("field", TestDataGenerator.getDEFAULT_SORT_FIELD())
-                .param("isSortDirectionAsc", "true"))
+                .param(REQUEST_PARAM_TYPE, vehicleResponseDTO.carClass().name())
+                .param(REQUEST_PARAM_OFFSET, String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
+                .param(REQUEST_PARAM_ITEMS, String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
+                .param(REQUEST_PARAM_FIELD, TestDataGenerator.getDEFAULT_SORT_FIELD())
+                .param(REQUEST_PARAM_DIRECTION, REQUEST_PARAM_DIRECTION_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content.length()").value(1));
@@ -413,11 +422,11 @@ public class VehicleControllerImplTest {
                 .thenThrow(new VehiclesNotFoundByTypeException(vehicleResponseDTO.carClass()));
 
         mockMvc.perform(withLocale(get(GET_ALL_VEHICLES_BY_TYPE), currentLocale)
-                .param("type", vehicleResponseDTO.carClass().name())
-                .param("offset", String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
-                .param("itemCount", String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
-                .param("field", TestDataGenerator.getDEFAULT_SORT_FIELD())
-                .param("isSortDirectionAsc", "true"))
+                .param(REQUEST_PARAM_TYPE, vehicleResponseDTO.carClass().name())
+                .param(REQUEST_PARAM_OFFSET, String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
+                .param(REQUEST_PARAM_ITEMS, String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
+                .param(REQUEST_PARAM_FIELD, TestDataGenerator.getDEFAULT_SORT_FIELD())
+                .param(REQUEST_PARAM_DIRECTION, REQUEST_PARAM_DIRECTION_VALUE))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.messageKey").value(VehicleExceptionMessageKeys.VEHICLE_NOT_FOUND_BY_TYPE_MESSAGE_KEY.getMessageKey()))
@@ -430,11 +439,11 @@ public class VehicleControllerImplTest {
                 .thenReturn(getObjectsPage(vehicleResponseDTO));
 
         mockMvc.perform(get(GET_ALL_VEHICLES_BY_YEAR)
-                .param("year", String.valueOf(vehicleResponseDTO.year()))
-                .param("offset", String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
-                .param("itemCount", String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
-                .param("field", TestDataGenerator.getDEFAULT_SORT_FIELD())
-                .param("isSortDirectionAsc", "true"))
+                .param(REQUEST_PARAM_YEAR, String.valueOf(vehicleResponseDTO.year()))
+                .param(REQUEST_PARAM_OFFSET, String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
+                .param(REQUEST_PARAM_ITEMS, String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
+                .param(REQUEST_PARAM_FIELD, TestDataGenerator.getDEFAULT_SORT_FIELD())
+                .param(REQUEST_PARAM_DIRECTION, REQUEST_PARAM_DIRECTION_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content.length()").value(1));
@@ -449,11 +458,11 @@ public class VehicleControllerImplTest {
                 .thenThrow(new VehiclesNotFoundByYearException(vehicleResponseDTO.year()));
 
         mockMvc.perform(withLocale(get(GET_ALL_VEHICLES_BY_YEAR), currentLocale)
-                .param("year", String.valueOf(vehicleResponseDTO.year()))
-                .param("offset", String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
-                .param("itemCount", String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
-                .param("field", TestDataGenerator.getDEFAULT_SORT_FIELD())
-                .param("isSortDirectionAsc", "true"))
+                .param(REQUEST_PARAM_YEAR, String.valueOf(vehicleResponseDTO.year()))
+                .param(REQUEST_PARAM_OFFSET, String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
+                .param(REQUEST_PARAM_ITEMS, String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
+                .param(REQUEST_PARAM_FIELD, TestDataGenerator.getDEFAULT_SORT_FIELD())
+                .param(REQUEST_PARAM_DIRECTION, REQUEST_PARAM_DIRECTION_VALUE))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.messageKey").value(VehicleExceptionMessageKeys.VEHICLE_NOT_FOUND_BY_YEAR_MESSAGE_KEY.getMessageKey()))
@@ -466,11 +475,11 @@ public class VehicleControllerImplTest {
                 .thenReturn(getObjectsPage(vehicleResponseDTO));
 
         mockMvc.perform(get(GET_ALL_VEHICLES_BY_BRAND)
-                .param("brand", String.valueOf(vehicleResponseDTO.brand()))
-                .param("offset", String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
-                .param("itemCount", String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
-                .param("field", TestDataGenerator.getDEFAULT_SORT_FIELD())
-                .param("isSortDirectionAsc", "true"))
+                .param(REQUEST_PARAM_BRAND, String.valueOf(vehicleResponseDTO.brand()))
+                .param(REQUEST_PARAM_OFFSET, String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
+                .param(REQUEST_PARAM_ITEMS, String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
+                .param(REQUEST_PARAM_FIELD, TestDataGenerator.getDEFAULT_SORT_FIELD())
+                .param(REQUEST_PARAM_DIRECTION, REQUEST_PARAM_DIRECTION_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content.length()").value(1));
@@ -485,11 +494,11 @@ public class VehicleControllerImplTest {
                 .thenThrow(new VehiclesNotFoundByBrandException(vehicleResponseDTO.brand()));
 
         mockMvc.perform(withLocale(get(GET_ALL_VEHICLES_BY_BRAND), currentLocale)
-                .param("brand", String.valueOf(vehicleResponseDTO.brand()))
-                .param("offset", String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
-                .param("itemCount", String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
-                .param("field", TestDataGenerator.getDEFAULT_SORT_FIELD())
-                .param("isSortDirectionAsc", "true"))
+                .param(REQUEST_PARAM_BRAND, String.valueOf(vehicleResponseDTO.brand()))
+                .param(REQUEST_PARAM_OFFSET, String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
+                .param(REQUEST_PARAM_ITEMS, String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
+                .param(REQUEST_PARAM_FIELD, TestDataGenerator.getDEFAULT_SORT_FIELD())
+                .param(REQUEST_PARAM_DIRECTION, REQUEST_PARAM_DIRECTION_VALUE))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.messageKey").value(VehicleExceptionMessageKeys.VEHICLE_NOT_FOUND_BY_BRAND_MESSAGE_KEY.getMessageKey()))
@@ -502,7 +511,7 @@ public class VehicleControllerImplTest {
                 .thenReturn(vehicleResponseDTO);
 
         mockMvc.perform(get(GET_VEHICLE_BY_LICENSE)
-                .param("licensePlate", String.valueOf(vehicleResponseDTO.licensePlate())))
+                .param(REQUEST_PARAM_LICENSE_PLATE, String.valueOf(vehicleResponseDTO.licensePlate())))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(vehicleResponseDTO)));
@@ -517,7 +526,7 @@ public class VehicleControllerImplTest {
                 .thenThrow(new VehicleNotFoundByLicensePlateException(vehicleResponseDTO.licensePlate()));
 
         mockMvc.perform(withLocale(get(GET_VEHICLE_BY_LICENSE), currentLocale)
-                .param("licensePlate", String.valueOf(vehicleResponseDTO.licensePlate())))
+                .param(REQUEST_PARAM_LICENSE_PLATE, String.valueOf(vehicleResponseDTO.licensePlate())))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.messageKey").value(VehicleExceptionMessageKeys.VEHICLE_NOT_FOUND_BY_LICENSE_PLATE_MESSAGE_KEY.getMessageKey()))
@@ -529,7 +538,7 @@ public class VehicleControllerImplTest {
         when(vehicleService.deleteVehicleById(anyLong(), anyLong()))
                 .thenReturn(vehicleResponseDTO);
 
-        mockMvc.perform(delete(DELETE_VEHICLE_BY_LICENSE, vehicleResponseDTO.driverId(), vehicleResponseDTO.id()))
+        mockMvc.perform(delete(DELETE_VEHICLE_BY_ID, vehicleResponseDTO.driverId(), vehicleResponseDTO.id()))
                 .andExpect(status().isNoContent())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(vehicleResponseDTO)));
@@ -543,7 +552,7 @@ public class VehicleControllerImplTest {
         when(vehicleService.deleteVehicleById(anyLong(), anyLong()))
                 .thenThrow(new VehicleNotFoundByIdException(vehicleResponseDTO.id()));
 
-        mockMvc.perform(withLocale(delete(DELETE_VEHICLE_BY_LICENSE, vehicleResponseDTO.driverId(), vehicleResponseDTO.id()), currentLocale))
+        mockMvc.perform(withLocale(delete(DELETE_VEHICLE_BY_ID, vehicleResponseDTO.driverId(), vehicleResponseDTO.id()), currentLocale))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message").value(messageSource.getMessage(VehicleExceptionMessageKeys.VEHICLE_NOT_FOUND_BY_ID_MESSAGE_KEY.getMessageKey(), new Object[]{vehicleResponseDTO.id()}, currentLocale)))
