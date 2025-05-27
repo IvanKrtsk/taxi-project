@@ -44,6 +44,11 @@ import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_ALL_D
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_DRIVER_PROFILE_BY_ID;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_DRIVER_RATING_BY_ID;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_DRIVER_WITH_VEHICLES;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_DIRECTION;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_DIRECTION_VALUE;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_FIELD;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_ITEMS;
+import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.REQUEST_PARAM_OFFSET;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.UPDATE_DRIVER_BY_ID;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.getObjectsPage;
 import static org.mockito.ArgumentMatchers.any;
@@ -271,10 +276,10 @@ public class DriverControllerImplTest {
                 .thenReturn(getObjectsPage(driverResponseDTO));
 
         mockMvc.perform(get(GET_ALL_DRIVERS)
-                .param("offset", String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
-                .param("itemCount", String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
-                .param("field", TestDataGenerator.getDEFAULT_SORT_FIELD())
-                .param("isSortDirectionAsc", "true"))
+                .param(REQUEST_PARAM_OFFSET, String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
+                .param(REQUEST_PARAM_ITEMS, String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
+                .param(REQUEST_PARAM_FIELD, TestDataGenerator.getDEFAULT_SORT_FIELD())
+                .param(REQUEST_PARAM_DIRECTION, REQUEST_PARAM_DIRECTION_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content.length()").value(1));
@@ -289,10 +294,10 @@ public class DriverControllerImplTest {
                 .thenThrow(new DriversNotFoundException());
 
         mockMvc.perform(withLocale(get(GET_ALL_DRIVERS), currentLocale)
-                .param("offset", String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
-                .param("itemCount", String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
-                .param("field", TestDataGenerator.getDEFAULT_SORT_FIELD())
-                .param("isSortDirectionAsc", "true"))
+                .param(REQUEST_PARAM_OFFSET, String.valueOf(TestDataGenerator.getDEFAULT_PAGE()))
+                .param(REQUEST_PARAM_ITEMS, String.valueOf(TestDataGenerator.getDEFAULT_ITEMS_PER_PAGE_COUNT()))
+                .param(REQUEST_PARAM_FIELD, TestDataGenerator.getDEFAULT_SORT_FIELD())
+                .param(REQUEST_PARAM_DIRECTION, REQUEST_PARAM_DIRECTION_VALUE))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message").value(messageSource.getMessage(DriverExceptionMessageKeys.DRIVERS_NOT_FOUND_MESSAGE_KEY.getMessageKey(), new Object[]{}, currentLocale)))
