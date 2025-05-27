@@ -3,7 +3,7 @@ package by.ikrotsyuk.bsuir.ratingservice.controller.impl;
 import by.ikrotsyuk.bsuir.ratingservice.controller.RatingReviewerOperations;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingRequestDTO;
 import by.ikrotsyuk.bsuir.ratingservice.dto.RatingResponseDTO;
-import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypeTypes;
+import by.ikrotsyuk.bsuir.ratingservice.entity.customtypes.ReviewerTypes;
 import by.ikrotsyuk.bsuir.ratingservice.service.RatingReviewerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +26,7 @@ public class RatingReviewerController implements RatingReviewerOperations {
     }
 
     @Override
-    public ResponseEntity<Page<RatingResponseDTO>> viewLeavedReviews(Long reviewerId, ReviewerTypeTypes reviewerType, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
+    public ResponseEntity<Page<RatingResponseDTO>> viewLeavedReviews(Long reviewerId, ReviewerTypes reviewerType, int offset, int itemCount, String field, Boolean isSortDirectionAsc) {
         return new ResponseEntity<>(ratingReviewerService.viewLeavedReviews(reviewerId, reviewerType, offset, itemCount, field, isSortDirectionAsc), HttpStatus.OK);
     }
 

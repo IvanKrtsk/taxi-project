@@ -11,22 +11,13 @@ spring:
   web:
     locale-resolver: accept_header
     locale: en
-  # postgresql database configuration
-  datasource:
-    url: jdbc:postgresql://localhost:5432/taxi_db
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-  jpa:
-    show-sql: true
-    open-in-view: false
-  # liquibase configuration
-  liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.xml
   # mongodb database configuration
   data:
     mongodb:
       uri: mongodb://mongo:mongo@localhost:27017/taxi_db
+  # liquibase configuration
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
 
 # swagger routes configuration
 springdoc:

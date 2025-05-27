@@ -4,6 +4,13 @@ server:
 spring:
   application:
     name: payment-service
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+  web:
+    locale-resolver: accept_header
+    locale: en
   # postgresql database configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/taxi_db
@@ -20,12 +27,17 @@ spring:
   data:
     mongodb:
       uri: mongodb://mongo:mongo@localhost:27017/taxi_db
+  artemis:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+    mode: native
 
 # swagger routes configuration
 springdoc:
   api-docs:
     enabled: true
-    path: /payment/v3/api-docs
+    path: /api/v1/payments/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /payment/swagger-ui.html
+    path: /api/v1/payments/swagger-ui.html

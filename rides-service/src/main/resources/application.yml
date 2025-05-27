@@ -23,6 +23,11 @@ spring:
   # liquibase configuration
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
+  artemis:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+    mode: native
 
 # swagger routes configuration
 springdoc:
