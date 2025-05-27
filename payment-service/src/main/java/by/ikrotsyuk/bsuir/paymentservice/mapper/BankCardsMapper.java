@@ -12,7 +12,10 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface BankCardsMapper {
     BankCardEntity toEntity(BankCardRequestDTO bankCardRequestDTO);
+
     BankCardFullResponseDTO toFullDTO(BankCardEntity bankCardEntity);
+
     List<BankCardFullResponseDTO> toFullDTOList(List<BankCardEntity> bankCardEntityList);
+
     BankCardResponseDTO toDTO(BankCardEntity bankCardEntity);
 }

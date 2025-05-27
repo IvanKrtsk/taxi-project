@@ -10,4 +10,6 @@
 
     <include file="V1/V1_create_promo_codes_incomes_expenses_collections.xml" relativeToChangelogFile="true"/>
 
+    <include file="V1/V1_create_incomes_expenses_collections.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

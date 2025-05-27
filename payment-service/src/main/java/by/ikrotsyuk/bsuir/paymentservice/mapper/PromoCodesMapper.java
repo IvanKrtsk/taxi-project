@@ -11,6 +11,8 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PromoCodesMapper {
     PromoCodeEntity toEntity(PromoCodeRequestDTO promoCodeRequestDTO);
+
     PromoCodeFullResponseDTO toFullDTO(PromoCodeEntity promoCodeEntity);
+
     List<PromoCodeFullResponseDTO> toFullDTOList(List<PromoCodeEntity> promoCodeEntityList);
 }

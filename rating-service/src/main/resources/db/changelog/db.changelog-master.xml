@@ -8,4 +8,6 @@
 
     <include file="V1/V1_create_ratings_collection.xml" relativeToChangelogFile="true"/>
 
+    <include file="V1/V1_create_reviews_collections.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

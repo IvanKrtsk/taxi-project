@@ -12,5 +12,6 @@ import org.mapstruct.MappingConstants;
 public interface UnsentRatingMapper {
     @Mapping(target = "id", expression = "java(objectId)")
     UnsentRatingEntity toEntity(RatingUpdatedEvent ratingUpdatedEvent, @Context ObjectId objectId);
+
     RatingUpdatedEvent toEvent(UnsentRatingEntity unsentRatingEntity);
 }

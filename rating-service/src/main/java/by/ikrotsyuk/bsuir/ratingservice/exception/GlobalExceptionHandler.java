@@ -7,6 +7,7 @@ import by.ikrotsyuk.bsuir.ratingservice.exception.template.ExceptionTemplate;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.View;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -26,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Slf4j
 @RequiredArgsConstructor
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -34,6 +37,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ExceptionDTO> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
+        log.error(ex.toString());
         String messageKey = GeneralExceptionMessageKeys.ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY.getMessageKey();
         String message = messageSource.getMessage(messageKey, new Object[]{ex.getParameterName(), ex.getMethodParameter(), ex.getParameterType()}, LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
@@ -41,6 +45,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        log.error(ex.toString());
         AtomicReference<ExceptionDTO> exceptionDTO = new AtomicReference<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String errorMessage = error.getDefaultMessage();
@@ -48,11 +53,11 @@ public class GlobalExceptionHandler {
             if (error instanceof FieldError fieldError) {
                 String fieldName = fieldError.getField();
                 Object invalidValue = fieldError.getRejectedValue();
-                try{
+                try {
                     errorMessage = messageSource.getMessage(messageKey, new Object[]{fieldName, invalidValue}, LocaleContextHolder.getLocale());
-                }catch(NoSuchMessageException exception){
+                } catch (NoSuchMessageException exception) {
                     errorMessage = generateFieldErrorMessage(fieldError);
-                }finally {
+                } finally {
                     exceptionDTO.set(new ExceptionDTO(errorMessage, messageKey));
                 }
             }
@@ -61,7 +66,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){
+    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        log.error(ex.toString());
         Map<String, String> errors = new HashMap<>();
         errors.put("error", ex.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
@@ -69,17 +75,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ExceptionDTO> handleConstraintViolation(ConstraintViolationException ex) {
+        log.error(ex.toString());
         AtomicReference<ExceptionDTO> exceptionDTO = new AtomicReference<>();
         ex.getConstraintViolations().forEach(violation -> {
             String messageKey = violation.getMessageTemplate();
             String fieldName = violation.getPropertyPath().toString();
             Object invalidValue = violation.getInvalidValue();
             String errorMessage = null;
-            try{
+            try {
                 errorMessage = messageSource.getMessage(messageKey, new Object[]{fieldName, invalidValue}, LocaleContextHolder.getLocale());
-            }catch (NoSuchMessageException exception){
+            } catch (NoSuchMessageException exception) {
                 errorMessage = violation.getMessage();
-            }finally {
+            } finally {
                 exceptionDTO.set(new ExceptionDTO(errorMessage, messageKey));
             }
         });
@@ -88,6 +95,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidFormatException.class)
     private String handleInvalidFormatException(InvalidFormatException ex) {
+        log.error(ex.toString());
         String fieldName = ex.getPath().getFirst().getFieldName();
         Object rejectedValue = ex.getValue();
         Class<?> targetType = ex.getTargetType();
@@ -95,56 +103,53 @@ public class GlobalExceptionHandler {
         if (targetType.isEnum()) {
             return generateEnumErrorMessage(targetType, fieldName, rejectedValue);
         } else {
-            return messageSource.getMessage(
-                    GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
-                    new Object[]{rejectedValue},
-                    LocaleContextHolder.getLocale()
-            );
+            return messageSource.getMessage(GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(), new Object[]{rejectedValue}, LocaleContextHolder.getLocale());
         }
     }
 
     @ExceptionHandler({ReviewNotFoundByIdException.class, ReviewsNotFoundException.class})
-    public ResponseEntity<ExceptionDTO> handleRideNotFoundException(ExceptionTemplate ex){
+    public ResponseEntity<ExceptionDTO> handleRideNotFoundException(ExceptionTemplate ex) {
+        log.error(ex.toString());
         String messageKey = ex.getMessageKey();
-        String message = messageSource
-                .getMessage(messageKey, ex.getArgs(), LocaleContextHolder.getLocale());
+        String message = messageSource.getMessage(messageKey, ex.getArgs(), LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({IdIsNotValidException.class, ReviewAlreadyExistsException.class})
-    public ResponseEntity<ExceptionDTO> handlePassengerWithSameEmailAlreadyExistsException(ExceptionTemplate ex){
+    public ResponseEntity<ExceptionDTO> handlePassengerWithSameEmailAlreadyExistsException(ExceptionTemplate ex) {
+        log.error(ex.toString());
         String messageKey = ex.getMessageKey();
-        String message = messageSource
-                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        String message = messageSource.getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ExceptionDTO> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        log.error(ex.toString());
         String messageKey = GeneralExceptionMessageKeys.METHOD_ARGUMENT_TYPE_MISMATCH_MESSAGE_KEY.getMessageKey();
-        String message = messageSource
-                .getMessage(messageKey, new Object[]{ex.getName(), ex.getRequiredType(), ex.getValue()}, LocaleContextHolder.getLocale());
+        String message = messageSource.getMessage(messageKey, new Object[]{ex.getName(), ex.getRequiredType(), ex.getValue()}, LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({FeignDeserializationException.class, FeignConnectException.class})
-    public ResponseEntity<ExceptionDTO> handleFeignResponseExceptions(ExceptionTemplate ex){
+    public ResponseEntity<ExceptionDTO> handleFeignResponseExceptions(ExceptionTemplate ex) {
+        log.error(ex.toString());
         String messageKey = ex.getMessageKey();
-        String message = messageSource
-                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        String message = messageSource.getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({RideNotAcceptedException.class, RideNotBelongToPassengerException.class, RideNotBelongToDriverException.class})
-    public ResponseEntity<ExceptionDTO> handleFeignRequestExceptions(ExceptionTemplate ex){
+    public ResponseEntity<ExceptionDTO> handleFeignRequestExceptions(ExceptionTemplate ex) {
+        log.error(ex.toString());
         String messageKey = ex.getMessageKey();
-        String message = messageSource
-                .getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
+        String message = messageSource.getMessage(ex.getMessageKey(), ex.getArgs(), LocaleContextHolder.getLocale());
         return new ResponseEntity<>(new ExceptionDTO(message, messageKey), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(FeignException.class)
-    public ResponseEntity<ExceptionDTO> handleFeignException(FeignException ex){
+    public ResponseEntity<ExceptionDTO> handleFeignException(FeignException ex) {
+        log.error(ex.toString());
         return new ResponseEntity<>(ex.getExceptionDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -164,11 +169,7 @@ public class GlobalExceptionHandler {
                 return fieldError.getDefaultMessage();
             }
         } catch (ClassNotFoundException | NoSuchFieldException e) {
-            return messageSource.getMessage(
-                    GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
-                    new Object[]{rejectedValue},
-                    LocaleContextHolder.getLocale()
-            );
+            return messageSource.getMessage(GeneralExceptionMessageKeys.FIELD_DESERIALIZATION_MESSAGE_KEY.getMessageKey(), new Object[]{rejectedValue}, LocaleContextHolder.getLocale());
         }
     }
 
@@ -179,10 +180,6 @@ public class GlobalExceptionHandler {
     private String generateEnumErrorMessage(Class<?> fieldType, String fieldName, Object rejectedValue) {
         Object[] enumValues = fieldType.getEnumConstants();
         String possibleValues = Arrays.toString(enumValues);
-        return messageSource.getMessage(
-                GeneralExceptionMessageKeys.ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY.getMessageKey(),
-                new Object[]{fieldName, rejectedValue, possibleValues},
-                LocaleContextHolder.getLocale()
-        );
+        return messageSource.getMessage(GeneralExceptionMessageKeys.ENUM_ARGUMENT_DESERIALIZATION_MESSAGE_KEY.getMessageKey(), new Object[]{fieldName, rejectedValue, possibleValues}, LocaleContextHolder.getLocale());
     }
 }
