@@ -55,7 +55,7 @@ public final class TestDataGenerator {
     private final Long VEHICLE_ZERO_RIDES_COUNT = 0L;
     private final String VEHICLE_CUSTOM_LICENSE_PLATE = "2222XM-8";
 
-    public static final String baseUri = "http://localhost:8084";
+    public static final String baseUri = "http://localhost:";
 
     public static final String GET_DRIVER_PROFILE_BY_ID = "/api/v1/drivers/{driverId}/profile";
     public static final String GET_DRIVER_RATING_BY_ID = "/api/v1/drivers/{driverId}/rating";
