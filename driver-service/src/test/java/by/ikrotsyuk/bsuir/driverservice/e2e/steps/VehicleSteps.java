@@ -23,7 +23,6 @@ import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_ALL_V
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_DRIVER_CURRENT_VEHICLE;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_VEHICLE_BY_ID;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.GET_VEHICLE_BY_LICENSE;
-import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.UPDATE_VEHICLE;
 import static by.ikrotsyuk.bsuir.driverservice.utils.TestDataGenerator.baseUri;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
