@@ -78,17 +78,6 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Long checkIsEmailCorrect(Long driverId, String email){
-        return driverRepository.findById(driverId)
-                .filter(driverEntity -> driverEntity.getEmail().equals(email))
-                .map(DriverEntity::getId)
-                .or(() -> driverRepository.findByEmail(email)
-                        .map(DriverEntity::getId))
-                .orElseThrow(() -> new DriverNotFoundByEmailException(email));
-    }
-
-    @Override
     @Transactional
     public DriverResponseDTO addDriver(DriverRequestDTO driverRequestDTO){
         String email = driverRequestDTO.email();
@@ -102,7 +91,6 @@ public class DriverServiceImpl implements DriverService {
             } else
                 throw new DriverWithSameEmailAlreadyExistsException(email);
         } else {
-            driverServiceValidationManager.checkEmailIsUnique(email);
             driverServiceValidationManager.checkPhoneIsUnique(phone);
 
             DriverEntity driverEntity = driverRepository.save(DriverEntity.builder()
