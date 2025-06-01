@@ -76,21 +76,6 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     /**
-     * для auth service(проверяет соответствие email и id)
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Long checkIsEmailCorrect(Long id, String email) {
-        return passengerRepository.findById(id)
-                .filter(passengerEntity -> passengerEntity.getEmail().equals(email))
-                .map(PassengerEntity::getId)
-                .or(() -> passengerRepository.findByEmail(email)
-                        .map(PassengerEntity::getId))
-                .orElseThrow(() -> new PassengerNotFoundByEmailException(email));
-    }
-
-
-    /**
      * для auth service(добавляет пустого пользователя в таблицу пассажиров)
      */
     @Override
