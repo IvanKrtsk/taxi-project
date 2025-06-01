@@ -2,9 +2,31 @@ package by.ikrotsyuk.bsuir.passengerservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.lifecycle.Startables;
 
 @SpringBootTest
 class PassengerServiceImplApplicationTests {
+    @Container
+    @ServiceConnection
+    public static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("pgvector/pgvector:pg16")
+            .withDatabaseName("taxidb")
+            .withUsername("postgres")
+            .withPassword("postgres");
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        Startables.deepStart(postgresContainer).join();
+
+        registry.add("spring.datasource.url", postgresContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgresContainer::getUsername);
+        registry.add("spring.datasource.password", postgresContainer::getPassword);
+        registry.add("spring.datasource.driver-class-name", postgresContainer::getDriverClassName);
+    }
 
     @Test
     void contextLoads() {
