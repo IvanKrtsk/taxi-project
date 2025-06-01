@@ -1,16 +1,19 @@
-package by.ikrotsyuk.bsuir.passengerservice;
+package by.ikrotsyuk.bsuir.passengerservice.e2e.steps.config;
 
-import org.junit.jupiter.api.Test;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.lifecycle.Startables;
 
-@SpringBootTest
-class PassengerServiceImplApplicationTests {
+@CucumberContextConfiguration
+@Testcontainers
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class CucumberTestConfig {
     @Container
     @ServiceConnection
     public static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("pgvector/pgvector:pg16")
@@ -27,9 +30,4 @@ class PassengerServiceImplApplicationTests {
         registry.add("spring.datasource.password", postgresContainer::getPassword);
         registry.add("spring.datasource.driver-class-name", postgresContainer::getDriverClassName);
     }
-
-    @Test
-    void contextLoads() {
-    }
-
 }
