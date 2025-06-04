@@ -1,0 +1,9 @@
+spring:
+#  liquibase:
+#    change-log: classpath:db/changelog/db.changelog-master.xml
+  cloud:
+    discovery:
+      enabled: false
+eureka:
+  client:
+    enabled: false
